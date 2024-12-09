@@ -1,0 +1,532 @@
+openapi: 3.0.3
+info:
+  description: Wisp API
+  title: Wisp API
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /api/constrain:
+    post:
+      description: Constrain clusters based on resource specification.
+      operationId: api_constrain_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConstrainRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConstrainRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConstrainRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstrainResponse'
+          description: ""
+      security:
+      - tokenAuth: []
+      tags:
+      - api
+  /api/download:
+    get:
+      description: Download the Wisp CLI
+      operationId: api_download_retrieve
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - api
+  /api/job:
+    delete:
+      description: Delete a job
+      operationId: api_job_destroy
+      responses:
+        "204":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - api
+    get:
+      description: Get the jobs for the user
+      operationId: api_job_retrieve
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - api
+    post:
+      description: Launch a cluster configuration
+      operationId: api_job_create
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - api
+  /api/project:
+    get:
+      description: Get the projects for the user
+      operationId: api_project_retrieve
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - api
+    post:
+      description: Create a new project for the user
+      operationId: api_project_create
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - api
+  /api/project/{project_id}/jobs:
+    get:
+      description: Get the jobs for the user.
+      operationId: api_project_jobs_retrieve
+      parameters:
+      - explode: false
+        in: path
+        name: project_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - api
+  /api/user:
+    get:
+      description: Get the user information
+      operationId: api_user_retrieve
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - api
+  /api/user/public_key:
+    get:
+      description: Get the user's public key.
+      operationId: api_user_public_key_retrieve
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - api
+    post:
+      description: Set the user's public key.
+      operationId: api_user_public_key_create
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - api
+  /wisp/constrain:
+    post:
+      description: Constrain clusters based on resource specification.
+      operationId: wisp_constrain_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConstrainRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConstrainRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConstrainRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstrainResponse'
+          description: ""
+      security:
+      - tokenAuth: []
+      tags:
+      - wisp
+  /wisp/download:
+    get:
+      description: Download the Wisp CLI
+      operationId: wisp_download_retrieve
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - wisp
+  /wisp/job:
+    delete:
+      description: Delete a job
+      operationId: wisp_job_destroy
+      responses:
+        "204":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - wisp
+    get:
+      description: Get the jobs for the user
+      operationId: wisp_job_retrieve
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - wisp
+    post:
+      description: Launch a cluster configuration
+      operationId: wisp_job_create
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - wisp
+  /wisp/project:
+    get:
+      description: Get the projects for the user
+      operationId: wisp_project_retrieve
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - wisp
+    post:
+      description: Create a new project for the user
+      operationId: wisp_project_create
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - wisp
+  /wisp/project/{project_id}/jobs:
+    get:
+      description: Get the jobs for the user.
+      operationId: wisp_project_jobs_retrieve
+      parameters:
+      - explode: false
+        in: path
+        name: project_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - wisp
+  /wisp/user:
+    get:
+      description: Get the user information
+      operationId: wisp_user_retrieve
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - wisp
+  /wisp/user/public_key:
+    get:
+      description: Get the user's public key.
+      operationId: wisp_user_public_key_retrieve
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - wisp
+    post:
+      description: Set the user's public key.
+      operationId: wisp_user_public_key_create
+      responses:
+        "200":
+          description: No response body
+      security:
+      - tokenAuth: []
+      tags:
+      - wisp
+components:
+  schemas:
+    ClusterOffer:
+      description: |-
+        Serializer for cluster offers.
+
+        Fields:
+            cloud (str): Cloud provider name
+            instance_type (str): Instance type identifier
+            cpus (int): Number of CPUs
+            memory (float): Memory size in GB
+            accelerators (AcceleratorSpec): Accelerator specifications
+            accelerator_args (dict): Additional accelerator arguments
+            use_spot (bool): Whether to use spot instances
+            job_recovery (dict): Job recovery configuration
+            region (str): Region identifier
+            zone (str): Zone identifier
+            image_id (str): VM image identifier
+            disk_size (int): Disk size in GB
+            disk_tier (str): Disk performance tier
+            ports (list): Port configurations
+            labels (dict): Instance labels
+            price (float): Hourly price
+            storage (int): Storage size in GB
+            accelerator_count (int): Number of accelerators
+            regions (list): Available regions
+      example:
+        accelerator_args: ""
+        memory: 6.027456183070403
+        regions:
+        - regions
+        - regions
+        cpus: 0
+        disk_size: 1
+        storage: 5
+        ports:
+        - ""
+        - ""
+        accelerator_count: 2
+        disk_tier: disk_tier
+        job_recovery: ""
+        labels:
+          key: ""
+        cloud: cloud
+        zone: zone
+        price: 5.962133916683182
+        accelerators: ""
+        use_spot: true
+        region: region
+        image_id: image_id
+        instance_type: instance_type
+      properties:
+        cloud:
+          type: string
+        instance_type:
+          type: string
+        cpus:
+          type: integer
+        memory:
+          format: double
+          type: number
+        accelerators:
+          nullable: true
+        accelerator_args:
+          nullable: true
+        use_spot:
+          nullable: true
+          type: boolean
+        job_recovery:
+          nullable: true
+        region:
+          nullable: true
+          type: string
+        zone:
+          nullable: true
+          type: string
+        image_id:
+          nullable: true
+          type: string
+        disk_size:
+          nullable: true
+          type: integer
+        disk_tier:
+          nullable: true
+          type: string
+        ports:
+          items: {}
+          nullable: true
+          type: array
+        labels:
+          additionalProperties: {}
+          nullable: true
+          type: object
+        price:
+          format: double
+          type: number
+        storage:
+          nullable: true
+          type: integer
+        accelerator_count:
+          nullable: true
+          type: integer
+        regions:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+      - accelerator_args
+      - accelerator_count
+      - accelerators
+      - cloud
+      - cpus
+      - disk_size
+      - disk_tier
+      - image_id
+      - instance_type
+      - job_recovery
+      - labels
+      - memory
+      - ports
+      - price
+      - region
+      - regions
+      - storage
+      - use_spot
+      - zone
+      type: object
+    ConstrainRequest:
+      description: |-
+        Serializer for cluster constraint request.
+
+        Fields:
+            Accelerators (dict): Accelerator specifications including name, count and VRAM
+            Storage (int): Required storage in GB
+            Memory (int): Required memory in GB
+            VCPUs (int): Required number of virtual CPUs
+            Regions (list): List of acceptable regions
+            Clouds (list): List of acceptable cloud providers
+      example:
+        Storage: 0
+        Accelerators:
+          key: ""
+        Clouds:
+        - Clouds
+        - Clouds
+        Memory: 6
+        VCPUs: 1
+        Regions:
+        - Regions
+        - Regions
+      properties:
+        Accelerators:
+          additionalProperties: {}
+          nullable: true
+          type: object
+        Storage:
+          type: integer
+        Memory:
+          type: integer
+        VCPUs:
+          type: integer
+        Regions:
+          items:
+            type: string
+          type: array
+        Clouds:
+          items:
+            type: string
+          type: array
+      type: object
+    ConstrainResponse:
+      description: |-
+        Serializer for cluster constraint response.
+
+        Fields:
+            choice (list): List of cluster offers matching the constraints
+      example:
+        choice:
+        - accelerator_args: ""
+          memory: 6.027456183070403
+          regions:
+          - regions
+          - regions
+          cpus: 0
+          disk_size: 1
+          storage: 5
+          ports:
+          - ""
+          - ""
+          accelerator_count: 2
+          disk_tier: disk_tier
+          job_recovery: ""
+          labels:
+            key: ""
+          cloud: cloud
+          zone: zone
+          price: 5.962133916683182
+          accelerators: ""
+          use_spot: true
+          region: region
+          image_id: image_id
+          instance_type: instance_type
+        - accelerator_args: ""
+          memory: 6.027456183070403
+          regions:
+          - regions
+          - regions
+          cpus: 0
+          disk_size: 1
+          storage: 5
+          ports:
+          - ""
+          - ""
+          accelerator_count: 2
+          disk_tier: disk_tier
+          job_recovery: ""
+          labels:
+            key: ""
+          cloud: cloud
+          zone: zone
+          price: 5.962133916683182
+          accelerators: ""
+          use_spot: true
+          region: region
+          image_id: image_id
+          instance_type: instance_type
+      properties:
+        choice:
+          items:
+            $ref: '#/components/schemas/ClusterOffer'
+          type: array
+      required:
+      - choice
+      type: object
+  securitySchemes:
+    oauth2:
+      flows: {}
+      type: oauth2
+    tokenAuth:
+      description: Token-based authentication with required prefix "Token"
+      in: header
+      name: Authorization
+      type: apiKey
