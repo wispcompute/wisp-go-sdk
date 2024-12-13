@@ -11,10 +11,11 @@ package openapi
 
 import (
 	"context"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+	openapiclient "github.com/wispcompute/wisp-go-sdk"
 )
 
 func Test_openapi_ApiAPIService(t *testing.T) {
@@ -24,7 +25,7 @@ func Test_openapi_ApiAPIService(t *testing.T) {
 
 	t.Run("Test ApiAPIService ApiConstrainCreate", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.ApiAPI.ApiConstrainCreate(context.Background()).Execute()
 
@@ -36,7 +37,7 @@ func Test_openapi_ApiAPIService(t *testing.T) {
 
 	t.Run("Test ApiAPIService ApiDownloadRetrieve", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		httpRes, err := apiClient.ApiAPI.ApiDownloadRetrieve(context.Background()).Execute()
 
@@ -47,7 +48,7 @@ func Test_openapi_ApiAPIService(t *testing.T) {
 
 	t.Run("Test ApiAPIService ApiJobCreate", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		httpRes, err := apiClient.ApiAPI.ApiJobCreate(context.Background()).Execute()
 
@@ -58,7 +59,7 @@ func Test_openapi_ApiAPIService(t *testing.T) {
 
 	t.Run("Test ApiAPIService ApiJobDestroy", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		httpRes, err := apiClient.ApiAPI.ApiJobDestroy(context.Background()).Execute()
 
@@ -69,7 +70,7 @@ func Test_openapi_ApiAPIService(t *testing.T) {
 
 	t.Run("Test ApiAPIService ApiJobRetrieve", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		httpRes, err := apiClient.ApiAPI.ApiJobRetrieve(context.Background()).Execute()
 
@@ -80,7 +81,7 @@ func Test_openapi_ApiAPIService(t *testing.T) {
 
 	t.Run("Test ApiAPIService ApiProjectCreate", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		httpRes, err := apiClient.ApiAPI.ApiProjectCreate(context.Background()).Execute()
 
@@ -91,7 +92,7 @@ func Test_openapi_ApiAPIService(t *testing.T) {
 
 	t.Run("Test ApiAPIService ApiProjectJobsRetrieve", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var projectId string
 
@@ -104,7 +105,7 @@ func Test_openapi_ApiAPIService(t *testing.T) {
 
 	t.Run("Test ApiAPIService ApiProjectRetrieve", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		httpRes, err := apiClient.ApiAPI.ApiProjectRetrieve(context.Background()).Execute()
 
@@ -115,7 +116,7 @@ func Test_openapi_ApiAPIService(t *testing.T) {
 
 	t.Run("Test ApiAPIService ApiUserPublicKeyCreate", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		httpRes, err := apiClient.ApiAPI.ApiUserPublicKeyCreate(context.Background()).Execute()
 
@@ -126,7 +127,7 @@ func Test_openapi_ApiAPIService(t *testing.T) {
 
 	t.Run("Test ApiAPIService ApiUserPublicKeyRetrieve", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		httpRes, err := apiClient.ApiAPI.ApiUserPublicKeyRetrieve(context.Background()).Execute()
 
@@ -137,7 +138,7 @@ func Test_openapi_ApiAPIService(t *testing.T) {
 
 	t.Run("Test ApiAPIService ApiUserRetrieve", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		httpRes, err := apiClient.ApiAPI.ApiUserRetrieve(context.Background()).Execute()
 
