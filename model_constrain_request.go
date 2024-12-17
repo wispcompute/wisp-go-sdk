@@ -12,27 +12,34 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the ConstrainRequest type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &ConstrainRequest{}
 
-// ConstrainRequest Serializer for cluster constraint request.  Fields:     Accelerators (dict): Accelerator specifications including name, count and VRAM     Storage (int): Required storage in GB     Memory (int): Required memory in GB     VCPUs (int): Required number of virtual CPUs     Regions (list): List of acceptable regions     Clouds (list): List of acceptable cloud providers
+// ConstrainRequest Configuration serializer for cluster constraints.  Validates the full configuration schema including project details, scripts, resource requirements, and IO specifications.
 type ConstrainRequest struct {
-	Accelerators map[string]interface{} `json:"Accelerators,omitempty"`
-	Storage *int32 `json:"Storage,omitempty"`
-	Memory *int32 `json:"Memory,omitempty"`
-	VCPUs *int32 `json:"VCPUs,omitempty"`
-	Regions []string `json:"Regions,omitempty"`
-	Clouds []string `json:"Clouds,omitempty"`
+	Project Project `json:"project"`
+	Setup NullableScript `json:"setup,omitempty"`
+	Run NullableScript `json:"run,omitempty"`
+	Teardown NullableScript `json:"teardown,omitempty"`
+	Resources Resources `json:"resources"`
+	Io NullableIO `json:"io"`
 }
+
+type _ConstrainRequest ConstrainRequest
 
 // NewConstrainRequest instantiates a new ConstrainRequest object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewConstrainRequest() *ConstrainRequest {
+func NewConstrainRequest(project Project, resources Resources, io NullableIO) *ConstrainRequest {
 	this := ConstrainRequest{}
+	this.Project = project
+	this.Resources = resources
+	this.Io = io
 	return &this
 }
 
@@ -44,197 +51,204 @@ func NewConstrainRequestWithDefaults() *ConstrainRequest {
 	return &this
 }
 
-// GetAccelerators returns the Accelerators field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *ConstrainRequest) GetAccelerators() map[string]interface{} {
+// GetProject returns the Project field value
+func (o *ConstrainRequest) GetProject() Project {
 	if o == nil {
-		var ret map[string]interface{}
+		var ret Project
 		return ret
 	}
-	return o.Accelerators
+
+	return o.Project
 }
 
-// GetAcceleratorsOk returns a tuple with the Accelerators field value if set, nil otherwise
+// GetProjectOk returns a tuple with the Project field value
+// and a boolean to check if the value has been set.
+func (o *ConstrainRequest) GetProjectOk() (*Project, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Project, true
+}
+
+// SetProject sets field value
+func (o *ConstrainRequest) SetProject(v Project) {
+	o.Project = v
+}
+
+// GetSetup returns the Setup field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ConstrainRequest) GetSetup() Script {
+	if o == nil || IsNil(o.Setup.Get()) {
+		var ret Script
+		return ret
+	}
+	return *o.Setup.Get()
+}
+
+// GetSetupOk returns a tuple with the Setup field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *ConstrainRequest) GetAcceleratorsOk() (map[string]interface{}, bool) {
-	if o == nil || IsNil(o.Accelerators) {
-		return map[string]interface{}{}, false
-	}
-	return o.Accelerators, true
-}
-
-// HasAccelerators returns a boolean if a field has been set.
-func (o *ConstrainRequest) HasAccelerators() bool {
-	if o != nil && !IsNil(o.Accelerators) {
-		return true
-	}
-
-	return false
-}
-
-// SetAccelerators gets a reference to the given map[string]interface{} and assigns it to the Accelerators field.
-func (o *ConstrainRequest) SetAccelerators(v map[string]interface{}) {
-	o.Accelerators = v
-}
-
-// GetStorage returns the Storage field value if set, zero value otherwise.
-func (o *ConstrainRequest) GetStorage() int32 {
-	if o == nil || IsNil(o.Storage) {
-		var ret int32
-		return ret
-	}
-	return *o.Storage
-}
-
-// GetStorageOk returns a tuple with the Storage field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *ConstrainRequest) GetStorageOk() (*int32, bool) {
-	if o == nil || IsNil(o.Storage) {
+func (o *ConstrainRequest) GetSetupOk() (*Script, bool) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Storage, true
+	return o.Setup.Get(), o.Setup.IsSet()
 }
 
-// HasStorage returns a boolean if a field has been set.
-func (o *ConstrainRequest) HasStorage() bool {
-	if o != nil && !IsNil(o.Storage) {
+// HasSetup returns a boolean if a field has been set.
+func (o *ConstrainRequest) HasSetup() bool {
+	if o != nil && o.Setup.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetStorage gets a reference to the given int32 and assigns it to the Storage field.
-func (o *ConstrainRequest) SetStorage(v int32) {
-	o.Storage = &v
+// SetSetup gets a reference to the given NullableScript and assigns it to the Setup field.
+func (o *ConstrainRequest) SetSetup(v Script) {
+	o.Setup.Set(&v)
+}
+// SetSetupNil sets the value for Setup to be an explicit nil
+func (o *ConstrainRequest) SetSetupNil() {
+	o.Setup.Set(nil)
 }
 
-// GetMemory returns the Memory field value if set, zero value otherwise.
-func (o *ConstrainRequest) GetMemory() int32 {
-	if o == nil || IsNil(o.Memory) {
-		var ret int32
+// UnsetSetup ensures that no value is present for Setup, not even an explicit nil
+func (o *ConstrainRequest) UnsetSetup() {
+	o.Setup.Unset()
+}
+
+// GetRun returns the Run field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ConstrainRequest) GetRun() Script {
+	if o == nil || IsNil(o.Run.Get()) {
+		var ret Script
 		return ret
 	}
-	return *o.Memory
+	return *o.Run.Get()
 }
 
-// GetMemoryOk returns a tuple with the Memory field value if set, nil otherwise
+// GetRunOk returns a tuple with the Run field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ConstrainRequest) GetMemoryOk() (*int32, bool) {
-	if o == nil || IsNil(o.Memory) {
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ConstrainRequest) GetRunOk() (*Script, bool) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Memory, true
+	return o.Run.Get(), o.Run.IsSet()
 }
 
-// HasMemory returns a boolean if a field has been set.
-func (o *ConstrainRequest) HasMemory() bool {
-	if o != nil && !IsNil(o.Memory) {
+// HasRun returns a boolean if a field has been set.
+func (o *ConstrainRequest) HasRun() bool {
+	if o != nil && o.Run.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetMemory gets a reference to the given int32 and assigns it to the Memory field.
-func (o *ConstrainRequest) SetMemory(v int32) {
-	o.Memory = &v
+// SetRun gets a reference to the given NullableScript and assigns it to the Run field.
+func (o *ConstrainRequest) SetRun(v Script) {
+	o.Run.Set(&v)
+}
+// SetRunNil sets the value for Run to be an explicit nil
+func (o *ConstrainRequest) SetRunNil() {
+	o.Run.Set(nil)
 }
 
-// GetVCPUs returns the VCPUs field value if set, zero value otherwise.
-func (o *ConstrainRequest) GetVCPUs() int32 {
-	if o == nil || IsNil(o.VCPUs) {
-		var ret int32
+// UnsetRun ensures that no value is present for Run, not even an explicit nil
+func (o *ConstrainRequest) UnsetRun() {
+	o.Run.Unset()
+}
+
+// GetTeardown returns the Teardown field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ConstrainRequest) GetTeardown() Script {
+	if o == nil || IsNil(o.Teardown.Get()) {
+		var ret Script
 		return ret
 	}
-	return *o.VCPUs
+	return *o.Teardown.Get()
 }
 
-// GetVCPUsOk returns a tuple with the VCPUs field value if set, nil otherwise
+// GetTeardownOk returns a tuple with the Teardown field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ConstrainRequest) GetVCPUsOk() (*int32, bool) {
-	if o == nil || IsNil(o.VCPUs) {
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ConstrainRequest) GetTeardownOk() (*Script, bool) {
+	if o == nil {
 		return nil, false
 	}
-	return o.VCPUs, true
+	return o.Teardown.Get(), o.Teardown.IsSet()
 }
 
-// HasVCPUs returns a boolean if a field has been set.
-func (o *ConstrainRequest) HasVCPUs() bool {
-	if o != nil && !IsNil(o.VCPUs) {
+// HasTeardown returns a boolean if a field has been set.
+func (o *ConstrainRequest) HasTeardown() bool {
+	if o != nil && o.Teardown.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetVCPUs gets a reference to the given int32 and assigns it to the VCPUs field.
-func (o *ConstrainRequest) SetVCPUs(v int32) {
-	o.VCPUs = &v
+// SetTeardown gets a reference to the given NullableScript and assigns it to the Teardown field.
+func (o *ConstrainRequest) SetTeardown(v Script) {
+	o.Teardown.Set(&v)
+}
+// SetTeardownNil sets the value for Teardown to be an explicit nil
+func (o *ConstrainRequest) SetTeardownNil() {
+	o.Teardown.Set(nil)
 }
 
-// GetRegions returns the Regions field value if set, zero value otherwise.
-func (o *ConstrainRequest) GetRegions() []string {
-	if o == nil || IsNil(o.Regions) {
-		var ret []string
+// UnsetTeardown ensures that no value is present for Teardown, not even an explicit nil
+func (o *ConstrainRequest) UnsetTeardown() {
+	o.Teardown.Unset()
+}
+
+// GetResources returns the Resources field value
+func (o *ConstrainRequest) GetResources() Resources {
+	if o == nil {
+		var ret Resources
 		return ret
 	}
-	return o.Regions
+
+	return o.Resources
 }
 
-// GetRegionsOk returns a tuple with the Regions field value if set, nil otherwise
+// GetResourcesOk returns a tuple with the Resources field value
 // and a boolean to check if the value has been set.
-func (o *ConstrainRequest) GetRegionsOk() ([]string, bool) {
-	if o == nil || IsNil(o.Regions) {
+func (o *ConstrainRequest) GetResourcesOk() (*Resources, bool) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Regions, true
+	return &o.Resources, true
 }
 
-// HasRegions returns a boolean if a field has been set.
-func (o *ConstrainRequest) HasRegions() bool {
-	if o != nil && !IsNil(o.Regions) {
-		return true
-	}
-
-	return false
+// SetResources sets field value
+func (o *ConstrainRequest) SetResources(v Resources) {
+	o.Resources = v
 }
 
-// SetRegions gets a reference to the given []string and assigns it to the Regions field.
-func (o *ConstrainRequest) SetRegions(v []string) {
-	o.Regions = v
-}
-
-// GetClouds returns the Clouds field value if set, zero value otherwise.
-func (o *ConstrainRequest) GetClouds() []string {
-	if o == nil || IsNil(o.Clouds) {
-		var ret []string
+// GetIo returns the Io field value
+// If the value is explicit nil, the zero value for IO will be returned
+func (o *ConstrainRequest) GetIo() IO {
+	if o == nil || o.Io.Get() == nil {
+		var ret IO
 		return ret
 	}
-	return o.Clouds
+
+	return *o.Io.Get()
 }
 
-// GetCloudsOk returns a tuple with the Clouds field value if set, nil otherwise
+// GetIoOk returns a tuple with the Io field value
 // and a boolean to check if the value has been set.
-func (o *ConstrainRequest) GetCloudsOk() ([]string, bool) {
-	if o == nil || IsNil(o.Clouds) {
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ConstrainRequest) GetIoOk() (*IO, bool) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Clouds, true
+	return o.Io.Get(), o.Io.IsSet()
 }
 
-// HasClouds returns a boolean if a field has been set.
-func (o *ConstrainRequest) HasClouds() bool {
-	if o != nil && !IsNil(o.Clouds) {
-		return true
-	}
-
-	return false
-}
-
-// SetClouds gets a reference to the given []string and assigns it to the Clouds field.
-func (o *ConstrainRequest) SetClouds(v []string) {
-	o.Clouds = v
+// SetIo sets field value
+func (o *ConstrainRequest) SetIo(v IO) {
+	o.Io.Set(&v)
 }
 
 func (o ConstrainRequest) MarshalJSON() ([]byte, error) {
@@ -247,25 +261,58 @@ func (o ConstrainRequest) MarshalJSON() ([]byte, error) {
 
 func (o ConstrainRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Accelerators != nil {
-		toSerialize["Accelerators"] = o.Accelerators
+	toSerialize["project"] = o.Project
+	if o.Setup.IsSet() {
+		toSerialize["setup"] = o.Setup.Get()
 	}
-	if !IsNil(o.Storage) {
-		toSerialize["Storage"] = o.Storage
+	if o.Run.IsSet() {
+		toSerialize["run"] = o.Run.Get()
 	}
-	if !IsNil(o.Memory) {
-		toSerialize["Memory"] = o.Memory
+	if o.Teardown.IsSet() {
+		toSerialize["teardown"] = o.Teardown.Get()
 	}
-	if !IsNil(o.VCPUs) {
-		toSerialize["VCPUs"] = o.VCPUs
-	}
-	if !IsNil(o.Regions) {
-		toSerialize["Regions"] = o.Regions
-	}
-	if !IsNil(o.Clouds) {
-		toSerialize["Clouds"] = o.Clouds
-	}
+	toSerialize["resources"] = o.Resources
+	toSerialize["io"] = o.Io.Get()
 	return toSerialize, nil
+}
+
+func (o *ConstrainRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"project",
+		"resources",
+		"io",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varConstrainRequest := _ConstrainRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varConstrainRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ConstrainRequest(varConstrainRequest)
+
+	return err
 }
 
 type NullableConstrainRequest struct {

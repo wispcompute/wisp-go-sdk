@@ -73,6 +73,9 @@ func (a *WispAPIService) WispConstrainCreateExecute(r ApiWispConstrainCreateRequ
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.constrainRequest == nil {
+		return localVarReturnValue, nil, reportError("constrainRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/x-www-form-urlencoded", "multipart/form-data"}
@@ -144,19 +147,146 @@ func (a *WispAPIService) WispConstrainCreateExecute(r ApiWispConstrainCreateRequ
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiWispConstrainPartialUpdateRequest struct {
+	ctx context.Context
+	ApiService *WispAPIService
+	patchedConstrainPatchRequest *PatchedConstrainPatchRequest
+}
+
+func (r ApiWispConstrainPartialUpdateRequest) PatchedConstrainPatchRequest(patchedConstrainPatchRequest PatchedConstrainPatchRequest) ApiWispConstrainPartialUpdateRequest {
+	r.patchedConstrainPatchRequest = &patchedConstrainPatchRequest
+	return r
+}
+
+func (r ApiWispConstrainPartialUpdateRequest) Execute() (*ConstrainResponse, *http.Response, error) {
+	return r.ApiService.WispConstrainPartialUpdateExecute(r)
+}
+
+/*
+WispConstrainPartialUpdate Method for WispConstrainPartialUpdate
+
+Validate the configuration if the cluster is already running.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiWispConstrainPartialUpdateRequest
+*/
+func (a *WispAPIService) WispConstrainPartialUpdate(ctx context.Context) ApiWispConstrainPartialUpdateRequest {
+	return ApiWispConstrainPartialUpdateRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return ConstrainResponse
+func (a *WispAPIService) WispConstrainPartialUpdateExecute(r ApiWispConstrainPartialUpdateRequest) (*ConstrainResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPatch
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *ConstrainResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WispAPIService.WispConstrainPartialUpdate")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/wisp/constrain"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json", "application/x-www-form-urlencoded", "multipart/form-data"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.patchedConstrainPatchRequest
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["tokenAuth"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiWispDownloadRetrieveRequest struct {
 	ctx context.Context
 	ApiService *WispAPIService
 }
 
-func (r ApiWispDownloadRetrieveRequest) Execute() (*http.Response, error) {
+func (r ApiWispDownloadRetrieveRequest) Execute() (*DownloadResponse, *http.Response, error) {
 	return r.ApiService.WispDownloadRetrieveExecute(r)
 }
 
 /*
 WispDownloadRetrieve Method for WispDownloadRetrieve
 
-Download the Wisp CLI
+Generate a signed download URL for the requested Wisp CLI binary.
+
+Args:
+    request: The HTTP request object containing the binary name in query params.
+
+Returns:
+    Response: Contains either the signed URL or an error message.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiWispDownloadRetrieveRequest
@@ -169,16 +299,18 @@ func (a *WispAPIService) WispDownloadRetrieve(ctx context.Context) ApiWispDownlo
 }
 
 // Execute executes the request
-func (a *WispAPIService) WispDownloadRetrieveExecute(r ApiWispDownloadRetrieveRequest) (*http.Response, error) {
+//  @return DownloadResponse
+func (a *WispAPIService) WispDownloadRetrieveExecute(r ApiWispDownloadRetrieveRequest) (*DownloadResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *DownloadResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WispAPIService.WispDownloadRetrieve")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/wisp/download"
@@ -197,7 +329,7 @@ func (a *WispAPIService) WispDownloadRetrieveExecute(r ApiWispDownloadRetrieveRe
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -220,19 +352,19 @@ func (a *WispAPIService) WispDownloadRetrieveExecute(r ApiWispDownloadRetrieveRe
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -240,18 +372,33 @@ func (a *WispAPIService) WispDownloadRetrieveExecute(r ApiWispDownloadRetrieveRe
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiWispJobCreateRequest struct {
 	ctx context.Context
 	ApiService *WispAPIService
+	jobGetRequest *JobGetRequest
 }
 
-func (r ApiWispJobCreateRequest) Execute() (*http.Response, error) {
+func (r ApiWispJobCreateRequest) JobGetRequest(jobGetRequest JobGetRequest) ApiWispJobCreateRequest {
+	r.jobGetRequest = &jobGetRequest
+	return r
+}
+
+func (r ApiWispJobCreateRequest) Execute() (*JobGetRequest, *http.Response, error) {
 	return r.ApiService.WispJobCreateExecute(r)
 }
 
@@ -271,16 +418,18 @@ func (a *WispAPIService) WispJobCreate(ctx context.Context) ApiWispJobCreateRequ
 }
 
 // Execute executes the request
-func (a *WispAPIService) WispJobCreateExecute(r ApiWispJobCreateRequest) (*http.Response, error) {
+//  @return JobGetRequest
+func (a *WispAPIService) WispJobCreateExecute(r ApiWispJobCreateRequest) (*JobGetRequest, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *JobGetRequest
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WispAPIService.WispJobCreate")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/wisp/job"
@@ -288,9 +437,12 @@ func (a *WispAPIService) WispJobCreateExecute(r ApiWispJobCreateRequest) (*http.
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.jobGetRequest == nil {
+		return localVarReturnValue, nil, reportError("jobGetRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json", "application/x-www-form-urlencoded", "multipart/form-data"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -299,13 +451,15 @@ func (a *WispAPIService) WispJobCreateExecute(r ApiWispJobCreateRequest) (*http.
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	// body params
+	localVarPostBody = r.jobGetRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -322,19 +476,19 @@ func (a *WispAPIService) WispJobCreateExecute(r ApiWispJobCreateRequest) (*http.
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -342,10 +496,19 @@ func (a *WispAPIService) WispJobCreateExecute(r ApiWispJobCreateRequest) (*http.
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiWispJobDestroyRequest struct {
@@ -455,7 +618,7 @@ type ApiWispJobRetrieveRequest struct {
 	ApiService *WispAPIService
 }
 
-func (r ApiWispJobRetrieveRequest) Execute() (*http.Response, error) {
+func (r ApiWispJobRetrieveRequest) Execute() (*JobGetResponse, *http.Response, error) {
 	return r.ApiService.WispJobRetrieveExecute(r)
 }
 
@@ -475,16 +638,18 @@ func (a *WispAPIService) WispJobRetrieve(ctx context.Context) ApiWispJobRetrieve
 }
 
 // Execute executes the request
-func (a *WispAPIService) WispJobRetrieveExecute(r ApiWispJobRetrieveRequest) (*http.Response, error) {
+//  @return JobGetResponse
+func (a *WispAPIService) WispJobRetrieveExecute(r ApiWispJobRetrieveRequest) (*JobGetResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *JobGetResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WispAPIService.WispJobRetrieve")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/wisp/job"
@@ -503,7 +668,7 @@ func (a *WispAPIService) WispJobRetrieveExecute(r ApiWispJobRetrieveRequest) (*h
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -526,19 +691,19 @@ func (a *WispAPIService) WispJobRetrieveExecute(r ApiWispJobRetrieveRequest) (*h
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -546,25 +711,40 @@ func (a *WispAPIService) WispJobRetrieveExecute(r ApiWispJobRetrieveRequest) (*h
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiWispProjectCreateRequest struct {
 	ctx context.Context
 	ApiService *WispAPIService
+	projectCreateRequest *ProjectCreateRequest
 }
 
-func (r ApiWispProjectCreateRequest) Execute() (*http.Response, error) {
+func (r ApiWispProjectCreateRequest) ProjectCreateRequest(projectCreateRequest ProjectCreateRequest) ApiWispProjectCreateRequest {
+	r.projectCreateRequest = &projectCreateRequest
+	return r
+}
+
+func (r ApiWispProjectCreateRequest) Execute() (*Project, *http.Response, error) {
 	return r.ApiService.WispProjectCreateExecute(r)
 }
 
 /*
 WispProjectCreate Method for WispProjectCreate
 
-Create a new project for the user
+Create a new project for the user.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiWispProjectCreateRequest
@@ -577,14 +757,132 @@ func (a *WispAPIService) WispProjectCreate(ctx context.Context) ApiWispProjectCr
 }
 
 // Execute executes the request
-func (a *WispAPIService) WispProjectCreateExecute(r ApiWispProjectCreateRequest) (*http.Response, error) {
+//  @return Project
+func (a *WispAPIService) WispProjectCreateExecute(r ApiWispProjectCreateRequest) (*Project, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *Project
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WispAPIService.WispProjectCreate")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/wisp/project"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectCreateRequest == nil {
+		return localVarReturnValue, nil, reportError("projectCreateRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json", "application/x-www-form-urlencoded", "multipart/form-data"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.projectCreateRequest
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["tokenAuth"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiWispProjectDestroyRequest struct {
+	ctx context.Context
+	ApiService *WispAPIService
+}
+
+func (r ApiWispProjectDestroyRequest) Execute() (*http.Response, error) {
+	return r.ApiService.WispProjectDestroyExecute(r)
+}
+
+/*
+WispProjectDestroy Method for WispProjectDestroy
+
+Delete a project.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiWispProjectDestroyRequest
+*/
+func (a *WispAPIService) WispProjectDestroy(ctx context.Context) ApiWispProjectDestroyRequest {
+	return ApiWispProjectDestroyRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+func (a *WispAPIService) WispProjectDestroyExecute(r ApiWispProjectDestroyRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodDelete
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WispAPIService.WispProjectDestroy")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -660,7 +958,7 @@ type ApiWispProjectJobsRetrieveRequest struct {
 	projectId string
 }
 
-func (r ApiWispProjectJobsRetrieveRequest) Execute() (*http.Response, error) {
+func (r ApiWispProjectJobsRetrieveRequest) Execute() (*Job, *http.Response, error) {
 	return r.ApiService.WispProjectJobsRetrieveExecute(r)
 }
 
@@ -682,16 +980,18 @@ func (a *WispAPIService) WispProjectJobsRetrieve(ctx context.Context, projectId 
 }
 
 // Execute executes the request
-func (a *WispAPIService) WispProjectJobsRetrieveExecute(r ApiWispProjectJobsRetrieveRequest) (*http.Response, error) {
+//  @return Job
+func (a *WispAPIService) WispProjectJobsRetrieveExecute(r ApiWispProjectJobsRetrieveRequest) (*Job, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *Job
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WispAPIService.WispProjectJobsRetrieve")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/wisp/project/{project_id}/jobs"
@@ -711,7 +1011,7 @@ func (a *WispAPIService) WispProjectJobsRetrieveExecute(r ApiWispProjectJobsRetr
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -734,19 +1034,19 @@ func (a *WispAPIService) WispProjectJobsRetrieveExecute(r ApiWispProjectJobsRetr
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -754,10 +1054,19 @@ func (a *WispAPIService) WispProjectJobsRetrieveExecute(r ApiWispProjectJobsRetr
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiWispProjectRetrieveRequest struct {
@@ -765,14 +1074,14 @@ type ApiWispProjectRetrieveRequest struct {
 	ApiService *WispAPIService
 }
 
-func (r ApiWispProjectRetrieveRequest) Execute() (*http.Response, error) {
+func (r ApiWispProjectRetrieveRequest) Execute() (*ProjectsGetResponse, *http.Response, error) {
 	return r.ApiService.WispProjectRetrieveExecute(r)
 }
 
 /*
 WispProjectRetrieve Method for WispProjectRetrieve
 
-Get the projects for the user
+Get projects for the authenticated user.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiWispProjectRetrieveRequest
@@ -785,16 +1094,18 @@ func (a *WispAPIService) WispProjectRetrieve(ctx context.Context) ApiWispProject
 }
 
 // Execute executes the request
-func (a *WispAPIService) WispProjectRetrieveExecute(r ApiWispProjectRetrieveRequest) (*http.Response, error) {
+//  @return ProjectsGetResponse
+func (a *WispAPIService) WispProjectRetrieveExecute(r ApiWispProjectRetrieveRequest) (*ProjectsGetResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *ProjectsGetResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WispAPIService.WispProjectRetrieve")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/wisp/project"
@@ -813,7 +1124,7 @@ func (a *WispAPIService) WispProjectRetrieveExecute(r ApiWispProjectRetrieveRequ
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -836,19 +1147,19 @@ func (a *WispAPIService) WispProjectRetrieveExecute(r ApiWispProjectRetrieveRequ
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -856,15 +1167,30 @@ func (a *WispAPIService) WispProjectRetrieveExecute(r ApiWispProjectRetrieveRequ
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiWispUserPublicKeyCreateRequest struct {
 	ctx context.Context
 	ApiService *WispAPIService
+	userPublicKeyRequest *UserPublicKeyRequest
+}
+
+func (r ApiWispUserPublicKeyCreateRequest) UserPublicKeyRequest(userPublicKeyRequest UserPublicKeyRequest) ApiWispUserPublicKeyCreateRequest {
+	r.userPublicKeyRequest = &userPublicKeyRequest
+	return r
 }
 
 func (r ApiWispUserPublicKeyCreateRequest) Execute() (*http.Response, error) {
@@ -904,9 +1230,12 @@ func (a *WispAPIService) WispUserPublicKeyCreateExecute(r ApiWispUserPublicKeyCr
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.userPublicKeyRequest == nil {
+		return nil, reportError("userPublicKeyRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json", "application/x-www-form-urlencoded", "multipart/form-data"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -922,6 +1251,8 @@ func (a *WispAPIService) WispUserPublicKeyCreateExecute(r ApiWispUserPublicKeyCr
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	// body params
+	localVarPostBody = r.userPublicKeyRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -969,7 +1300,7 @@ type ApiWispUserPublicKeyRetrieveRequest struct {
 	ApiService *WispAPIService
 }
 
-func (r ApiWispUserPublicKeyRetrieveRequest) Execute() (*http.Response, error) {
+func (r ApiWispUserPublicKeyRetrieveRequest) Execute() (*UserPublicKeyResponse, *http.Response, error) {
 	return r.ApiService.WispUserPublicKeyRetrieveExecute(r)
 }
 
@@ -989,16 +1320,18 @@ func (a *WispAPIService) WispUserPublicKeyRetrieve(ctx context.Context) ApiWispU
 }
 
 // Execute executes the request
-func (a *WispAPIService) WispUserPublicKeyRetrieveExecute(r ApiWispUserPublicKeyRetrieveRequest) (*http.Response, error) {
+//  @return UserPublicKeyResponse
+func (a *WispAPIService) WispUserPublicKeyRetrieveExecute(r ApiWispUserPublicKeyRetrieveRequest) (*UserPublicKeyResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *UserPublicKeyResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WispAPIService.WispUserPublicKeyRetrieve")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/wisp/user/public_key"
@@ -1017,7 +1350,7 @@ func (a *WispAPIService) WispUserPublicKeyRetrieveExecute(r ApiWispUserPublicKey
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -1040,19 +1373,19 @@ func (a *WispAPIService) WispUserPublicKeyRetrieveExecute(r ApiWispUserPublicKey
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -1060,10 +1393,19 @@ func (a *WispAPIService) WispUserPublicKeyRetrieveExecute(r ApiWispUserPublicKey
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiWispUserRetrieveRequest struct {
@@ -1071,7 +1413,7 @@ type ApiWispUserRetrieveRequest struct {
 	ApiService *WispAPIService
 }
 
-func (r ApiWispUserRetrieveRequest) Execute() (*http.Response, error) {
+func (r ApiWispUserRetrieveRequest) Execute() (*UserResponse, *http.Response, error) {
 	return r.ApiService.WispUserRetrieveExecute(r)
 }
 
@@ -1091,16 +1433,18 @@ func (a *WispAPIService) WispUserRetrieve(ctx context.Context) ApiWispUserRetrie
 }
 
 // Execute executes the request
-func (a *WispAPIService) WispUserRetrieveExecute(r ApiWispUserRetrieveRequest) (*http.Response, error) {
+//  @return UserResponse
+func (a *WispAPIService) WispUserRetrieveExecute(r ApiWispUserRetrieveRequest) (*UserResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *UserResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WispAPIService.WispUserRetrieve")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/wisp/user"
@@ -1119,7 +1463,7 @@ func (a *WispAPIService) WispUserRetrieveExecute(r ApiWispUserRetrieveRequest) (
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -1142,19 +1486,19 @@ func (a *WispAPIService) WispUserRetrieveExecute(r ApiWispUserRetrieveRequest) (
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -1162,8 +1506,17 @@ func (a *WispAPIService) WispUserRetrieveExecute(r ApiWispUserRetrieveRequest) (
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }

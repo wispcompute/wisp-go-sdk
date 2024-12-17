@@ -5,11 +5,13 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**WispConstrainCreate**](WispAPI.md#WispConstrainCreate) | **Post** /wisp/constrain | 
+[**WispConstrainPartialUpdate**](WispAPI.md#WispConstrainPartialUpdate) | **Patch** /wisp/constrain | 
 [**WispDownloadRetrieve**](WispAPI.md#WispDownloadRetrieve) | **Get** /wisp/download | 
 [**WispJobCreate**](WispAPI.md#WispJobCreate) | **Post** /wisp/job | 
 [**WispJobDestroy**](WispAPI.md#WispJobDestroy) | **Delete** /wisp/job | 
 [**WispJobRetrieve**](WispAPI.md#WispJobRetrieve) | **Get** /wisp/job | 
 [**WispProjectCreate**](WispAPI.md#WispProjectCreate) | **Post** /wisp/project | 
+[**WispProjectDestroy**](WispAPI.md#WispProjectDestroy) | **Delete** /wisp/project | 
 [**WispProjectJobsRetrieve**](WispAPI.md#WispProjectJobsRetrieve) | **Get** /wisp/project/{project_id}/jobs | 
 [**WispProjectRetrieve**](WispAPI.md#WispProjectRetrieve) | **Get** /wisp/project | 
 [**WispUserPublicKeyCreate**](WispAPI.md#WispUserPublicKeyCreate) | **Post** /wisp/user/public_key | 
@@ -39,7 +41,7 @@ import (
 )
 
 func main() {
-	constrainRequest := *openapiclient.NewConstrainRequest() // ConstrainRequest |  (optional)
+	constrainRequest := *openapiclient.NewConstrainRequest("TODO", "TODO", "TODO", "TODO") // ConstrainRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -84,9 +86,75 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## WispConstrainPartialUpdate
+
+> ConstrainResponse WispConstrainPartialUpdate(ctx).PatchedConstrainPatchRequest(patchedConstrainPatchRequest).Execute()
+
+
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/wispcompute/wisp_go_sdk"
+)
+
+func main() {
+	patchedConstrainPatchRequest := *openapiclient.NewPatchedConstrainPatchRequest() // PatchedConstrainPatchRequest |  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.WispAPI.WispConstrainPartialUpdate(context.Background()).PatchedConstrainPatchRequest(patchedConstrainPatchRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `WispAPI.WispConstrainPartialUpdate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `WispConstrainPartialUpdate`: ConstrainResponse
+	fmt.Fprintf(os.Stdout, "Response from `WispAPI.WispConstrainPartialUpdate`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiWispConstrainPartialUpdateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **patchedConstrainPatchRequest** | [**PatchedConstrainPatchRequest**](PatchedConstrainPatchRequest.md) |  | 
+
+### Return type
+
+[**ConstrainResponse**](ConstrainResponse.md)
+
+### Authorization
+
+[tokenAuth](../README.md#tokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json, application/x-www-form-urlencoded, multipart/form-data
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## WispDownloadRetrieve
 
-> WispDownloadRetrieve(ctx).Execute()
+> DownloadResponse WispDownloadRetrieve(ctx).Execute()
 
 
 
@@ -108,11 +176,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.WispAPI.WispDownloadRetrieve(context.Background()).Execute()
+	resp, r, err := apiClient.WispAPI.WispDownloadRetrieve(context.Background()).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `WispAPI.WispDownloadRetrieve``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `WispDownloadRetrieve`: DownloadResponse
+	fmt.Fprintf(os.Stdout, "Response from `WispAPI.WispDownloadRetrieve`: %v\n", resp)
 }
 ```
 
@@ -127,7 +197,7 @@ Other parameters are passed through a pointer to a apiWispDownloadRetrieveReques
 
 ### Return type
 
- (empty response body)
+[**DownloadResponse**](DownloadResponse.md)
 
 ### Authorization
 
@@ -136,7 +206,7 @@ Other parameters are passed through a pointer to a apiWispDownloadRetrieveReques
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -145,7 +215,7 @@ Other parameters are passed through a pointer to a apiWispDownloadRetrieveReques
 
 ## WispJobCreate
 
-> WispJobCreate(ctx).Execute()
+> JobGetRequest WispJobCreate(ctx).JobGetRequest(jobGetRequest).Execute()
 
 
 
@@ -164,29 +234,36 @@ import (
 )
 
 func main() {
+	jobGetRequest := *openapiclient.NewJobGetRequest("Id_example") // JobGetRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.WispAPI.WispJobCreate(context.Background()).Execute()
+	resp, r, err := apiClient.WispAPI.WispJobCreate(context.Background()).JobGetRequest(jobGetRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `WispAPI.WispJobCreate``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `WispJobCreate`: JobGetRequest
+	fmt.Fprintf(os.Stdout, "Response from `WispAPI.WispJobCreate`: %v\n", resp)
 }
 ```
 
 ### Path Parameters
 
-This endpoint does not need any parameter.
+
 
 ### Other Parameters
 
 Other parameters are passed through a pointer to a apiWispJobCreateRequest struct via the builder pattern
 
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **jobGetRequest** | [**JobGetRequest**](JobGetRequest.md) |  | 
+
 ### Return type
 
- (empty response body)
+[**JobGetRequest**](JobGetRequest.md)
 
 ### Authorization
 
@@ -194,8 +271,8 @@ Other parameters are passed through a pointer to a apiWispJobCreateRequest struc
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Content-Type**: application/json, application/x-www-form-urlencoded, multipart/form-data
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -263,7 +340,7 @@ Other parameters are passed through a pointer to a apiWispJobDestroyRequest stru
 
 ## WispJobRetrieve
 
-> WispJobRetrieve(ctx).Execute()
+> JobGetResponse WispJobRetrieve(ctx).Execute()
 
 
 
@@ -285,11 +362,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.WispAPI.WispJobRetrieve(context.Background()).Execute()
+	resp, r, err := apiClient.WispAPI.WispJobRetrieve(context.Background()).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `WispAPI.WispJobRetrieve``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `WispJobRetrieve`: JobGetResponse
+	fmt.Fprintf(os.Stdout, "Response from `WispAPI.WispJobRetrieve`: %v\n", resp)
 }
 ```
 
@@ -304,7 +383,7 @@ Other parameters are passed through a pointer to a apiWispJobRetrieveRequest str
 
 ### Return type
 
- (empty response body)
+[**JobGetResponse**](JobGetResponse.md)
 
 ### Authorization
 
@@ -313,7 +392,7 @@ Other parameters are passed through a pointer to a apiWispJobRetrieveRequest str
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -322,7 +401,73 @@ Other parameters are passed through a pointer to a apiWispJobRetrieveRequest str
 
 ## WispProjectCreate
 
-> WispProjectCreate(ctx).Execute()
+> Project WispProjectCreate(ctx).ProjectCreateRequest(projectCreateRequest).Execute()
+
+
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/wispcompute/wisp_go_sdk"
+)
+
+func main() {
+	projectCreateRequest := *openapiclient.NewProjectCreateRequest("Name_example") // ProjectCreateRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.WispAPI.WispProjectCreate(context.Background()).ProjectCreateRequest(projectCreateRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `WispAPI.WispProjectCreate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `WispProjectCreate`: Project
+	fmt.Fprintf(os.Stdout, "Response from `WispAPI.WispProjectCreate`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiWispProjectCreateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectCreateRequest** | [**ProjectCreateRequest**](ProjectCreateRequest.md) |  | 
+
+### Return type
+
+[**Project**](Project.md)
+
+### Authorization
+
+[tokenAuth](../README.md#tokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json, application/x-www-form-urlencoded, multipart/form-data
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## WispProjectDestroy
+
+> WispProjectDestroy(ctx).Execute()
 
 
 
@@ -344,9 +489,9 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.WispAPI.WispProjectCreate(context.Background()).Execute()
+	r, err := apiClient.WispAPI.WispProjectDestroy(context.Background()).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `WispAPI.WispProjectCreate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `WispAPI.WispProjectDestroy``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
 }
@@ -358,7 +503,7 @@ This endpoint does not need any parameter.
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiWispProjectCreateRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiWispProjectDestroyRequest struct via the builder pattern
 
 
 ### Return type
@@ -381,7 +526,7 @@ Other parameters are passed through a pointer to a apiWispProjectCreateRequest s
 
 ## WispProjectJobsRetrieve
 
-> WispProjectJobsRetrieve(ctx, projectId).Execute()
+> Job WispProjectJobsRetrieve(ctx, projectId).Execute()
 
 
 
@@ -404,11 +549,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.WispAPI.WispProjectJobsRetrieve(context.Background(), projectId).Execute()
+	resp, r, err := apiClient.WispAPI.WispProjectJobsRetrieve(context.Background(), projectId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `WispAPI.WispProjectJobsRetrieve``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `WispProjectJobsRetrieve`: Job
+	fmt.Fprintf(os.Stdout, "Response from `WispAPI.WispProjectJobsRetrieve`: %v\n", resp)
 }
 ```
 
@@ -431,7 +578,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**Job**](Job.md)
 
 ### Authorization
 
@@ -440,7 +587,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -449,7 +596,7 @@ Name | Type | Description  | Notes
 
 ## WispProjectRetrieve
 
-> WispProjectRetrieve(ctx).Execute()
+> ProjectsGetResponse WispProjectRetrieve(ctx).Execute()
 
 
 
@@ -471,11 +618,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.WispAPI.WispProjectRetrieve(context.Background()).Execute()
+	resp, r, err := apiClient.WispAPI.WispProjectRetrieve(context.Background()).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `WispAPI.WispProjectRetrieve``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `WispProjectRetrieve`: ProjectsGetResponse
+	fmt.Fprintf(os.Stdout, "Response from `WispAPI.WispProjectRetrieve`: %v\n", resp)
 }
 ```
 
@@ -490,7 +639,7 @@ Other parameters are passed through a pointer to a apiWispProjectRetrieveRequest
 
 ### Return type
 
- (empty response body)
+[**ProjectsGetResponse**](ProjectsGetResponse.md)
 
 ### Authorization
 
@@ -499,7 +648,7 @@ Other parameters are passed through a pointer to a apiWispProjectRetrieveRequest
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -508,7 +657,7 @@ Other parameters are passed through a pointer to a apiWispProjectRetrieveRequest
 
 ## WispUserPublicKeyCreate
 
-> WispUserPublicKeyCreate(ctx).Execute()
+> WispUserPublicKeyCreate(ctx).UserPublicKeyRequest(userPublicKeyRequest).Execute()
 
 
 
@@ -527,10 +676,11 @@ import (
 )
 
 func main() {
+	userPublicKeyRequest := *openapiclient.NewUserPublicKeyRequest("PublicKey_example") // UserPublicKeyRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.WispAPI.WispUserPublicKeyCreate(context.Background()).Execute()
+	r, err := apiClient.WispAPI.WispUserPublicKeyCreate(context.Background()).UserPublicKeyRequest(userPublicKeyRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `WispAPI.WispUserPublicKeyCreate``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -540,12 +690,16 @@ func main() {
 
 ### Path Parameters
 
-This endpoint does not need any parameter.
+
 
 ### Other Parameters
 
 Other parameters are passed through a pointer to a apiWispUserPublicKeyCreateRequest struct via the builder pattern
 
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userPublicKeyRequest** | [**UserPublicKeyRequest**](UserPublicKeyRequest.md) |  | 
 
 ### Return type
 
@@ -557,7 +711,7 @@ Other parameters are passed through a pointer to a apiWispUserPublicKeyCreateReq
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json, application/x-www-form-urlencoded, multipart/form-data
 - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -567,7 +721,7 @@ Other parameters are passed through a pointer to a apiWispUserPublicKeyCreateReq
 
 ## WispUserPublicKeyRetrieve
 
-> WispUserPublicKeyRetrieve(ctx).Execute()
+> UserPublicKeyResponse WispUserPublicKeyRetrieve(ctx).Execute()
 
 
 
@@ -589,11 +743,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.WispAPI.WispUserPublicKeyRetrieve(context.Background()).Execute()
+	resp, r, err := apiClient.WispAPI.WispUserPublicKeyRetrieve(context.Background()).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `WispAPI.WispUserPublicKeyRetrieve``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `WispUserPublicKeyRetrieve`: UserPublicKeyResponse
+	fmt.Fprintf(os.Stdout, "Response from `WispAPI.WispUserPublicKeyRetrieve`: %v\n", resp)
 }
 ```
 
@@ -608,7 +764,7 @@ Other parameters are passed through a pointer to a apiWispUserPublicKeyRetrieveR
 
 ### Return type
 
- (empty response body)
+[**UserPublicKeyResponse**](UserPublicKeyResponse.md)
 
 ### Authorization
 
@@ -617,7 +773,7 @@ Other parameters are passed through a pointer to a apiWispUserPublicKeyRetrieveR
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -626,7 +782,7 @@ Other parameters are passed through a pointer to a apiWispUserPublicKeyRetrieveR
 
 ## WispUserRetrieve
 
-> WispUserRetrieve(ctx).Execute()
+> UserResponse WispUserRetrieve(ctx).Execute()
 
 
 
@@ -648,11 +804,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.WispAPI.WispUserRetrieve(context.Background()).Execute()
+	resp, r, err := apiClient.WispAPI.WispUserRetrieve(context.Background()).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `WispAPI.WispUserRetrieve``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `WispUserRetrieve`: UserResponse
+	fmt.Fprintf(os.Stdout, "Response from `WispAPI.WispUserRetrieve`: %v\n", resp)
 }
 ```
 
@@ -667,7 +825,7 @@ Other parameters are passed through a pointer to a apiWispUserRetrieveRequest st
 
 ### Return type
 
- (empty response body)
+[**UserResponse**](UserResponse.md)
 
 ### Authorization
 
@@ -676,7 +834,7 @@ Other parameters are passed through a pointer to a apiWispUserRetrieveRequest st
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

@@ -5,11 +5,13 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**ApiConstrainCreate**](ApiAPI.md#ApiConstrainCreate) | **Post** /api/constrain | 
+[**ApiConstrainPartialUpdate**](ApiAPI.md#ApiConstrainPartialUpdate) | **Patch** /api/constrain | 
 [**ApiDownloadRetrieve**](ApiAPI.md#ApiDownloadRetrieve) | **Get** /api/download | 
 [**ApiJobCreate**](ApiAPI.md#ApiJobCreate) | **Post** /api/job | 
 [**ApiJobDestroy**](ApiAPI.md#ApiJobDestroy) | **Delete** /api/job | 
 [**ApiJobRetrieve**](ApiAPI.md#ApiJobRetrieve) | **Get** /api/job | 
 [**ApiProjectCreate**](ApiAPI.md#ApiProjectCreate) | **Post** /api/project | 
+[**ApiProjectDestroy**](ApiAPI.md#ApiProjectDestroy) | **Delete** /api/project | 
 [**ApiProjectJobsRetrieve**](ApiAPI.md#ApiProjectJobsRetrieve) | **Get** /api/project/{project_id}/jobs | 
 [**ApiProjectRetrieve**](ApiAPI.md#ApiProjectRetrieve) | **Get** /api/project | 
 [**ApiUserPublicKeyCreate**](ApiAPI.md#ApiUserPublicKeyCreate) | **Post** /api/user/public_key | 
@@ -39,7 +41,7 @@ import (
 )
 
 func main() {
-	constrainRequest := *openapiclient.NewConstrainRequest() // ConstrainRequest |  (optional)
+	constrainRequest := *openapiclient.NewConstrainRequest("TODO", "TODO", "TODO", "TODO") // ConstrainRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -84,9 +86,75 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## ApiConstrainPartialUpdate
+
+> ConstrainResponse ApiConstrainPartialUpdate(ctx).PatchedConstrainPatchRequest(patchedConstrainPatchRequest).Execute()
+
+
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/wispcompute/wisp_go_sdk"
+)
+
+func main() {
+	patchedConstrainPatchRequest := *openapiclient.NewPatchedConstrainPatchRequest() // PatchedConstrainPatchRequest |  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ApiAPI.ApiConstrainPartialUpdate(context.Background()).PatchedConstrainPatchRequest(patchedConstrainPatchRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ApiAPI.ApiConstrainPartialUpdate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ApiConstrainPartialUpdate`: ConstrainResponse
+	fmt.Fprintf(os.Stdout, "Response from `ApiAPI.ApiConstrainPartialUpdate`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiApiConstrainPartialUpdateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **patchedConstrainPatchRequest** | [**PatchedConstrainPatchRequest**](PatchedConstrainPatchRequest.md) |  | 
+
+### Return type
+
+[**ConstrainResponse**](ConstrainResponse.md)
+
+### Authorization
+
+[tokenAuth](../README.md#tokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json, application/x-www-form-urlencoded, multipart/form-data
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ApiDownloadRetrieve
 
-> ApiDownloadRetrieve(ctx).Execute()
+> DownloadResponse ApiDownloadRetrieve(ctx).Execute()
 
 
 
@@ -108,11 +176,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ApiAPI.ApiDownloadRetrieve(context.Background()).Execute()
+	resp, r, err := apiClient.ApiAPI.ApiDownloadRetrieve(context.Background()).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ApiAPI.ApiDownloadRetrieve``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ApiDownloadRetrieve`: DownloadResponse
+	fmt.Fprintf(os.Stdout, "Response from `ApiAPI.ApiDownloadRetrieve`: %v\n", resp)
 }
 ```
 
@@ -127,7 +197,7 @@ Other parameters are passed through a pointer to a apiApiDownloadRetrieveRequest
 
 ### Return type
 
- (empty response body)
+[**DownloadResponse**](DownloadResponse.md)
 
 ### Authorization
 
@@ -136,7 +206,7 @@ Other parameters are passed through a pointer to a apiApiDownloadRetrieveRequest
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -145,7 +215,7 @@ Other parameters are passed through a pointer to a apiApiDownloadRetrieveRequest
 
 ## ApiJobCreate
 
-> ApiJobCreate(ctx).Execute()
+> JobGetRequest ApiJobCreate(ctx).JobGetRequest(jobGetRequest).Execute()
 
 
 
@@ -164,29 +234,36 @@ import (
 )
 
 func main() {
+	jobGetRequest := *openapiclient.NewJobGetRequest("Id_example") // JobGetRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ApiAPI.ApiJobCreate(context.Background()).Execute()
+	resp, r, err := apiClient.ApiAPI.ApiJobCreate(context.Background()).JobGetRequest(jobGetRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ApiAPI.ApiJobCreate``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ApiJobCreate`: JobGetRequest
+	fmt.Fprintf(os.Stdout, "Response from `ApiAPI.ApiJobCreate`: %v\n", resp)
 }
 ```
 
 ### Path Parameters
 
-This endpoint does not need any parameter.
+
 
 ### Other Parameters
 
 Other parameters are passed through a pointer to a apiApiJobCreateRequest struct via the builder pattern
 
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **jobGetRequest** | [**JobGetRequest**](JobGetRequest.md) |  | 
+
 ### Return type
 
- (empty response body)
+[**JobGetRequest**](JobGetRequest.md)
 
 ### Authorization
 
@@ -194,8 +271,8 @@ Other parameters are passed through a pointer to a apiApiJobCreateRequest struct
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Content-Type**: application/json, application/x-www-form-urlencoded, multipart/form-data
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -263,7 +340,7 @@ Other parameters are passed through a pointer to a apiApiJobDestroyRequest struc
 
 ## ApiJobRetrieve
 
-> ApiJobRetrieve(ctx).Execute()
+> JobGetResponse ApiJobRetrieve(ctx).Execute()
 
 
 
@@ -285,11 +362,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ApiAPI.ApiJobRetrieve(context.Background()).Execute()
+	resp, r, err := apiClient.ApiAPI.ApiJobRetrieve(context.Background()).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ApiAPI.ApiJobRetrieve``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ApiJobRetrieve`: JobGetResponse
+	fmt.Fprintf(os.Stdout, "Response from `ApiAPI.ApiJobRetrieve`: %v\n", resp)
 }
 ```
 
@@ -304,7 +383,7 @@ Other parameters are passed through a pointer to a apiApiJobRetrieveRequest stru
 
 ### Return type
 
- (empty response body)
+[**JobGetResponse**](JobGetResponse.md)
 
 ### Authorization
 
@@ -313,7 +392,7 @@ Other parameters are passed through a pointer to a apiApiJobRetrieveRequest stru
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -322,7 +401,73 @@ Other parameters are passed through a pointer to a apiApiJobRetrieveRequest stru
 
 ## ApiProjectCreate
 
-> ApiProjectCreate(ctx).Execute()
+> Project ApiProjectCreate(ctx).ProjectCreateRequest(projectCreateRequest).Execute()
+
+
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/wispcompute/wisp_go_sdk"
+)
+
+func main() {
+	projectCreateRequest := *openapiclient.NewProjectCreateRequest("Name_example") // ProjectCreateRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ApiAPI.ApiProjectCreate(context.Background()).ProjectCreateRequest(projectCreateRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ApiAPI.ApiProjectCreate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ApiProjectCreate`: Project
+	fmt.Fprintf(os.Stdout, "Response from `ApiAPI.ApiProjectCreate`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiApiProjectCreateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectCreateRequest** | [**ProjectCreateRequest**](ProjectCreateRequest.md) |  | 
+
+### Return type
+
+[**Project**](Project.md)
+
+### Authorization
+
+[tokenAuth](../README.md#tokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json, application/x-www-form-urlencoded, multipart/form-data
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ApiProjectDestroy
+
+> ApiProjectDestroy(ctx).Execute()
 
 
 
@@ -344,9 +489,9 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ApiAPI.ApiProjectCreate(context.Background()).Execute()
+	r, err := apiClient.ApiAPI.ApiProjectDestroy(context.Background()).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ApiAPI.ApiProjectCreate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ApiAPI.ApiProjectDestroy``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
 }
@@ -358,7 +503,7 @@ This endpoint does not need any parameter.
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiApiProjectCreateRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiApiProjectDestroyRequest struct via the builder pattern
 
 
 ### Return type
@@ -381,7 +526,7 @@ Other parameters are passed through a pointer to a apiApiProjectCreateRequest st
 
 ## ApiProjectJobsRetrieve
 
-> ApiProjectJobsRetrieve(ctx, projectId).Execute()
+> Job ApiProjectJobsRetrieve(ctx, projectId).Execute()
 
 
 
@@ -404,11 +549,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ApiAPI.ApiProjectJobsRetrieve(context.Background(), projectId).Execute()
+	resp, r, err := apiClient.ApiAPI.ApiProjectJobsRetrieve(context.Background(), projectId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ApiAPI.ApiProjectJobsRetrieve``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ApiProjectJobsRetrieve`: Job
+	fmt.Fprintf(os.Stdout, "Response from `ApiAPI.ApiProjectJobsRetrieve`: %v\n", resp)
 }
 ```
 
@@ -431,7 +578,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**Job**](Job.md)
 
 ### Authorization
 
@@ -440,7 +587,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -449,7 +596,7 @@ Name | Type | Description  | Notes
 
 ## ApiProjectRetrieve
 
-> ApiProjectRetrieve(ctx).Execute()
+> ProjectsGetResponse ApiProjectRetrieve(ctx).Execute()
 
 
 
@@ -471,11 +618,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ApiAPI.ApiProjectRetrieve(context.Background()).Execute()
+	resp, r, err := apiClient.ApiAPI.ApiProjectRetrieve(context.Background()).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ApiAPI.ApiProjectRetrieve``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ApiProjectRetrieve`: ProjectsGetResponse
+	fmt.Fprintf(os.Stdout, "Response from `ApiAPI.ApiProjectRetrieve`: %v\n", resp)
 }
 ```
 
@@ -490,7 +639,7 @@ Other parameters are passed through a pointer to a apiApiProjectRetrieveRequest 
 
 ### Return type
 
- (empty response body)
+[**ProjectsGetResponse**](ProjectsGetResponse.md)
 
 ### Authorization
 
@@ -499,7 +648,7 @@ Other parameters are passed through a pointer to a apiApiProjectRetrieveRequest 
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -508,7 +657,7 @@ Other parameters are passed through a pointer to a apiApiProjectRetrieveRequest 
 
 ## ApiUserPublicKeyCreate
 
-> ApiUserPublicKeyCreate(ctx).Execute()
+> ApiUserPublicKeyCreate(ctx).UserPublicKeyRequest(userPublicKeyRequest).Execute()
 
 
 
@@ -527,10 +676,11 @@ import (
 )
 
 func main() {
+	userPublicKeyRequest := *openapiclient.NewUserPublicKeyRequest("PublicKey_example") // UserPublicKeyRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ApiAPI.ApiUserPublicKeyCreate(context.Background()).Execute()
+	r, err := apiClient.ApiAPI.ApiUserPublicKeyCreate(context.Background()).UserPublicKeyRequest(userPublicKeyRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ApiAPI.ApiUserPublicKeyCreate``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -540,12 +690,16 @@ func main() {
 
 ### Path Parameters
 
-This endpoint does not need any parameter.
+
 
 ### Other Parameters
 
 Other parameters are passed through a pointer to a apiApiUserPublicKeyCreateRequest struct via the builder pattern
 
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userPublicKeyRequest** | [**UserPublicKeyRequest**](UserPublicKeyRequest.md) |  | 
 
 ### Return type
 
@@ -557,7 +711,7 @@ Other parameters are passed through a pointer to a apiApiUserPublicKeyCreateRequ
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json, application/x-www-form-urlencoded, multipart/form-data
 - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -567,7 +721,7 @@ Other parameters are passed through a pointer to a apiApiUserPublicKeyCreateRequ
 
 ## ApiUserPublicKeyRetrieve
 
-> ApiUserPublicKeyRetrieve(ctx).Execute()
+> UserPublicKeyResponse ApiUserPublicKeyRetrieve(ctx).Execute()
 
 
 
@@ -589,11 +743,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ApiAPI.ApiUserPublicKeyRetrieve(context.Background()).Execute()
+	resp, r, err := apiClient.ApiAPI.ApiUserPublicKeyRetrieve(context.Background()).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ApiAPI.ApiUserPublicKeyRetrieve``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ApiUserPublicKeyRetrieve`: UserPublicKeyResponse
+	fmt.Fprintf(os.Stdout, "Response from `ApiAPI.ApiUserPublicKeyRetrieve`: %v\n", resp)
 }
 ```
 
@@ -608,7 +764,7 @@ Other parameters are passed through a pointer to a apiApiUserPublicKeyRetrieveRe
 
 ### Return type
 
- (empty response body)
+[**UserPublicKeyResponse**](UserPublicKeyResponse.md)
 
 ### Authorization
 
@@ -617,7 +773,7 @@ Other parameters are passed through a pointer to a apiApiUserPublicKeyRetrieveRe
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -626,7 +782,7 @@ Other parameters are passed through a pointer to a apiApiUserPublicKeyRetrieveRe
 
 ## ApiUserRetrieve
 
-> ApiUserRetrieve(ctx).Execute()
+> UserResponse ApiUserRetrieve(ctx).Execute()
 
 
 
@@ -648,11 +804,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ApiAPI.ApiUserRetrieve(context.Background()).Execute()
+	resp, r, err := apiClient.ApiAPI.ApiUserRetrieve(context.Background()).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ApiAPI.ApiUserRetrieve``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ApiUserRetrieve`: UserResponse
+	fmt.Fprintf(os.Stdout, "Response from `ApiAPI.ApiUserRetrieve`: %v\n", resp)
 }
 ```
 
@@ -667,7 +825,7 @@ Other parameters are passed through a pointer to a apiApiUserRetrieveRequest str
 
 ### Return type
 
- (empty response body)
+[**UserResponse**](UserResponse.md)
 
 ### Authorization
 
@@ -676,7 +834,7 @@ Other parameters are passed through a pointer to a apiApiUserRetrieveRequest str
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
