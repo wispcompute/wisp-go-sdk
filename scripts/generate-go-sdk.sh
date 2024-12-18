@@ -2,8 +2,8 @@
 
 # TODO: Update with new endpoint when Elias is done setting up public endpoint
 # Define variables
-OPENAPI_URL="https://raw.githubusercontent.com/wispcompute/wisp/refs/heads/dev/web/openapi/latest.yml"
-OUTPUT_DIR="./go-sdk"
+OPENAPI_URL="https://storage.googleapis.com/wisp-public/schema/latest.yml"
+OUTPUT_DIR="../"
 DOCKER_IMAGE="openapitools/openapi-generator-cli:v5.3.0"  # OpenAPI Generator Docker image
 
 # Download OpenAPI schema from URL
