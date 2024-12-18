@@ -6,10 +6,35 @@ info:
 servers:
 - url: /
 paths:
-  /api/constrain:
+  /api/constraints/:
+    patch:
+      description: Validate the configuration if the cluster is already running.
+      operationId: constraints_partial_update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedConstrainPatchRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedConstrainPatchRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedConstrainPatchRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstrainResponse'
+      security:
+      - tokenAuth: []
+      - oauth2: []
+      tags:
+      - constraints
     post:
       description: Constrain clusters based on resource specification.
-      operationId: api_constrain_create
+      operationId: constraints_create
       requestBody:
         content:
           application/json:
@@ -21,224 +46,182 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/ConstrainRequest'
+        required: true
       responses:
         "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConstrainResponse'
-          description: ""
       security:
       - tokenAuth: []
+      - oauth2: []
       tags:
-      - api
-  /api/download:
+      - constraints
+  /api/download/:
     get:
-      description: Download the Wisp CLI
-      operationId: api_download_retrieve
-      responses:
-        "200":
-          description: No response body
-      security:
-      - tokenAuth: []
-      tags:
-      - api
-  /api/job:
-    delete:
-      description: Delete a job
-      operationId: api_job_destroy
-      responses:
-        "204":
-          description: No response body
-      security:
-      - tokenAuth: []
-      tags:
-      - api
-    get:
-      description: Get the jobs for the user
-      operationId: api_job_retrieve
-      responses:
-        "200":
-          description: No response body
-      security:
-      - tokenAuth: []
-      tags:
-      - api
-    post:
-      description: Launch a cluster configuration
-      operationId: api_job_create
-      responses:
-        "200":
-          description: No response body
-      security:
-      - tokenAuth: []
-      tags:
-      - api
-  /api/project:
-    get:
-      description: Get the projects for the user
-      operationId: api_project_retrieve
-      responses:
-        "200":
-          description: No response body
-      security:
-      - tokenAuth: []
-      tags:
-      - api
-    post:
-      description: Create a new project for the user
-      operationId: api_project_create
-      responses:
-        "200":
-          description: No response body
-      security:
-      - tokenAuth: []
-      tags:
-      - api
-  /api/project/{project_id}/jobs:
-    get:
-      description: Get the jobs for the user.
-      operationId: api_project_jobs_retrieve
+      description: |-
+        Generate a signed download URL for the requested Wisp CLI binary.
+
+        Args:
+            request: The HTTP request object containing the binary name in query params.
+
+        Returns:
+            Response: Contains either the signed URL or an error message.
+      operationId: download_retrieve
       parameters:
-      - explode: false
-        in: path
-        name: project_id
+      - description: The name of the binary to download
+        explode: true
+        in: query
+        name: name
         required: true
         schema:
           type: string
-        style: simple
+        style: form
       responses:
         "200":
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DownloadResponse'
       security:
       - tokenAuth: []
+      - oauth2: []
       tags:
-      - api
-  /api/user:
-    get:
-      description: Get the user information
-      operationId: api_user_retrieve
-      responses:
-        "200":
-          description: No response body
-      security:
-      - tokenAuth: []
-      tags:
-      - api
-  /api/user/public_key:
-    get:
-      description: Get the user's public key.
-      operationId: api_user_public_key_retrieve
-      responses:
-        "200":
-          description: No response body
-      security:
-      - tokenAuth: []
-      tags:
-      - api
+      - download
+  /api/jobs/:
     post:
-      description: Set the user's public key.
-      operationId: api_user_public_key_create
-      responses:
-        "200":
-          description: No response body
-      security:
-      - tokenAuth: []
-      tags:
-      - api
-  /wisp/constrain:
-    post:
-      description: Constrain clusters based on resource specification.
-      operationId: wisp_constrain_create
+      description: Launch a cluster configuration.
+      operationId: create_job
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConstrainRequest'
+              $ref: '#/components/schemas/JobPostRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/ConstrainRequest'
+              $ref: '#/components/schemas/JobPostRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ConstrainRequest'
+              $ref: '#/components/schemas/JobPostRequest'
+        required: true
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ConstrainResponse'
-          description: ""
+                $ref: '#/components/schemas/JobGetResponse'
       security:
       - tokenAuth: []
+      - oauth2: []
       tags:
-      - wisp
-  /wisp/download:
-    get:
-      description: Download the Wisp CLI
-      operationId: wisp_download_retrieve
-      responses:
-        "200":
-          description: No response body
-      security:
-      - tokenAuth: []
-      tags:
-      - wisp
-  /wisp/job:
+      - jobs
+  /api/jobs/{job_id}/:
     delete:
       description: Delete a job
-      operationId: wisp_job_destroy
+      operationId: jobs_destroy
+      parameters:
+      - explode: false
+        in: path
+        name: job_id
+        required: true
+        schema:
+          type: string
+        style: simple
       responses:
         "204":
           description: No response body
       security:
       - tokenAuth: []
+      - oauth2: []
       tags:
-      - wisp
+      - jobs
     get:
-      description: Get the jobs for the user
-      operationId: wisp_job_retrieve
+      description: Get the job for the user.
+      operationId: jobs_retrieve
+      parameters:
+      - explode: false
+        in: path
+        name: job_id
+        required: true
+        schema:
+          type: string
+        style: simple
       responses:
         "200":
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobGetResponse'
       security:
       - tokenAuth: []
+      - oauth2: []
       tags:
-      - wisp
+      - jobs
+  /api/projects/:
+    get:
+      description: List all projects for the authenticated user.
+      operationId: list_projects
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectsGetResponse'
+      security:
+      - tokenAuth: []
+      - oauth2: []
+      tags:
+      - projects
     post:
-      description: Launch a cluster configuration
-      operationId: wisp_job_create
+      description: Create a new project.
+      operationId: create_project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProjectCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProjectCreateRequest'
+        required: true
       responses:
-        "200":
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+      security:
+      - tokenAuth: []
+      - oauth2: []
+      tags:
+      - projects
+  /api/projects/{project_id}/:
+    delete:
+      description: Delete a specific project.
+      operationId: delete_project
+      parameters:
+      - explode: false
+        in: path
+        name: project_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
           description: No response body
       security:
       - tokenAuth: []
+      - oauth2: []
       tags:
-      - wisp
-  /wisp/project:
+      - projects
     get:
-      description: Get the projects for the user
-      operationId: wisp_project_retrieve
-      responses:
-        "200":
-          description: No response body
-      security:
-      - tokenAuth: []
-      tags:
-      - wisp
-    post:
-      description: Create a new project for the user
-      operationId: wisp_project_create
-      responses:
-        "200":
-          description: No response body
-      security:
-      - tokenAuth: []
-      tags:
-      - wisp
-  /wisp/project/{project_id}/jobs:
-    get:
-      description: Get the jobs for the user.
-      operationId: wisp_project_jobs_retrieve
+      description: Retrieve a specific project.
+      operationId: retrieve_project
       parameters:
       - explode: false
         in: path
@@ -249,213 +232,314 @@ paths:
         style: simple
       responses:
         "200":
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
       security:
       - tokenAuth: []
+      - oauth2: []
       tags:
-      - wisp
-  /wisp/user:
+      - projects
+  /api/projects/{project_id}/jobs/:
+    get:
+      description: Get the jobs for the user.
+      operationId: projects_jobs_retrieve
+      parameters:
+      - explode: false
+        in: path
+        name: project_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobListResponse'
+      security:
+      - tokenAuth: []
+      - oauth2: []
+      tags:
+      - projects
+  /api/users/me/:
     get:
       description: Get the user information
-      operationId: wisp_user_retrieve
+      operationId: users_me_retrieve
       responses:
         "200":
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
       security:
       - tokenAuth: []
+      - oauth2: []
       tags:
-      - wisp
-  /wisp/user/public_key:
+      - users
+  /api/users/me/public-key/:
     get:
       description: Get the user's public key.
-      operationId: wisp_user_public_key_retrieve
+      operationId: users_me_public_key_retrieve
       responses:
         "200":
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublicKeyResponse'
       security:
       - tokenAuth: []
+      - oauth2: []
       tags:
-      - wisp
+      - users
     post:
       description: Set the user's public key.
-      operationId: wisp_user_public_key_create
+      operationId: users_me_public_key_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPublicKeyRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserPublicKeyRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserPublicKeyRequest'
+        required: true
       responses:
         "200":
           description: No response body
       security:
       - tokenAuth: []
+      - oauth2: []
       tags:
-      - wisp
+      - users
 components:
   schemas:
+    Bucket:
+      description: Bucket configuration serializer.
+      properties:
+        name:
+          nullable: true
+          type: string
+        mode:
+          nullable: true
+          type: string
+        mount_location:
+          nullable: true
+          type: string
+      required:
+      - mode
+      - mount_location
+      - name
+      type: object
+    Cluster:
+      description: Cluster serializer.
+      properties:
+        user:
+          type: integer
+        name:
+          maxLength: 255
+          type: string
+        launched_at:
+          format: int64
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          nullable: true
+          type: integer
+        last_use:
+          maxLength: 255
+          nullable: true
+          type: string
+        status:
+          $ref: '#/components/schemas/ClusterStatusEnum'
+        autostop:
+          format: int64
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          type: integer
+        metadata:
+          type: string
+        to_down:
+          type: boolean
+        cluster_hash:
+          maxLength: 255
+          nullable: true
+          type: string
+        handle:
+          allOf:
+          - $ref: '#/components/schemas/PickledHandleField'
+          nullable: true
+      required:
+      - handle
+      - name
+      - user
+      type: object
     ClusterOffer:
-      description: |-
-        Serializer for cluster offers.
-
-        Fields:
-            cloud (str): Cloud provider name
-            instance_type (str): Instance type identifier
-            cpus (int): Number of CPUs
-            memory (float): Memory size in GB
-            accelerators (AcceleratorSpec): Accelerator specifications
-            accelerator_args (dict): Additional accelerator arguments
-            use_spot (bool): Whether to use spot instances
-            job_recovery (dict): Job recovery configuration
-            region (str): Region identifier
-            zone (str): Zone identifier
-            image_id (str): VM image identifier
-            disk_size (int): Disk size in GB
-            disk_tier (str): Disk performance tier
-            ports (list): Port configurations
-            labels (dict): Instance labels
-            price (float): Hourly price
-            storage (int): Storage size in GB
-            accelerator_count (int): Number of accelerators
-            regions (list): Available regions
       example:
         accelerator_args: ""
-        memory: 6.027456183070403
-        regions:
-        - regions
-        - regions
-        cpus: 0
-        disk_size: 1
-        storage: 5
-        ports:
-        - ""
-        - ""
-        accelerator_count: 2
+        memory: 1895322125605019648
+        regions: ""
+        cpus: 1774823812569044992
+        disk_size: -7746104769210155008
+        storage: storage
+        ports: ""
+        accelerator_count: ""
         disk_tier: disk_tier
-        job_recovery: ""
-        labels:
-          key: ""
+        job_recovery: job_recovery
+        labels: ""
         cloud: cloud
         zone: zone
-        price: 5.962133916683182
+        price: 1.4658129805029452
         accelerators: ""
         use_spot: true
         region: region
-        image_id: image_id
+        image_id: ""
         instance_type: instance_type
       properties:
+        disk_size:
+          format: int64
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          nullable: true
+          type: integer
         cloud:
+          maxLength: 100
+          nullable: true
+          type: string
+        job_recovery:
+          maxLength: 100
+          nullable: true
+          type: string
+        disk_tier:
+          maxLength: 100
+          nullable: true
+          type: string
+        memory:
+          format: int64
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          nullable: true
+          type: integer
+        accelerator_args:
+          nullable: true
+        region:
+          maxLength: 100
+          nullable: true
+          type: string
+        price:
+          format: double
+          nullable: true
+          type: number
+        storage:
+          maxLength: 100
+          nullable: true
           type: string
         instance_type:
+          maxLength: 100
+          nullable: true
           type: string
         cpus:
-          type: integer
-        memory:
-          format: double
-          type: number
-        accelerators:
+          format: int64
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
           nullable: true
-        accelerator_args:
+          type: integer
+        accelerators:
           nullable: true
         use_spot:
           nullable: true
           type: boolean
-        job_recovery:
-          nullable: true
-        region:
-          nullable: true
-          type: string
         zone:
+          maxLength: 100
           nullable: true
           type: string
         image_id:
           nullable: true
-          type: string
-        disk_size:
-          nullable: true
-          type: integer
-        disk_tier:
-          nullable: true
-          type: string
         ports:
-          items: {}
           nullable: true
-          type: array
         labels:
-          additionalProperties: {}
           nullable: true
-          type: object
-        price:
-          format: double
-          type: number
-        storage:
-          nullable: true
-          type: integer
         accelerator_count:
           nullable: true
-          type: integer
         regions:
-          items:
-            type: string
           nullable: true
-          type: array
-      required:
-      - accelerator_args
-      - accelerator_count
-      - accelerators
-      - cloud
-      - cpus
-      - disk_size
-      - disk_tier
-      - image_id
-      - instance_type
-      - job_recovery
-      - labels
-      - memory
-      - ports
-      - price
-      - region
-      - regions
-      - storage
-      - use_spot
-      - zone
       type: object
+    ClusterStatusEnum:
+      description: |-
+        * `INIT` - INIT
+        * `UP` - UP
+        * `STOPPED` - STOPPED
+        * `ERROR` - ERROR
+      enum:
+      - INIT
+      - UP
+      - STOPPED
+      - ERROR
+      type: string
     ConstrainRequest:
       description: |-
-        Serializer for cluster constraint request.
+        Configuration serializer for cluster constraints.
 
-        Fields:
-            Accelerators (dict): Accelerator specifications including name, count and VRAM
-            Storage (int): Required storage in GB
-            Memory (int): Required memory in GB
-            VCPUs (int): Required number of virtual CPUs
-            Regions (list): List of acceptable regions
-            Clouds (list): List of acceptable cloud providers
+        Validates the full configuration schema including project details,
+        scripts, resource requirements, and IO specifications.
       example:
-        Storage: 0
-        Accelerators:
-          key: ""
-        Clouds:
-        - Clouds
-        - Clouds
-        Memory: 6
-        VCPUs: 1
-        Regions:
-        - Regions
-        - Regions
+        io: ""
+        project: ""
+        setup: ""
+        resources:
+          regions:
+          - regions
+          - regions
+          memory: 0
+          cpus: 6
+          compute_capability: compute_capability
+          persistent_disk: 5
+          accelerators:
+          - accelerators
+          - accelerators
+          areas:
+          - areas
+          - areas
+          clouds:
+          - clouds
+          - clouds
+          storage: 1
+          accelerator_count: 2
+          platform: platform
+          vram: 5
+        run: ""
+        teardown: ""
       properties:
-        Accelerators:
-          additionalProperties: {}
+        project:
+          allOf:
+          - $ref: '#/components/schemas/Project'
+          readOnly: true
+        setup:
+          allOf:
+          - $ref: '#/components/schemas/Script'
           nullable: true
-          type: object
-        Storage:
-          type: integer
-        Memory:
-          type: integer
-        VCPUs:
-          type: integer
-        Regions:
-          items:
-            type: string
-          type: array
-        Clouds:
-          items:
-            type: string
-          type: array
+        run:
+          allOf:
+          - $ref: '#/components/schemas/Script'
+          nullable: true
+        teardown:
+          allOf:
+          - $ref: '#/components/schemas/Script'
+          nullable: true
+        resources:
+          $ref: '#/components/schemas/Resources'
+        io:
+          allOf:
+          - $ref: '#/components/schemas/IO'
+          nullable: true
+      required:
+      - io
+      - project
+      - resources
       type: object
     ConstrainResponse:
       description: |-
@@ -466,52 +550,42 @@ components:
       example:
         choice:
         - accelerator_args: ""
-          memory: 6.027456183070403
-          regions:
-          - regions
-          - regions
-          cpus: 0
-          disk_size: 1
-          storage: 5
-          ports:
-          - ""
-          - ""
-          accelerator_count: 2
+          memory: 1895322125605019648
+          regions: ""
+          cpus: 1774823812569044992
+          disk_size: -7746104769210155008
+          storage: storage
+          ports: ""
+          accelerator_count: ""
           disk_tier: disk_tier
-          job_recovery: ""
-          labels:
-            key: ""
+          job_recovery: job_recovery
+          labels: ""
           cloud: cloud
           zone: zone
-          price: 5.962133916683182
+          price: 1.4658129805029452
           accelerators: ""
           use_spot: true
           region: region
-          image_id: image_id
+          image_id: ""
           instance_type: instance_type
         - accelerator_args: ""
-          memory: 6.027456183070403
-          regions:
-          - regions
-          - regions
-          cpus: 0
-          disk_size: 1
-          storage: 5
-          ports:
-          - ""
-          - ""
-          accelerator_count: 2
+          memory: 1895322125605019648
+          regions: ""
+          cpus: 1774823812569044992
+          disk_size: -7746104769210155008
+          storage: storage
+          ports: ""
+          accelerator_count: ""
           disk_tier: disk_tier
-          job_recovery: ""
-          labels:
-            key: ""
+          job_recovery: job_recovery
+          labels: ""
           cloud: cloud
           zone: zone
-          price: 5.962133916683182
+          price: 1.4658129805029452
           accelerators: ""
           use_spot: true
           region: region
-          image_id: image_id
+          image_id: ""
           instance_type: instance_type
       properties:
         choice:
@@ -521,9 +595,477 @@ components:
       required:
       - choice
       type: object
+    DownloadResponse:
+      description: Download response serializer.
+      example:
+        binary: binary
+        url: url
+      properties:
+        url:
+          type: string
+        binary:
+          type: string
+      required:
+      - binary
+      - url
+      type: object
+    IO:
+      description: IO configuration serializer.
+      properties:
+        inputs:
+          allOf:
+          - $ref: '#/components/schemas/Inputs'
+          nullable: true
+        outputs:
+          allOf:
+          - $ref: '#/components/schemas/Outputs'
+          nullable: true
+      type: object
+    Inputs:
+      description: Inputs configuration serializer.
+      properties:
+        buckets:
+          items:
+            $ref: '#/components/schemas/Bucket'
+          nullable: true
+          type: array
+      type: object
+    Job:
+      description: Job serializer.
+      example:
+        cluster: ""
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        finished_at: 2000-01-23T04:56:07.000+00:00
+        configuration: configuration
+        job_id: job_id
+        name: name
+        created_at: 2000-01-23T04:56:07.000+00:00
+        started_at: 2000-01-23T04:56:07.000+00:00
+        logs: logs
+      properties:
+        name:
+          maxLength: 255
+          type: string
+        job_id:
+          maxLength: 255
+          type: string
+        configuration:
+          type: string
+        created_at:
+          format: date-time
+          readOnly: true
+          type: string
+        updated_at:
+          format: date-time
+          readOnly: true
+          type: string
+        started_at:
+          format: date-time
+          nullable: true
+          type: string
+        finished_at:
+          format: date-time
+          nullable: true
+          type: string
+        logs:
+          type: string
+        cluster:
+          allOf:
+          - $ref: '#/components/schemas/Cluster'
+          nullable: true
+      required:
+      - cluster
+      - configuration
+      - created_at
+      - job_id
+      - logs
+      - name
+      - updated_at
+      type: object
+    JobGetResponse:
+      description: Job get response serializer.
+      example:
+        job:
+          cluster: ""
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          finished_at: 2000-01-23T04:56:07.000+00:00
+          configuration: configuration
+          job_id: job_id
+          name: name
+          created_at: 2000-01-23T04:56:07.000+00:00
+          started_at: 2000-01-23T04:56:07.000+00:00
+          logs: logs
+        latest_cluster_log: ""
+      properties:
+        job:
+          $ref: '#/components/schemas/Job'
+        latest_cluster_log:
+          allOf:
+          - $ref: '#/components/schemas/LatestClusterLog'
+          nullable: true
+      required:
+      - job
+      - latest_cluster_log
+      type: object
+    JobListResponse:
+      description: Job list response serializer.
+      example:
+        jobs:
+        - cluster: ""
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          finished_at: 2000-01-23T04:56:07.000+00:00
+          configuration: configuration
+          job_id: job_id
+          name: name
+          created_at: 2000-01-23T04:56:07.000+00:00
+          started_at: 2000-01-23T04:56:07.000+00:00
+          logs: logs
+        - cluster: ""
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          finished_at: 2000-01-23T04:56:07.000+00:00
+          configuration: configuration
+          job_id: job_id
+          name: name
+          created_at: 2000-01-23T04:56:07.000+00:00
+          started_at: 2000-01-23T04:56:07.000+00:00
+          logs: logs
+      properties:
+        jobs:
+          items:
+            $ref: '#/components/schemas/Job'
+          type: array
+      required:
+      - jobs
+      type: object
+    JobPostRequest:
+      description: Job post request serializer.
+      example:
+        project: ""
+        choice:
+          accelerator_args: ""
+          memory: 1895322125605019648
+          regions: ""
+          cpus: 1774823812569044992
+          disk_size: -7746104769210155008
+          storage: storage
+          ports: ""
+          accelerator_count: ""
+          disk_tier: disk_tier
+          job_recovery: job_recovery
+          labels: ""
+          cloud: cloud
+          zone: zone
+          price: 1.4658129805029452
+          accelerators: ""
+          use_spot: true
+          region: region
+          image_id: ""
+          instance_type: instance_type
+        config:
+          io: ""
+          project: ""
+          setup: ""
+          resources:
+            regions:
+            - regions
+            - regions
+            memory: 0
+            cpus: 6
+            compute_capability: compute_capability
+            persistent_disk: 5
+            accelerators:
+            - accelerators
+            - accelerators
+            areas:
+            - areas
+            - areas
+            clouds:
+            - clouds
+            - clouds
+            storage: 1
+            accelerator_count: 2
+            platform: platform
+            vram: 5
+          run: ""
+          teardown: ""
+      properties:
+        choice:
+          $ref: '#/components/schemas/ClusterOffer'
+        config:
+          $ref: '#/components/schemas/ConstrainRequest'
+        project:
+          allOf:
+          - $ref: '#/components/schemas/Project'
+          readOnly: true
+      required:
+      - choice
+      - config
+      - project
+      type: object
+    LatestClusterLog:
+      description: Latest cluster log serializer.
+      properties:
+        timestamp:
+          format: date-time
+          readOnly: true
+          type: string
+        status:
+          $ref: '#/components/schemas/LatestClusterLogStatusEnum'
+        message:
+          type: string
+      required:
+      - message
+      - status
+      - timestamp
+      type: object
+    LatestClusterLogStatusEnum:
+      description: |-
+        * `UPDATING` - UPDATING
+        * `DONE` - DONE
+      enum:
+      - UPDATING
+      - DONE
+      type: string
+    Outputs:
+      description: Outputs configuration serializer.
+      properties:
+        buckets:
+          items:
+            $ref: '#/components/schemas/Bucket'
+          nullable: true
+          type: array
+      type: object
+    PatchedConstrainPatchRequest:
+      description: Serializer for cluster constraint patch request.
+      example:
+        job_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        config: ""
+      properties:
+        job_id:
+          format: uuid
+          type: string
+        config: {}
+      type: object
+    PickledHandleField:
+      description: Custom field serializer for pickled handle data.
+      properties:
+        stable_internal_ip:
+          nullable: true
+          type: string
+        stable_external_ip:
+          nullable: true
+          type: string
+        stable_ssh_ports:
+          items:
+            type: integer
+          type: array
+        ssh_user:
+          nullable: true
+          type: string
+      required:
+      - ssh_user
+      - stable_external_ip
+      - stable_internal_ip
+      - stable_ssh_ports
+      type: object
+    Project:
+      description: Project serializer.
+      example:
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        project_id: project_id
+        name: name
+        created_at: 2000-01-23T04:56:07.000+00:00
+      properties:
+        name:
+          maxLength: 255
+          type: string
+        project_id:
+          maxLength: 255
+          type: string
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        created_at:
+          format: date-time
+          readOnly: true
+          type: string
+        updated_at:
+          format: date-time
+          readOnly: true
+          type: string
+      required:
+      - created_at
+      - name
+      - updated_at
+      type: object
+    ProjectCreateRequest:
+      description: Project create request serializer.
+      example:
+        name: name
+      properties:
+        name:
+          type: string
+      required:
+      - name
+      type: object
+    ProjectsGetResponse:
+      description: Projects serializer.
+      example:
+        projects:
+        - updated_at: 2000-01-23T04:56:07.000+00:00
+          project_id: project_id
+          name: name
+          created_at: 2000-01-23T04:56:07.000+00:00
+        - updated_at: 2000-01-23T04:56:07.000+00:00
+          project_id: project_id
+          name: name
+          created_at: 2000-01-23T04:56:07.000+00:00
+      properties:
+        projects:
+          items:
+            $ref: '#/components/schemas/Project'
+          type: array
+      required:
+      - projects
+      type: object
+    Resources:
+      description: Resource configuration serializer.
+      example:
+        regions:
+        - regions
+        - regions
+        memory: 0
+        cpus: 6
+        compute_capability: compute_capability
+        persistent_disk: 5
+        accelerators:
+        - accelerators
+        - accelerators
+        areas:
+        - areas
+        - areas
+        clouds:
+        - clouds
+        - clouds
+        storage: 1
+        accelerator_count: 2
+        platform: platform
+        vram: 5
+      properties:
+        clouds:
+          items:
+            nullable: true
+            type: string
+          type: array
+        regions:
+          items:
+            nullable: true
+            type: string
+          type: array
+        areas:
+          items:
+            nullable: true
+            type: string
+          type: array
+        memory:
+          nullable: true
+          type: integer
+        cpus:
+          nullable: true
+          type: integer
+        storage:
+          nullable: true
+          type: integer
+        persistent_disk:
+          nullable: true
+          type: integer
+        accelerators:
+          items:
+            nullable: true
+            type: string
+          nullable: true
+          type: array
+        compute_capability:
+          nullable: true
+          type: string
+        vram:
+          nullable: true
+          type: integer
+        accelerator_count:
+          nullable: true
+          type: integer
+        platform:
+          nullable: true
+          type: string
+      required:
+      - accelerators
+      type: object
+    Script:
+      description: Script configuration serializer.
+      properties:
+        script:
+          nullable: true
+          type: string
+      required:
+      - script
+      type: object
+    TypeEnum:
+      description: |-
+        * `local` - local
+        * `git` - git
+        * `docker` - docker
+      enum:
+      - local
+      - git
+      - docker
+      type: string
+    UserPublicKeyRequest:
+      example:
+        public_key: public_key
+      properties:
+        public_key:
+          type: string
+      required:
+      - public_key
+      type: object
+    UserPublicKeyResponse:
+      example:
+        public_key: public_key
+      properties:
+        public_key:
+          type: string
+      required:
+      - public_key
+      type: object
+    UserResponse:
+      example:
+        email: email
+      properties:
+        email:
+          format: email
+          readOnly: true
+          type: string
+      required:
+      - email
+      type: object
   securitySchemes:
     oauth2:
-      flows: {}
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          scopes:
+            read: Read access
+            write: Write access
+          tokenUrl: /o/token/
+        clientCredentials:
+          scopes:
+            read: Read access
+            write: Write access
+          tokenUrl: /o/token/
+        password:
+          scopes:
+            read: Read access
+            write: Write access
+          tokenUrl: /o/token/
       type: oauth2
     tokenAuth:
       description: Token-based authentication with required prefix "Token"

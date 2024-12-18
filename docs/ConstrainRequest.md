@@ -4,18 +4,18 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Accelerators** | Pointer to **map[string]interface{}** |  | [optional] 
-**Storage** | Pointer to **int32** |  | [optional] 
-**Memory** | Pointer to **int32** |  | [optional] 
-**VCPUs** | Pointer to **int32** |  | [optional] 
-**Regions** | Pointer to **[]string** |  | [optional] 
-**Clouds** | Pointer to **[]string** |  | [optional] 
+**Project** | [**Project**](Project.md) |  | [readonly] 
+**Setup** | Pointer to [**Script**](Script.md) |  | [optional] 
+**Run** | Pointer to [**Script**](Script.md) |  | [optional] 
+**Teardown** | Pointer to [**Script**](Script.md) |  | [optional] 
+**Resources** | [**Resources**](Resources.md) |  | 
+**Io** | [**IO**](IO.md) |  | 
 
 ## Methods
 
 ### NewConstrainRequest
 
-`func NewConstrainRequest() *ConstrainRequest`
+`func NewConstrainRequest(project Project, resources Resources, io IO, ) *ConstrainRequest`
 
 NewConstrainRequest instantiates a new ConstrainRequest object
 This constructor will assign default values to properties that have it defined,
@@ -30,166 +30,191 @@ NewConstrainRequestWithDefaults instantiates a new ConstrainRequest object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetAccelerators
+### GetProject
 
-`func (o *ConstrainRequest) GetAccelerators() map[string]interface{}`
+`func (o *ConstrainRequest) GetProject() Project`
 
-GetAccelerators returns the Accelerators field if non-nil, zero value otherwise.
+GetProject returns the Project field if non-nil, zero value otherwise.
 
-### GetAcceleratorsOk
+### GetProjectOk
 
-`func (o *ConstrainRequest) GetAcceleratorsOk() (*map[string]interface{}, bool)`
+`func (o *ConstrainRequest) GetProjectOk() (*Project, bool)`
 
-GetAcceleratorsOk returns a tuple with the Accelerators field if it's non-nil, zero value otherwise
+GetProjectOk returns a tuple with the Project field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetAccelerators
+### SetProject
 
-`func (o *ConstrainRequest) SetAccelerators(v map[string]interface{})`
+`func (o *ConstrainRequest) SetProject(v Project)`
 
-SetAccelerators sets Accelerators field to given value.
+SetProject sets Project field to given value.
 
-### HasAccelerators
 
-`func (o *ConstrainRequest) HasAccelerators() bool`
+### SetProjectNil
 
-HasAccelerators returns a boolean if a field has been set.
+`func (o *ConstrainRequest) SetProjectNil(b bool)`
 
-### SetAcceleratorsNil
+ SetProjectNil sets the value for Project to be an explicit nil
 
-`func (o *ConstrainRequest) SetAcceleratorsNil(b bool)`
+### UnsetProject
+`func (o *ConstrainRequest) UnsetProject()`
 
- SetAcceleratorsNil sets the value for Accelerators to be an explicit nil
+UnsetProject ensures that no value is present for Project, not even an explicit nil
+### GetSetup
 
-### UnsetAccelerators
-`func (o *ConstrainRequest) UnsetAccelerators()`
+`func (o *ConstrainRequest) GetSetup() Script`
 
-UnsetAccelerators ensures that no value is present for Accelerators, not even an explicit nil
-### GetStorage
+GetSetup returns the Setup field if non-nil, zero value otherwise.
 
-`func (o *ConstrainRequest) GetStorage() int32`
+### GetSetupOk
 
-GetStorage returns the Storage field if non-nil, zero value otherwise.
+`func (o *ConstrainRequest) GetSetupOk() (*Script, bool)`
 
-### GetStorageOk
-
-`func (o *ConstrainRequest) GetStorageOk() (*int32, bool)`
-
-GetStorageOk returns a tuple with the Storage field if it's non-nil, zero value otherwise
+GetSetupOk returns a tuple with the Setup field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetStorage
+### SetSetup
 
-`func (o *ConstrainRequest) SetStorage(v int32)`
+`func (o *ConstrainRequest) SetSetup(v Script)`
 
-SetStorage sets Storage field to given value.
+SetSetup sets Setup field to given value.
 
-### HasStorage
+### HasSetup
 
-`func (o *ConstrainRequest) HasStorage() bool`
+`func (o *ConstrainRequest) HasSetup() bool`
 
-HasStorage returns a boolean if a field has been set.
+HasSetup returns a boolean if a field has been set.
 
-### GetMemory
+### SetSetupNil
 
-`func (o *ConstrainRequest) GetMemory() int32`
+`func (o *ConstrainRequest) SetSetupNil(b bool)`
 
-GetMemory returns the Memory field if non-nil, zero value otherwise.
+ SetSetupNil sets the value for Setup to be an explicit nil
 
-### GetMemoryOk
+### UnsetSetup
+`func (o *ConstrainRequest) UnsetSetup()`
 
-`func (o *ConstrainRequest) GetMemoryOk() (*int32, bool)`
+UnsetSetup ensures that no value is present for Setup, not even an explicit nil
+### GetRun
 
-GetMemoryOk returns a tuple with the Memory field if it's non-nil, zero value otherwise
+`func (o *ConstrainRequest) GetRun() Script`
+
+GetRun returns the Run field if non-nil, zero value otherwise.
+
+### GetRunOk
+
+`func (o *ConstrainRequest) GetRunOk() (*Script, bool)`
+
+GetRunOk returns a tuple with the Run field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetMemory
+### SetRun
 
-`func (o *ConstrainRequest) SetMemory(v int32)`
+`func (o *ConstrainRequest) SetRun(v Script)`
 
-SetMemory sets Memory field to given value.
+SetRun sets Run field to given value.
 
-### HasMemory
+### HasRun
 
-`func (o *ConstrainRequest) HasMemory() bool`
+`func (o *ConstrainRequest) HasRun() bool`
 
-HasMemory returns a boolean if a field has been set.
+HasRun returns a boolean if a field has been set.
 
-### GetVCPUs
+### SetRunNil
 
-`func (o *ConstrainRequest) GetVCPUs() int32`
+`func (o *ConstrainRequest) SetRunNil(b bool)`
 
-GetVCPUs returns the VCPUs field if non-nil, zero value otherwise.
+ SetRunNil sets the value for Run to be an explicit nil
 
-### GetVCPUsOk
+### UnsetRun
+`func (o *ConstrainRequest) UnsetRun()`
 
-`func (o *ConstrainRequest) GetVCPUsOk() (*int32, bool)`
+UnsetRun ensures that no value is present for Run, not even an explicit nil
+### GetTeardown
 
-GetVCPUsOk returns a tuple with the VCPUs field if it's non-nil, zero value otherwise
+`func (o *ConstrainRequest) GetTeardown() Script`
+
+GetTeardown returns the Teardown field if non-nil, zero value otherwise.
+
+### GetTeardownOk
+
+`func (o *ConstrainRequest) GetTeardownOk() (*Script, bool)`
+
+GetTeardownOk returns a tuple with the Teardown field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetVCPUs
+### SetTeardown
 
-`func (o *ConstrainRequest) SetVCPUs(v int32)`
+`func (o *ConstrainRequest) SetTeardown(v Script)`
 
-SetVCPUs sets VCPUs field to given value.
+SetTeardown sets Teardown field to given value.
 
-### HasVCPUs
+### HasTeardown
 
-`func (o *ConstrainRequest) HasVCPUs() bool`
+`func (o *ConstrainRequest) HasTeardown() bool`
 
-HasVCPUs returns a boolean if a field has been set.
+HasTeardown returns a boolean if a field has been set.
 
-### GetRegions
+### SetTeardownNil
 
-`func (o *ConstrainRequest) GetRegions() []string`
+`func (o *ConstrainRequest) SetTeardownNil(b bool)`
 
-GetRegions returns the Regions field if non-nil, zero value otherwise.
+ SetTeardownNil sets the value for Teardown to be an explicit nil
 
-### GetRegionsOk
+### UnsetTeardown
+`func (o *ConstrainRequest) UnsetTeardown()`
 
-`func (o *ConstrainRequest) GetRegionsOk() (*[]string, bool)`
+UnsetTeardown ensures that no value is present for Teardown, not even an explicit nil
+### GetResources
 
-GetRegionsOk returns a tuple with the Regions field if it's non-nil, zero value otherwise
+`func (o *ConstrainRequest) GetResources() Resources`
+
+GetResources returns the Resources field if non-nil, zero value otherwise.
+
+### GetResourcesOk
+
+`func (o *ConstrainRequest) GetResourcesOk() (*Resources, bool)`
+
+GetResourcesOk returns a tuple with the Resources field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetRegions
+### SetResources
 
-`func (o *ConstrainRequest) SetRegions(v []string)`
+`func (o *ConstrainRequest) SetResources(v Resources)`
 
-SetRegions sets Regions field to given value.
+SetResources sets Resources field to given value.
 
-### HasRegions
 
-`func (o *ConstrainRequest) HasRegions() bool`
+### GetIo
 
-HasRegions returns a boolean if a field has been set.
+`func (o *ConstrainRequest) GetIo() IO`
 
-### GetClouds
+GetIo returns the Io field if non-nil, zero value otherwise.
 
-`func (o *ConstrainRequest) GetClouds() []string`
+### GetIoOk
 
-GetClouds returns the Clouds field if non-nil, zero value otherwise.
+`func (o *ConstrainRequest) GetIoOk() (*IO, bool)`
 
-### GetCloudsOk
-
-`func (o *ConstrainRequest) GetCloudsOk() (*[]string, bool)`
-
-GetCloudsOk returns a tuple with the Clouds field if it's non-nil, zero value otherwise
+GetIoOk returns a tuple with the Io field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetClouds
+### SetIo
 
-`func (o *ConstrainRequest) SetClouds(v []string)`
+`func (o *ConstrainRequest) SetIo(v IO)`
 
-SetClouds sets Clouds field to given value.
+SetIo sets Io field to given value.
 
-### HasClouds
 
-`func (o *ConstrainRequest) HasClouds() bool`
+### SetIoNil
 
-HasClouds returns a boolean if a field has been set.
+`func (o *ConstrainRequest) SetIoNil(b bool)`
 
+ SetIoNil sets the value for Io to be an explicit nil
+
+### UnsetIo
+`func (o *ConstrainRequest) UnsetIo()`
+
+UnsetIo ensures that no value is present for Io, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
