@@ -32,7 +32,7 @@ import (
 )
 
 func main() {
-    jobPostRequest := *openapiclient.NewJobPostRequest(*openapiclient.NewClusterOffer(), *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), *openapiclient.NewIO()), *openapiclient.NewProject("Name_example", time.Now(), time.Now())) // JobPostRequest | 
+    jobPostRequest := *openapiclient.NewJobPostRequest(*openapiclient.NewClusterOffer(), *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), *openapiclient.NewIO()), *openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now())) // JobPostRequest | 
 
     configuration := openapiclient.NewConfiguration()
     api_client := openapiclient.NewAPIClient(configuration)

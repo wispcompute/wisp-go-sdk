@@ -16,22 +16,18 @@ import (
 
 // PickledHandleField Custom field serializer for pickled handle data.
 type PickledHandleField struct {
-	StableInternalIp NullableString `json:"stable_internal_ip"`
-	StableExternalIp NullableString `json:"stable_external_ip"`
-	StableSshPorts []int32 `json:"stable_ssh_ports"`
-	SshUser NullableString `json:"ssh_user"`
+	StableInternalIp NullableString `json:"stable_internal_ip,omitempty"`
+	StableExternalIp NullableString `json:"stable_external_ip,omitempty"`
+	StableSshPorts *[]int32 `json:"stable_ssh_ports,omitempty"`
+	SshUser NullableString `json:"ssh_user,omitempty"`
 }
 
 // NewPickledHandleField instantiates a new PickledHandleField object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPickledHandleField(stableInternalIp NullableString, stableExternalIp NullableString, stableSshPorts []int32, sshUser NullableString) *PickledHandleField {
+func NewPickledHandleField() *PickledHandleField {
 	this := PickledHandleField{}
-	this.StableInternalIp = stableInternalIp
-	this.StableExternalIp = stableExternalIp
-	this.StableSshPorts = stableSshPorts
-	this.SshUser = sshUser
 	return &this
 }
 
@@ -43,18 +39,16 @@ func NewPickledHandleFieldWithDefaults() *PickledHandleField {
 	return &this
 }
 
-// GetStableInternalIp returns the StableInternalIp field value
-// If the value is explicit nil, the zero value for string will be returned
+// GetStableInternalIp returns the StableInternalIp field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *PickledHandleField) GetStableInternalIp() string {
 	if o == nil || o.StableInternalIp.Get() == nil {
 		var ret string
 		return ret
 	}
-
 	return *o.StableInternalIp.Get()
 }
 
-// GetStableInternalIpOk returns a tuple with the StableInternalIp field value
+// GetStableInternalIpOk returns a tuple with the StableInternalIp field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *PickledHandleField) GetStableInternalIpOk() (*string, bool) {
@@ -64,23 +58,39 @@ func (o *PickledHandleField) GetStableInternalIpOk() (*string, bool) {
 	return o.StableInternalIp.Get(), o.StableInternalIp.IsSet()
 }
 
-// SetStableInternalIp sets field value
+// HasStableInternalIp returns a boolean if a field has been set.
+func (o *PickledHandleField) HasStableInternalIp() bool {
+	if o != nil && o.StableInternalIp.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetStableInternalIp gets a reference to the given NullableString and assigns it to the StableInternalIp field.
 func (o *PickledHandleField) SetStableInternalIp(v string) {
 	o.StableInternalIp.Set(&v)
 }
+// SetStableInternalIpNil sets the value for StableInternalIp to be an explicit nil
+func (o *PickledHandleField) SetStableInternalIpNil() {
+	o.StableInternalIp.Set(nil)
+}
 
-// GetStableExternalIp returns the StableExternalIp field value
-// If the value is explicit nil, the zero value for string will be returned
+// UnsetStableInternalIp ensures that no value is present for StableInternalIp, not even an explicit nil
+func (o *PickledHandleField) UnsetStableInternalIp() {
+	o.StableInternalIp.Unset()
+}
+
+// GetStableExternalIp returns the StableExternalIp field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *PickledHandleField) GetStableExternalIp() string {
 	if o == nil || o.StableExternalIp.Get() == nil {
 		var ret string
 		return ret
 	}
-
 	return *o.StableExternalIp.Get()
 }
 
-// GetStableExternalIpOk returns a tuple with the StableExternalIp field value
+// GetStableExternalIpOk returns a tuple with the StableExternalIp field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *PickledHandleField) GetStableExternalIpOk() (*string, bool) {
@@ -90,47 +100,71 @@ func (o *PickledHandleField) GetStableExternalIpOk() (*string, bool) {
 	return o.StableExternalIp.Get(), o.StableExternalIp.IsSet()
 }
 
-// SetStableExternalIp sets field value
+// HasStableExternalIp returns a boolean if a field has been set.
+func (o *PickledHandleField) HasStableExternalIp() bool {
+	if o != nil && o.StableExternalIp.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetStableExternalIp gets a reference to the given NullableString and assigns it to the StableExternalIp field.
 func (o *PickledHandleField) SetStableExternalIp(v string) {
 	o.StableExternalIp.Set(&v)
 }
+// SetStableExternalIpNil sets the value for StableExternalIp to be an explicit nil
+func (o *PickledHandleField) SetStableExternalIpNil() {
+	o.StableExternalIp.Set(nil)
+}
 
-// GetStableSshPorts returns the StableSshPorts field value
+// UnsetStableExternalIp ensures that no value is present for StableExternalIp, not even an explicit nil
+func (o *PickledHandleField) UnsetStableExternalIp() {
+	o.StableExternalIp.Unset()
+}
+
+// GetStableSshPorts returns the StableSshPorts field value if set, zero value otherwise.
 func (o *PickledHandleField) GetStableSshPorts() []int32 {
-	if o == nil {
+	if o == nil || o.StableSshPorts == nil {
 		var ret []int32
 		return ret
 	}
-
-	return o.StableSshPorts
+	return *o.StableSshPorts
 }
 
-// GetStableSshPortsOk returns a tuple with the StableSshPorts field value
+// GetStableSshPortsOk returns a tuple with the StableSshPorts field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PickledHandleField) GetStableSshPortsOk() (*[]int32, bool) {
-	if o == nil  {
+	if o == nil || o.StableSshPorts == nil {
 		return nil, false
 	}
-	return &o.StableSshPorts, true
+	return o.StableSshPorts, true
 }
 
-// SetStableSshPorts sets field value
+// HasStableSshPorts returns a boolean if a field has been set.
+func (o *PickledHandleField) HasStableSshPorts() bool {
+	if o != nil && o.StableSshPorts != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStableSshPorts gets a reference to the given []int32 and assigns it to the StableSshPorts field.
 func (o *PickledHandleField) SetStableSshPorts(v []int32) {
-	o.StableSshPorts = v
+	o.StableSshPorts = &v
 }
 
-// GetSshUser returns the SshUser field value
-// If the value is explicit nil, the zero value for string will be returned
+// GetSshUser returns the SshUser field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *PickledHandleField) GetSshUser() string {
 	if o == nil || o.SshUser.Get() == nil {
 		var ret string
 		return ret
 	}
-
 	return *o.SshUser.Get()
 }
 
-// GetSshUserOk returns a tuple with the SshUser field value
+// GetSshUserOk returns a tuple with the SshUser field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *PickledHandleField) GetSshUserOk() (*string, bool) {
@@ -140,23 +174,41 @@ func (o *PickledHandleField) GetSshUserOk() (*string, bool) {
 	return o.SshUser.Get(), o.SshUser.IsSet()
 }
 
-// SetSshUser sets field value
+// HasSshUser returns a boolean if a field has been set.
+func (o *PickledHandleField) HasSshUser() bool {
+	if o != nil && o.SshUser.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetSshUser gets a reference to the given NullableString and assigns it to the SshUser field.
 func (o *PickledHandleField) SetSshUser(v string) {
 	o.SshUser.Set(&v)
+}
+// SetSshUserNil sets the value for SshUser to be an explicit nil
+func (o *PickledHandleField) SetSshUserNil() {
+	o.SshUser.Set(nil)
+}
+
+// UnsetSshUser ensures that no value is present for SshUser, not even an explicit nil
+func (o *PickledHandleField) UnsetSshUser() {
+	o.SshUser.Unset()
 }
 
 func (o PickledHandleField) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if true {
+	if o.StableInternalIp.IsSet() {
 		toSerialize["stable_internal_ip"] = o.StableInternalIp.Get()
 	}
-	if true {
+	if o.StableExternalIp.IsSet() {
 		toSerialize["stable_external_ip"] = o.StableExternalIp.Get()
 	}
-	if true {
+	if o.StableSshPorts != nil {
 		toSerialize["stable_ssh_ports"] = o.StableSshPorts
 	}
-	if true {
+	if o.SshUser.IsSet() {
 		toSerialize["ssh_user"] = o.SshUser.Get()
 	}
 	return json.Marshal(toSerialize)

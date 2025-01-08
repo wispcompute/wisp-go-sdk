@@ -29,8 +29,10 @@ docker run --rm \
   -i /local/scripts/openapi-schema.yml \
   -g go \
   -o $OUTPUT_DIR \
-  --additional-properties=packageName=wisp
-
+  --additional-properties=packageName=wisp \
+  --git-user-id=wispcompute \
+  --git-repo-id=wisp-go-sdk
+  
 if [ $? -ne 0 ]; then
     echo "Failed to generate Go SDK using Docker."
     exit 1

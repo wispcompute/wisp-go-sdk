@@ -78,10 +78,9 @@ func (o *JobGetResponse) GetLatestClusterLog() LatestClusterLog {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *JobGetResponse) GetLatestClusterLogOk() (*LatestClusterLog, bool) {
-	if o == nil {
+	if o == nil || o.LatestClusterLog == nil {
 		return nil, false
 	}
-	
 	return &o.LatestClusterLog, true
 }
 
@@ -95,9 +94,9 @@ func (o JobGetResponse) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["job"] = o.Job
 	}
-
-	toSerialize["latest_cluster_log"] = o.LatestClusterLog
-
+	if o.LatestClusterLog != nil {
+		toSerialize["latest_cluster_log"] = o.LatestClusterLog
+	}
 	return json.Marshal(toSerialize)
 }
 

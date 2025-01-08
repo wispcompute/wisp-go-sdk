@@ -365,7 +365,7 @@ func (o *Cluster) GetHandle() PickledHandleField {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Cluster) GetHandleOk() (*PickledHandleField, bool) {
-	if o == nil {
+	if o == nil || o.Handle == nil {
 		return nil, false
 	}
 	return &o.Handle, true
@@ -405,9 +405,9 @@ func (o Cluster) MarshalJSON() ([]byte, error) {
 	if o.ClusterHash.IsSet() {
 		toSerialize["cluster_hash"] = o.ClusterHash.Get()
 	}
-	
-	toSerialize["handle"] = o.Handle
-		
+	if o.Handle != nil {
+		toSerialize["handle"] = o.Handle
+	}
 	return json.Marshal(toSerialize)
 }
 

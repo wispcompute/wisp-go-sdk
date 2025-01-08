@@ -50,7 +50,7 @@ func (o *IO) GetInputs() Inputs {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *IO) GetInputsOk() (*Inputs, bool) {
-	if o == nil {
+	if o == nil || o.Inputs == nil {
 		return nil, false
 	}
 	return &o.Inputs, true
@@ -58,7 +58,7 @@ func (o *IO) GetInputsOk() (*Inputs, bool) {
 
 // HasInputs returns a boolean if a field has been set.
 func (o *IO) HasInputs() bool {
-	if o != nil {
+	if o != nil && o.Inputs != nil {
 		return true
 	}
 
@@ -83,7 +83,7 @@ func (o *IO) GetOutputs() Outputs {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *IO) GetOutputsOk() (*Outputs, bool) {
-	if o == nil {
+	if o == nil || o.Outputs == nil {
 		return nil, false
 	}
 	return &o.Outputs, true
@@ -91,7 +91,7 @@ func (o *IO) GetOutputsOk() (*Outputs, bool) {
 
 // HasOutputs returns a boolean if a field has been set.
 func (o *IO) HasOutputs() bool {
-	if o != nil {
+	if o != nil && o.Outputs != nil {
 		return true
 	}
 
@@ -105,10 +105,12 @@ func (o *IO) SetOutputs(v Outputs) {
 
 func (o IO) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-
-	toSerialize["inputs"] = o.Inputs
-	toSerialize["outputs"] = o.Outputs
-
+	if o.Inputs != nil {
+		toSerialize["inputs"] = o.Inputs
+	}
+	if o.Outputs != nil {
+		toSerialize["outputs"] = o.Outputs
+	}
 	return json.Marshal(toSerialize)
 }
 

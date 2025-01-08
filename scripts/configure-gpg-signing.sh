@@ -45,6 +45,8 @@ IFS="$OLD_IFS"
 # Compile JSON payload
 GITHUB_REST_API_JSON_PAYLOAD="{\"name\":\"GitHub GPG Key\",\"armored_public_key\":\"$GITHUB_REST_API_GPG_PAYLOAD\"}"
 
+echo $GITHUB_REST_API_JSON_PAYLOAD
+
 # Add GPG key to account associated with GITHUB_TOKEN (classic or PAT)
 curl -L --insecure \
   -X POST \

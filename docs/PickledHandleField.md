@@ -4,16 +4,16 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**StableInternalIp** | **NullableString** |  | 
-**StableExternalIp** | **NullableString** |  | 
-**StableSshPorts** | **[]int32** |  | 
-**SshUser** | **NullableString** |  | 
+**StableInternalIp** | Pointer to **NullableString** |  | [optional] 
+**StableExternalIp** | Pointer to **NullableString** |  | [optional] 
+**StableSshPorts** | Pointer to **[]int32** |  | [optional] 
+**SshUser** | Pointer to **NullableString** |  | [optional] 
 
 ## Methods
 
 ### NewPickledHandleField
 
-`func NewPickledHandleField(stableInternalIp NullableString, stableExternalIp NullableString, stableSshPorts []int32, sshUser NullableString, ) *PickledHandleField`
+`func NewPickledHandleField() *PickledHandleField`
 
 NewPickledHandleField instantiates a new PickledHandleField object
 This constructor will assign default values to properties that have it defined,
@@ -47,6 +47,11 @@ and a boolean to check if the value has been set.
 
 SetStableInternalIp sets StableInternalIp field to given value.
 
+### HasStableInternalIp
+
+`func (o *PickledHandleField) HasStableInternalIp() bool`
+
+HasStableInternalIp returns a boolean if a field has been set.
 
 ### SetStableInternalIpNil
 
@@ -77,6 +82,11 @@ and a boolean to check if the value has been set.
 
 SetStableExternalIp sets StableExternalIp field to given value.
 
+### HasStableExternalIp
+
+`func (o *PickledHandleField) HasStableExternalIp() bool`
+
+HasStableExternalIp returns a boolean if a field has been set.
 
 ### SetStableExternalIpNil
 
@@ -107,6 +117,11 @@ and a boolean to check if the value has been set.
 
 SetStableSshPorts sets StableSshPorts field to given value.
 
+### HasStableSshPorts
+
+`func (o *PickledHandleField) HasStableSshPorts() bool`
+
+HasStableSshPorts returns a boolean if a field has been set.
 
 ### GetSshUser
 
@@ -127,6 +142,11 @@ and a boolean to check if the value has been set.
 
 SetSshUser sets SshUser field to given value.
 
+### HasSshUser
+
+`func (o *PickledHandleField) HasSshUser() bool`
+
+HasSshUser returns a boolean if a field has been set.
 
 ### SetSshUserNil
 

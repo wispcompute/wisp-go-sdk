@@ -18,8 +18,8 @@ import (
 // Project Project serializer.
 type Project struct {
 	Name string `json:"name"`
-	ProjectId *string `json:"project_id,omitempty"`
-	Type *TypeEnum `json:"type,omitempty"`
+	ProjectId string `json:"project_id"`
+	Type string `json:"type"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -28,9 +28,11 @@ type Project struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProject(name string, createdAt time.Time, updatedAt time.Time) *Project {
+func NewProject(name string, projectId string, type_ string, createdAt time.Time, updatedAt time.Time) *Project {
 	this := Project{}
 	this.Name = name
+	this.ProjectId = projectId
+	this.Type = type_
 	this.CreatedAt = createdAt
 	this.UpdatedAt = updatedAt
 	return &this
@@ -68,68 +70,52 @@ func (o *Project) SetName(v string) {
 	o.Name = v
 }
 
-// GetProjectId returns the ProjectId field value if set, zero value otherwise.
+// GetProjectId returns the ProjectId field value
 func (o *Project) GetProjectId() string {
-	if o == nil || o.ProjectId == nil {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.ProjectId
+
+	return o.ProjectId
 }
 
-// GetProjectIdOk returns a tuple with the ProjectId field value if set, nil otherwise
+// GetProjectIdOk returns a tuple with the ProjectId field value
 // and a boolean to check if the value has been set.
 func (o *Project) GetProjectIdOk() (*string, bool) {
-	if o == nil || o.ProjectId == nil {
+	if o == nil  {
 		return nil, false
 	}
-	return o.ProjectId, true
+	return &o.ProjectId, true
 }
 
-// HasProjectId returns a boolean if a field has been set.
-func (o *Project) HasProjectId() bool {
-	if o != nil && o.ProjectId != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetProjectId gets a reference to the given string and assigns it to the ProjectId field.
+// SetProjectId sets field value
 func (o *Project) SetProjectId(v string) {
-	o.ProjectId = &v
+	o.ProjectId = v
 }
 
-// GetType returns the Type field value if set, zero value otherwise.
-func (o *Project) GetType() TypeEnum {
-	if o == nil || o.Type == nil {
-		var ret TypeEnum
+// GetType returns the Type field value
+func (o *Project) GetType() string {
+	if o == nil {
+		var ret string
 		return ret
 	}
-	return *o.Type
+
+	return o.Type
 }
 
-// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
-func (o *Project) GetTypeOk() (*TypeEnum, bool) {
-	if o == nil || o.Type == nil {
+func (o *Project) GetTypeOk() (*string, bool) {
+	if o == nil  {
 		return nil, false
 	}
-	return o.Type, true
+	return &o.Type, true
 }
 
-// HasType returns a boolean if a field has been set.
-func (o *Project) HasType() bool {
-	if o != nil && o.Type != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetType gets a reference to the given TypeEnum and assigns it to the Type field.
-func (o *Project) SetType(v TypeEnum) {
-	o.Type = &v
+// SetType sets field value
+func (o *Project) SetType(v string) {
+	o.Type = v
 }
 
 // GetCreatedAt returns the CreatedAt field value
@@ -185,10 +171,10 @@ func (o Project) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["name"] = o.Name
 	}
-	if o.ProjectId != nil {
+	if true {
 		toSerialize["project_id"] = o.ProjectId
 	}
-	if o.Type != nil {
+	if true {
 		toSerialize["type"] = o.Type
 	}
 	if true {

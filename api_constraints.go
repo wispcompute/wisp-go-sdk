@@ -163,7 +163,7 @@ func (r ApiConstraintsPartialUpdateRequest) PatchedConstrainPatchRequest(patched
 	return r
 }
 
-func (r ApiConstraintsPartialUpdateRequest) Execute() (ConstrainResponse, *_nethttp.Response, error) {
+func (r ApiConstraintsPartialUpdateRequest) Execute() (ConstrainRequest, *_nethttp.Response, error) {
 	return r.ApiService.ConstraintsPartialUpdateExecute(r)
 }
 
@@ -183,15 +183,15 @@ func (a *ConstraintsApiService) ConstraintsPartialUpdate(ctx _context.Context) A
 }
 
 // Execute executes the request
-//  @return ConstrainResponse
-func (a *ConstraintsApiService) ConstraintsPartialUpdateExecute(r ApiConstraintsPartialUpdateRequest) (ConstrainResponse, *_nethttp.Response, error) {
+//  @return ConstrainRequest
+func (a *ConstraintsApiService) ConstraintsPartialUpdateExecute(r ApiConstraintsPartialUpdateRequest) (ConstrainRequest, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPatch
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  ConstrainResponse
+		localVarReturnValue  ConstrainRequest
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConstraintsApiService.ConstraintsPartialUpdate")

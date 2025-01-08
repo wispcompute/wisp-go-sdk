@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **JobId** | Pointer to **string** |  | [optional] 
-**Config** | Pointer to **interface{}** |  | [optional] 
+**Config** | Pointer to [**ConstrainRequest**](ConstrainRequest.md) |  | [optional] 
 
 ## Methods
 
@@ -53,20 +53,20 @@ HasJobId returns a boolean if a field has been set.
 
 ### GetConfig
 
-`func (o *PatchedConstrainPatchRequest) GetConfig() interface{}`
+`func (o *PatchedConstrainPatchRequest) GetConfig() ConstrainRequest`
 
 GetConfig returns the Config field if non-nil, zero value otherwise.
 
 ### GetConfigOk
 
-`func (o *PatchedConstrainPatchRequest) GetConfigOk() (*interface{}, bool)`
+`func (o *PatchedConstrainPatchRequest) GetConfigOk() (*ConstrainRequest, bool)`
 
 GetConfigOk returns a tuple with the Config field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetConfig
 
-`func (o *PatchedConstrainPatchRequest) SetConfig(v interface{})`
+`func (o *PatchedConstrainPatchRequest) SetConfig(v ConstrainRequest)`
 
 SetConfig sets Config field to given value.
 
@@ -76,16 +76,6 @@ SetConfig sets Config field to given value.
 
 HasConfig returns a boolean if a field has been set.
 
-### SetConfigNil
-
-`func (o *PatchedConstrainPatchRequest) SetConfigNil(b bool)`
-
- SetConfigNil sets the value for Config to be an explicit nil
-
-### UnsetConfig
-`func (o *PatchedConstrainPatchRequest) UnsetConfig()`
-
-UnsetConfig ensures that no value is present for Config, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

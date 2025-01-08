@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Choice** | [**ClusterOffer**](ClusterOffer.md) |  | 
 **Config** | [**ConstrainRequest**](ConstrainRequest.md) |  | 
-**Project** | [**Project**](Project.md) |  | [readonly] 
+**Project** | [**Project**](Project.md) |  | 
 
 ## Methods
 
@@ -87,16 +87,6 @@ and a boolean to check if the value has been set.
 SetProject sets Project field to given value.
 
 
-### SetProjectNil
-
-`func (o *JobPostRequest) SetProjectNil(b bool)`
-
- SetProjectNil sets the value for Project to be an explicit nil
-
-### UnsetProject
-`func (o *JobPostRequest) UnsetProject()`
-
-UnsetProject ensures that no value is present for Project, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

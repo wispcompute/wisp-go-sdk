@@ -31,7 +31,7 @@ import (
 )
 
 func main() {
-    constrainRequest := *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), *openapiclient.NewIO()) // ConstrainRequest | 
+    constrainRequest := *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), *openapiclient.NewIO()) // ConstrainRequest | 
 
     configuration := openapiclient.NewConfiguration()
     api_client := openapiclient.NewAPIClient(configuration)
@@ -78,7 +78,7 @@ Name | Type | Description  | Notes
 
 ## ConstraintsPartialUpdate
 
-> ConstrainResponse ConstraintsPartialUpdate(ctx).PatchedConstrainPatchRequest(patchedConstrainPatchRequest).Execute()
+> ConstrainRequest ConstraintsPartialUpdate(ctx).PatchedConstrainPatchRequest(patchedConstrainPatchRequest).Execute()
 
 
 
@@ -106,7 +106,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `ConstraintsApi.ConstraintsPartialUpdate``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `ConstraintsPartialUpdate`: ConstrainResponse
+    // response from `ConstraintsPartialUpdate`: ConstrainRequest
     fmt.Fprintf(os.Stdout, "Response from `ConstraintsApi.ConstraintsPartialUpdate`: %v\n", resp)
 }
 ```
@@ -126,7 +126,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ConstrainResponse**](ConstrainResponse.md)
+[**ConstrainRequest**](ConstrainRequest.md)
 
 ### Authorization
 

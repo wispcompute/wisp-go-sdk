@@ -15,19 +15,21 @@ import (
 	"fmt"
 )
 
-// LatestClusterLogStatusEnum * `UPDATING` - UPDATING * `DONE` - DONE
+// LatestClusterLogStatusEnum * `UPDATING` - UPDATING * `DONE` - DONE * `CLUSTER_ERROR` - CLUSTER_ERROR
 type LatestClusterLogStatusEnum string
 
 // List of LatestClusterLogStatusEnum
 const (
 	UPDATING LatestClusterLogStatusEnum = "UPDATING"
 	DONE LatestClusterLogStatusEnum = "DONE"
+	CLUSTER_ERROR LatestClusterLogStatusEnum = "CLUSTER_ERROR"
 )
 
 // All allowed values of LatestClusterLogStatusEnum enum
 var AllowedLatestClusterLogStatusEnumEnumValues = []LatestClusterLogStatusEnum{
 	"UPDATING",
 	"DONE",
+	"CLUSTER_ERROR",
 }
 
 func (v *LatestClusterLogStatusEnum) UnmarshalJSON(src []byte) error {

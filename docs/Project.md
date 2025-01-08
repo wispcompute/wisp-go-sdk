@@ -5,16 +5,16 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Name** | **string** |  | 
-**ProjectId** | Pointer to **string** |  | [optional] 
-**Type** | Pointer to [**TypeEnum**](TypeEnum.md) |  | [optional] 
-**CreatedAt** | **time.Time** |  | [readonly] 
-**UpdatedAt** | **time.Time** |  | [readonly] 
+**ProjectId** | **string** |  | 
+**Type** | **string** |  | 
+**CreatedAt** | **time.Time** |  | 
+**UpdatedAt** | **time.Time** |  | 
 
 ## Methods
 
 ### NewProject
 
-`func NewProject(name string, createdAt time.Time, updatedAt time.Time, ) *Project`
+`func NewProject(name string, projectId string, type_ string, createdAt time.Time, updatedAt time.Time, ) *Project`
 
 NewProject instantiates a new Project object
 This constructor will assign default values to properties that have it defined,
@@ -68,36 +68,26 @@ and a boolean to check if the value has been set.
 
 SetProjectId sets ProjectId field to given value.
 
-### HasProjectId
-
-`func (o *Project) HasProjectId() bool`
-
-HasProjectId returns a boolean if a field has been set.
 
 ### GetType
 
-`func (o *Project) GetType() TypeEnum`
+`func (o *Project) GetType() string`
 
 GetType returns the Type field if non-nil, zero value otherwise.
 
 ### GetTypeOk
 
-`func (o *Project) GetTypeOk() (*TypeEnum, bool)`
+`func (o *Project) GetTypeOk() (*string, bool)`
 
 GetTypeOk returns a tuple with the Type field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetType
 
-`func (o *Project) SetType(v TypeEnum)`
+`func (o *Project) SetType(v string)`
 
 SetType sets Type field to given value.
 
-### HasType
-
-`func (o *Project) HasType() bool`
-
-HasType returns a boolean if a field has been set.
 
 ### GetCreatedAt
 

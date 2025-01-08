@@ -295,7 +295,7 @@ func (o *Job) GetCluster() Cluster {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Job) GetClusterOk() (*Cluster, bool) {
-	if o == nil {
+	if o == nil || o.Cluster == nil {
 		return nil, false
 	}
 	return &o.Cluster, true
@@ -332,9 +332,9 @@ func (o Job) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["logs"] = o.Logs
 	}
-	
-	toSerialize["cluster"] = o.Cluster
-
+	if o.Cluster != nil {
+		toSerialize["cluster"] = o.Cluster
+	}
 	return json.Marshal(toSerialize)
 }
 

@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 .travis.yml
 README.md
 api/openapi.yaml
@@ -37,7 +36,6 @@ docs/ProjectsApi.md
 docs/ProjectsGetResponse.md
 docs/Resources.md
 docs/Script.md
-docs/TypeEnum.md
 docs/UserPublicKeyRequest.md
 docs/UserPublicKeyResponse.md
 docs/UserResponse.md
@@ -68,7 +66,6 @@ model_project_create_request.go
 model_projects_get_response.go
 model_resources.go
 model_script.go
-model_type_enum.go
 model_user_public_key_request.go
 model_user_public_key_response.go
 model_user_response.go

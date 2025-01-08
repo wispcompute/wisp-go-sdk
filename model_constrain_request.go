@@ -59,7 +59,7 @@ func (o *ConstrainRequest) GetProject() Project {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ConstrainRequest) GetProjectOk() (*Project, bool) {
-	if o == nil {
+	if o == nil || o.Project == nil {
 		return nil, false
 	}
 	return &o.Project, true
@@ -83,7 +83,7 @@ func (o *ConstrainRequest) GetSetup() Script {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ConstrainRequest) GetSetupOk() (*Script, bool) {
-	if o == nil {
+	if o == nil || o.Setup == nil {
 		return nil, false
 	}
 	return &o.Setup, true
@@ -91,7 +91,7 @@ func (o *ConstrainRequest) GetSetupOk() (*Script, bool) {
 
 // HasSetup returns a boolean if a field has been set.
 func (o *ConstrainRequest) HasSetup() bool {
-	if o != nil {
+	if o != nil && o.Setup != nil {
 		return true
 	}
 
@@ -116,7 +116,7 @@ func (o *ConstrainRequest) GetRun() Script {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ConstrainRequest) GetRunOk() (*Script, bool) {
-	if o == nil {
+	if o == nil || o.Run == nil {
 		return nil, false
 	}
 	return &o.Run, true
@@ -124,7 +124,7 @@ func (o *ConstrainRequest) GetRunOk() (*Script, bool) {
 
 // HasRun returns a boolean if a field has been set.
 func (o *ConstrainRequest) HasRun() bool {
-	if o != nil {
+	if o != nil && o.Run != nil {
 		return true
 	}
 
@@ -149,7 +149,7 @@ func (o *ConstrainRequest) GetTeardown() Script {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ConstrainRequest) GetTeardownOk() (*Script, bool) {
-	if o == nil {
+	if o == nil || o.Teardown == nil {
 		return nil, false
 	}
 	return &o.Teardown, true
@@ -157,7 +157,7 @@ func (o *ConstrainRequest) GetTeardownOk() (*Script, bool) {
 
 // HasTeardown returns a boolean if a field has been set.
 func (o *ConstrainRequest) HasTeardown() bool {
-	if o != nil {
+	if o != nil && o.Teardown != nil {
 		return true
 	}
 
@@ -208,7 +208,7 @@ func (o *ConstrainRequest) GetIo() IO {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ConstrainRequest) GetIoOk() (*IO, bool) {
-	if o == nil {
+	if o == nil || o.Io == nil {
 		return nil, false
 	}
 	return &o.Io, true
@@ -221,14 +221,24 @@ func (o *ConstrainRequest) SetIo(v IO) {
 
 func (o ConstrainRequest) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	
-	toSerialize["project"] = o.Project
-	toSerialize["setup"] = o.Setup
-	toSerialize["run"] = o.Run
-	toSerialize["teardown"] = o.Teardown
-	toSerialize["resources"] = o.Resources
-	toSerialize["io"] = o.Io
-	
+	if o.Project != nil {
+		toSerialize["project"] = o.Project
+	}
+	if o.Setup != nil {
+		toSerialize["setup"] = o.Setup
+	}
+	if o.Run != nil {
+		toSerialize["run"] = o.Run
+	}
+	if o.Teardown != nil {
+		toSerialize["teardown"] = o.Teardown
+	}
+	if true {
+		toSerialize["resources"] = o.Resources
+	}
+	if o.Io != nil {
+		toSerialize["io"] = o.Io
+	}
 	return json.Marshal(toSerialize)
 }
 

@@ -90,7 +90,6 @@ func (o *JobPostRequest) SetConfig(v ConstrainRequest) {
 }
 
 // GetProject returns the Project field value
-// If the value is explicit nil, the zero value for Project will be returned
 func (o *JobPostRequest) GetProject() Project {
 	if o == nil {
 		var ret Project
@@ -102,9 +101,8 @@ func (o *JobPostRequest) GetProject() Project {
 
 // GetProjectOk returns a tuple with the Project field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *JobPostRequest) GetProjectOk() (*Project, bool) {
-	if o == nil {
+	if o == nil  {
 		return nil, false
 	}
 	return &o.Project, true
@@ -123,9 +121,9 @@ func (o JobPostRequest) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["config"] = o.Config
 	}
-
-	toSerialize["project"] = o.Project
-	
+	if true {
+		toSerialize["project"] = o.Project
+	}
 	return json.Marshal(toSerialize)
 }
 
