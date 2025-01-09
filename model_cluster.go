@@ -12,7 +12,12 @@ package wisp
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
+
+// checks if the Cluster type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Cluster{}
 
 // Cluster Cluster serializer.
 type Cluster struct {
@@ -25,14 +30,16 @@ type Cluster struct {
 	Metadata *string `json:"metadata,omitempty"`
 	ToDown *bool `json:"to_down,omitempty"`
 	ClusterHash NullableString `json:"cluster_hash,omitempty"`
-	Handle PickledHandleField `json:"handle"`
+	Handle NullablePickledHandleField `json:"handle"`
 }
+
+type _Cluster Cluster
 
 // NewCluster instantiates a new Cluster object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCluster(user int32, name string, handle PickledHandleField) *Cluster {
+func NewCluster(user int32, name string, handle NullablePickledHandleField) *Cluster {
 	this := Cluster{}
 	this.User = user
 	this.Name = name
@@ -61,7 +68,7 @@ func (o *Cluster) GetUser() int32 {
 // GetUserOk returns a tuple with the User field value
 // and a boolean to check if the value has been set.
 func (o *Cluster) GetUserOk() (*int32, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.User, true
@@ -85,7 +92,7 @@ func (o *Cluster) GetName() string {
 // GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
 func (o *Cluster) GetNameOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Name, true
@@ -98,7 +105,7 @@ func (o *Cluster) SetName(v string) {
 
 // GetLaunchedAt returns the LaunchedAt field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Cluster) GetLaunchedAt() int64 {
-	if o == nil || o.LaunchedAt.Get() == nil {
+	if o == nil || IsNil(o.LaunchedAt.Get()) {
 		var ret int64
 		return ret
 	}
@@ -109,7 +116,7 @@ func (o *Cluster) GetLaunchedAt() int64 {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Cluster) GetLaunchedAtOk() (*int64, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.LaunchedAt.Get(), o.LaunchedAt.IsSet()
@@ -140,7 +147,7 @@ func (o *Cluster) UnsetLaunchedAt() {
 
 // GetLastUse returns the LastUse field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Cluster) GetLastUse() string {
-	if o == nil || o.LastUse.Get() == nil {
+	if o == nil || IsNil(o.LastUse.Get()) {
 		var ret string
 		return ret
 	}
@@ -151,7 +158,7 @@ func (o *Cluster) GetLastUse() string {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Cluster) GetLastUseOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.LastUse.Get(), o.LastUse.IsSet()
@@ -182,7 +189,7 @@ func (o *Cluster) UnsetLastUse() {
 
 // GetStatus returns the Status field value if set, zero value otherwise.
 func (o *Cluster) GetStatus() ClusterStatusEnum {
-	if o == nil || o.Status == nil {
+	if o == nil || IsNil(o.Status) {
 		var ret ClusterStatusEnum
 		return ret
 	}
@@ -192,7 +199,7 @@ func (o *Cluster) GetStatus() ClusterStatusEnum {
 // GetStatusOk returns a tuple with the Status field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Cluster) GetStatusOk() (*ClusterStatusEnum, bool) {
-	if o == nil || o.Status == nil {
+	if o == nil || IsNil(o.Status) {
 		return nil, false
 	}
 	return o.Status, true
@@ -200,7 +207,7 @@ func (o *Cluster) GetStatusOk() (*ClusterStatusEnum, bool) {
 
 // HasStatus returns a boolean if a field has been set.
 func (o *Cluster) HasStatus() bool {
-	if o != nil && o.Status != nil {
+	if o != nil && !IsNil(o.Status) {
 		return true
 	}
 
@@ -214,7 +221,7 @@ func (o *Cluster) SetStatus(v ClusterStatusEnum) {
 
 // GetAutostop returns the Autostop field value if set, zero value otherwise.
 func (o *Cluster) GetAutostop() int64 {
-	if o == nil || o.Autostop == nil {
+	if o == nil || IsNil(o.Autostop) {
 		var ret int64
 		return ret
 	}
@@ -224,7 +231,7 @@ func (o *Cluster) GetAutostop() int64 {
 // GetAutostopOk returns a tuple with the Autostop field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Cluster) GetAutostopOk() (*int64, bool) {
-	if o == nil || o.Autostop == nil {
+	if o == nil || IsNil(o.Autostop) {
 		return nil, false
 	}
 	return o.Autostop, true
@@ -232,7 +239,7 @@ func (o *Cluster) GetAutostopOk() (*int64, bool) {
 
 // HasAutostop returns a boolean if a field has been set.
 func (o *Cluster) HasAutostop() bool {
-	if o != nil && o.Autostop != nil {
+	if o != nil && !IsNil(o.Autostop) {
 		return true
 	}
 
@@ -246,7 +253,7 @@ func (o *Cluster) SetAutostop(v int64) {
 
 // GetMetadata returns the Metadata field value if set, zero value otherwise.
 func (o *Cluster) GetMetadata() string {
-	if o == nil || o.Metadata == nil {
+	if o == nil || IsNil(o.Metadata) {
 		var ret string
 		return ret
 	}
@@ -256,7 +263,7 @@ func (o *Cluster) GetMetadata() string {
 // GetMetadataOk returns a tuple with the Metadata field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Cluster) GetMetadataOk() (*string, bool) {
-	if o == nil || o.Metadata == nil {
+	if o == nil || IsNil(o.Metadata) {
 		return nil, false
 	}
 	return o.Metadata, true
@@ -264,7 +271,7 @@ func (o *Cluster) GetMetadataOk() (*string, bool) {
 
 // HasMetadata returns a boolean if a field has been set.
 func (o *Cluster) HasMetadata() bool {
-	if o != nil && o.Metadata != nil {
+	if o != nil && !IsNil(o.Metadata) {
 		return true
 	}
 
@@ -278,7 +285,7 @@ func (o *Cluster) SetMetadata(v string) {
 
 // GetToDown returns the ToDown field value if set, zero value otherwise.
 func (o *Cluster) GetToDown() bool {
-	if o == nil || o.ToDown == nil {
+	if o == nil || IsNil(o.ToDown) {
 		var ret bool
 		return ret
 	}
@@ -288,7 +295,7 @@ func (o *Cluster) GetToDown() bool {
 // GetToDownOk returns a tuple with the ToDown field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Cluster) GetToDownOk() (*bool, bool) {
-	if o == nil || o.ToDown == nil {
+	if o == nil || IsNil(o.ToDown) {
 		return nil, false
 	}
 	return o.ToDown, true
@@ -296,7 +303,7 @@ func (o *Cluster) GetToDownOk() (*bool, bool) {
 
 // HasToDown returns a boolean if a field has been set.
 func (o *Cluster) HasToDown() bool {
-	if o != nil && o.ToDown != nil {
+	if o != nil && !IsNil(o.ToDown) {
 		return true
 	}
 
@@ -310,7 +317,7 @@ func (o *Cluster) SetToDown(v bool) {
 
 // GetClusterHash returns the ClusterHash field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Cluster) GetClusterHash() string {
-	if o == nil || o.ClusterHash.Get() == nil {
+	if o == nil || IsNil(o.ClusterHash.Get()) {
 		var ret string
 		return ret
 	}
@@ -321,7 +328,7 @@ func (o *Cluster) GetClusterHash() string {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Cluster) GetClusterHashOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.ClusterHash.Get(), o.ClusterHash.IsSet()
@@ -353,62 +360,103 @@ func (o *Cluster) UnsetClusterHash() {
 // GetHandle returns the Handle field value
 // If the value is explicit nil, the zero value for PickledHandleField will be returned
 func (o *Cluster) GetHandle() PickledHandleField {
-	if o == nil {
+	if o == nil || o.Handle.Get() == nil {
 		var ret PickledHandleField
 		return ret
 	}
 
-	return o.Handle
+	return *o.Handle.Get()
 }
 
 // GetHandleOk returns a tuple with the Handle field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Cluster) GetHandleOk() (*PickledHandleField, bool) {
-	if o == nil || o.Handle == nil {
+	if o == nil {
 		return nil, false
 	}
-	return &o.Handle, true
+	return o.Handle.Get(), o.Handle.IsSet()
 }
 
 // SetHandle sets field value
 func (o *Cluster) SetHandle(v PickledHandleField) {
-	o.Handle = v
+	o.Handle.Set(&v)
 }
 
 func (o Cluster) MarshalJSON() ([]byte, error) {
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
+	}
+	return json.Marshal(toSerialize)
+}
+
+func (o Cluster) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["user"] = o.User
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
+	toSerialize["user"] = o.User
+	toSerialize["name"] = o.Name
 	if o.LaunchedAt.IsSet() {
 		toSerialize["launched_at"] = o.LaunchedAt.Get()
 	}
 	if o.LastUse.IsSet() {
 		toSerialize["last_use"] = o.LastUse.Get()
 	}
-	if o.Status != nil {
+	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status
 	}
-	if o.Autostop != nil {
+	if !IsNil(o.Autostop) {
 		toSerialize["autostop"] = o.Autostop
 	}
-	if o.Metadata != nil {
+	if !IsNil(o.Metadata) {
 		toSerialize["metadata"] = o.Metadata
 	}
-	if o.ToDown != nil {
+	if !IsNil(o.ToDown) {
 		toSerialize["to_down"] = o.ToDown
 	}
 	if o.ClusterHash.IsSet() {
 		toSerialize["cluster_hash"] = o.ClusterHash.Get()
 	}
-	if o.Handle != nil {
-		toSerialize["handle"] = o.Handle
+	toSerialize["handle"] = o.Handle.Get()
+	return toSerialize, nil
+}
+
+func (o *Cluster) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"user",
+		"name",
+		"handle",
 	}
-	return json.Marshal(toSerialize)
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCluster := _Cluster{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCluster)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Cluster(varCluster)
+
+	return err
 }
 
 type NullableCluster struct {

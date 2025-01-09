@@ -5,17 +5,17 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Project** | [**Project**](Project.md) |  | [readonly] 
-**Setup** | Pointer to [**Script**](Script.md) |  | [optional] 
-**Run** | Pointer to [**Script**](Script.md) |  | [optional] 
-**Teardown** | Pointer to [**Script**](Script.md) |  | [optional] 
+**Setup** | Pointer to [**NullableScript**](Script.md) |  | [optional] 
+**Run** | Pointer to [**NullableScript**](Script.md) |  | [optional] 
+**Teardown** | Pointer to [**NullableScript**](Script.md) |  | [optional] 
 **Resources** | [**Resources**](Resources.md) |  | 
-**Io** | [**IO**](IO.md) |  | 
+**Io** | [**NullableIO**](IO.md) |  | 
 
 ## Methods
 
 ### NewConstrainRequest
 
-`func NewConstrainRequest(project Project, resources Resources, io IO, ) *ConstrainRequest`
+`func NewConstrainRequest(project Project, resources Resources, io NullableIO, ) *ConstrainRequest`
 
 NewConstrainRequest instantiates a new ConstrainRequest object
 This constructor will assign default values to properties that have it defined,
@@ -50,16 +50,6 @@ and a boolean to check if the value has been set.
 SetProject sets Project field to given value.
 
 
-### SetProjectNil
-
-`func (o *ConstrainRequest) SetProjectNil(b bool)`
-
- SetProjectNil sets the value for Project to be an explicit nil
-
-### UnsetProject
-`func (o *ConstrainRequest) UnsetProject()`
-
-UnsetProject ensures that no value is present for Project, not even an explicit nil
 ### GetSetup
 
 `func (o *ConstrainRequest) GetSetup() Script`

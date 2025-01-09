@@ -12,13 +12,20 @@ package wisp
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
+
+// checks if the DownloadResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &DownloadResponse{}
 
 // DownloadResponse Download response serializer.
 type DownloadResponse struct {
 	Url string `json:"url"`
 	Binary string `json:"binary"`
 }
+
+type _DownloadResponse DownloadResponse
 
 // NewDownloadResponse instantiates a new DownloadResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -52,7 +59,7 @@ func (o *DownloadResponse) GetUrl() string {
 // GetUrlOk returns a tuple with the Url field value
 // and a boolean to check if the value has been set.
 func (o *DownloadResponse) GetUrlOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Url, true
@@ -76,7 +83,7 @@ func (o *DownloadResponse) GetBinary() string {
 // GetBinaryOk returns a tuple with the Binary field value
 // and a boolean to check if the value has been set.
 func (o *DownloadResponse) GetBinaryOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Binary, true
@@ -88,14 +95,56 @@ func (o *DownloadResponse) SetBinary(v string) {
 }
 
 func (o DownloadResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["url"] = o.Url
-	}
-	if true {
-		toSerialize["binary"] = o.Binary
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o DownloadResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["url"] = o.Url
+	toSerialize["binary"] = o.Binary
+	return toSerialize, nil
+}
+
+func (o *DownloadResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"url",
+		"binary",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varDownloadResponse := _DownloadResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varDownloadResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = DownloadResponse(varDownloadResponse)
+
+	return err
 }
 
 type NullableDownloadResponse struct {

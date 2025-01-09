@@ -12,23 +12,19 @@ package wisp
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io"
+	"net/http"
+	"net/url"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
-// DownloadApiService DownloadApi service
-type DownloadApiService service
+// DownloadAPIService DownloadAPI service
+type DownloadAPIService service
 
 type ApiDownloadRetrieveRequest struct {
-	ctx _context.Context
-	ApiService *DownloadApiService
+	ctx context.Context
+	ApiService *DownloadAPIService
 	name *string
 }
 
@@ -38,7 +34,7 @@ func (r ApiDownloadRetrieveRequest) Name(name string) ApiDownloadRetrieveRequest
 	return r
 }
 
-func (r ApiDownloadRetrieveRequest) Execute() (DownloadResponse, *_nethttp.Response, error) {
+func (r ApiDownloadRetrieveRequest) Execute() (*DownloadResponse, *http.Response, error) {
 	return r.ApiService.DownloadRetrieveExecute(r)
 }
 
@@ -53,10 +49,10 @@ Args:
 Returns:
     Response: Contains either the signed URL or an error message.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiDownloadRetrieveRequest
 */
-func (a *DownloadApiService) DownloadRetrieve(ctx _context.Context) ApiDownloadRetrieveRequest {
+func (a *DownloadAPIService) DownloadRetrieve(ctx context.Context) ApiDownloadRetrieveRequest {
 	return ApiDownloadRetrieveRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -65,31 +61,29 @@ func (a *DownloadApiService) DownloadRetrieve(ctx _context.Context) ApiDownloadR
 
 // Execute executes the request
 //  @return DownloadResponse
-func (a *DownloadApiService) DownloadRetrieveExecute(r ApiDownloadRetrieveRequest) (DownloadResponse, *_nethttp.Response, error) {
+func (a *DownloadAPIService) DownloadRetrieveExecute(r ApiDownloadRetrieveRequest) (*DownloadResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  DownloadResponse
+		formFiles            []formFile
+		localVarReturnValue  *DownloadResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DownloadApiService.DownloadRetrieve")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DownloadAPIService.DownloadRetrieve")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/api/download/"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.name == nil {
 		return localVarReturnValue, nil, reportError("name is required and must be specified")
 	}
 
-	localVarQueryParams.Add("name", parameterToString(*r.name, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "name", r.name, "form", "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -121,7 +115,7 @@ func (a *DownloadApiService) DownloadRetrieveExecute(r ApiDownloadRetrieveReques
 			}
 		}
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -131,15 +125,15 @@ func (a *DownloadApiService) DownloadRetrieveExecute(r ApiDownloadRetrieveReques
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -148,7 +142,7 @@ func (a *DownloadApiService) DownloadRetrieveExecute(r ApiDownloadRetrieveReques
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}

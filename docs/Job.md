@@ -12,13 +12,13 @@ Name | Type | Description | Notes
 **StartedAt** | Pointer to **NullableTime** |  | [optional] 
 **FinishedAt** | Pointer to **NullableTime** |  | [optional] 
 **Logs** | **string** |  | 
-**Cluster** | [**Cluster**](Cluster.md) |  | 
+**Cluster** | [**NullableCluster**](Cluster.md) |  | 
 
 ## Methods
 
 ### NewJob
 
-`func NewJob(name string, jobId string, configuration string, createdAt time.Time, updatedAt time.Time, logs string, cluster Cluster, ) *Job`
+`func NewJob(name string, jobId string, configuration string, createdAt time.Time, updatedAt time.Time, logs string, cluster NullableCluster, ) *Job`
 
 NewJob instantiates a new Job object
 This constructor will assign default values to properties that have it defined,

@@ -13,7 +13,12 @@ package wisp
 import (
 	"encoding/json"
 	"time"
+	"bytes"
+	"fmt"
 )
+
+// checks if the Job type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Job{}
 
 // Job Job serializer.
 type Job struct {
@@ -25,14 +30,16 @@ type Job struct {
 	StartedAt NullableTime `json:"started_at,omitempty"`
 	FinishedAt NullableTime `json:"finished_at,omitempty"`
 	Logs string `json:"logs"`
-	Cluster Cluster `json:"cluster"`
+	Cluster NullableCluster `json:"cluster"`
 }
+
+type _Job Job
 
 // NewJob instantiates a new Job object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewJob(name string, jobId string, configuration string, createdAt time.Time, updatedAt time.Time, logs string, cluster Cluster) *Job {
+func NewJob(name string, jobId string, configuration string, createdAt time.Time, updatedAt time.Time, logs string, cluster NullableCluster) *Job {
 	this := Job{}
 	this.Name = name
 	this.JobId = jobId
@@ -65,7 +72,7 @@ func (o *Job) GetName() string {
 // GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
 func (o *Job) GetNameOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Name, true
@@ -89,7 +96,7 @@ func (o *Job) GetJobId() string {
 // GetJobIdOk returns a tuple with the JobId field value
 // and a boolean to check if the value has been set.
 func (o *Job) GetJobIdOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.JobId, true
@@ -113,7 +120,7 @@ func (o *Job) GetConfiguration() string {
 // GetConfigurationOk returns a tuple with the Configuration field value
 // and a boolean to check if the value has been set.
 func (o *Job) GetConfigurationOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Configuration, true
@@ -137,7 +144,7 @@ func (o *Job) GetCreatedAt() time.Time {
 // GetCreatedAtOk returns a tuple with the CreatedAt field value
 // and a boolean to check if the value has been set.
 func (o *Job) GetCreatedAtOk() (*time.Time, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.CreatedAt, true
@@ -161,7 +168,7 @@ func (o *Job) GetUpdatedAt() time.Time {
 // GetUpdatedAtOk returns a tuple with the UpdatedAt field value
 // and a boolean to check if the value has been set.
 func (o *Job) GetUpdatedAtOk() (*time.Time, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.UpdatedAt, true
@@ -174,7 +181,7 @@ func (o *Job) SetUpdatedAt(v time.Time) {
 
 // GetStartedAt returns the StartedAt field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Job) GetStartedAt() time.Time {
-	if o == nil || o.StartedAt.Get() == nil {
+	if o == nil || IsNil(o.StartedAt.Get()) {
 		var ret time.Time
 		return ret
 	}
@@ -185,7 +192,7 @@ func (o *Job) GetStartedAt() time.Time {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Job) GetStartedAtOk() (*time.Time, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.StartedAt.Get(), o.StartedAt.IsSet()
@@ -216,7 +223,7 @@ func (o *Job) UnsetStartedAt() {
 
 // GetFinishedAt returns the FinishedAt field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Job) GetFinishedAt() time.Time {
-	if o == nil || o.FinishedAt.Get() == nil {
+	if o == nil || IsNil(o.FinishedAt.Get()) {
 		var ret time.Time
 		return ret
 	}
@@ -227,7 +234,7 @@ func (o *Job) GetFinishedAt() time.Time {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Job) GetFinishedAtOk() (*time.Time, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.FinishedAt.Get(), o.FinishedAt.IsSet()
@@ -269,7 +276,7 @@ func (o *Job) GetLogs() string {
 // GetLogsOk returns a tuple with the Logs field value
 // and a boolean to check if the value has been set.
 func (o *Job) GetLogsOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Logs, true
@@ -283,59 +290,96 @@ func (o *Job) SetLogs(v string) {
 // GetCluster returns the Cluster field value
 // If the value is explicit nil, the zero value for Cluster will be returned
 func (o *Job) GetCluster() Cluster {
-	if o == nil {
+	if o == nil || o.Cluster.Get() == nil {
 		var ret Cluster
 		return ret
 	}
 
-	return o.Cluster
+	return *o.Cluster.Get()
 }
 
 // GetClusterOk returns a tuple with the Cluster field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Job) GetClusterOk() (*Cluster, bool) {
-	if o == nil || o.Cluster == nil {
+	if o == nil {
 		return nil, false
 	}
-	return &o.Cluster, true
+	return o.Cluster.Get(), o.Cluster.IsSet()
 }
 
 // SetCluster sets field value
 func (o *Job) SetCluster(v Cluster) {
-	o.Cluster = v
+	o.Cluster.Set(&v)
 }
 
 func (o Job) MarshalJSON() ([]byte, error) {
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
+	}
+	return json.Marshal(toSerialize)
+}
+
+func (o Job) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["job_id"] = o.JobId
-	}
-	if true {
-		toSerialize["configuration"] = o.Configuration
-	}
-	if true {
-		toSerialize["created_at"] = o.CreatedAt
-	}
-	if true {
-		toSerialize["updated_at"] = o.UpdatedAt
-	}
+	toSerialize["name"] = o.Name
+	toSerialize["job_id"] = o.JobId
+	toSerialize["configuration"] = o.Configuration
+	toSerialize["created_at"] = o.CreatedAt
+	toSerialize["updated_at"] = o.UpdatedAt
 	if o.StartedAt.IsSet() {
 		toSerialize["started_at"] = o.StartedAt.Get()
 	}
 	if o.FinishedAt.IsSet() {
 		toSerialize["finished_at"] = o.FinishedAt.Get()
 	}
-	if true {
-		toSerialize["logs"] = o.Logs
+	toSerialize["logs"] = o.Logs
+	toSerialize["cluster"] = o.Cluster.Get()
+	return toSerialize, nil
+}
+
+func (o *Job) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+		"job_id",
+		"configuration",
+		"created_at",
+		"updated_at",
+		"logs",
+		"cluster",
 	}
-	if o.Cluster != nil {
-		toSerialize["cluster"] = o.Cluster
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
 	}
-	return json.Marshal(toSerialize)
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varJob := _Job{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varJob)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Job(varJob)
+
+	return err
 }
 
 type NullableJob struct {

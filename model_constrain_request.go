@@ -12,23 +12,30 @@ package wisp
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
+
+// checks if the ConstrainRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ConstrainRequest{}
 
 // ConstrainRequest Configuration serializer for cluster constraints.  Validates the full configuration schema including project details, scripts, resource requirements, and IO specifications.
 type ConstrainRequest struct {
 	Project Project `json:"project"`
-	Setup Script `json:"setup,omitempty"`
-	Run Script `json:"run,omitempty"`
-	Teardown Script `json:"teardown,omitempty"`
+	Setup NullableScript `json:"setup,omitempty"`
+	Run NullableScript `json:"run,omitempty"`
+	Teardown NullableScript `json:"teardown,omitempty"`
 	Resources Resources `json:"resources"`
-	Io IO `json:"io"`
+	Io NullableIO `json:"io"`
 }
+
+type _ConstrainRequest ConstrainRequest
 
 // NewConstrainRequest instantiates a new ConstrainRequest object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewConstrainRequest(project Project, resources Resources, io IO) *ConstrainRequest {
+func NewConstrainRequest(project Project, resources Resources, io NullableIO) *ConstrainRequest {
 	this := ConstrainRequest{}
 	this.Project = project
 	this.Resources = resources
@@ -45,7 +52,6 @@ func NewConstrainRequestWithDefaults() *ConstrainRequest {
 }
 
 // GetProject returns the Project field value
-// If the value is explicit nil, the zero value for Project will be returned
 func (o *ConstrainRequest) GetProject() Project {
 	if o == nil {
 		var ret Project
@@ -57,9 +63,8 @@ func (o *ConstrainRequest) GetProject() Project {
 
 // GetProjectOk returns a tuple with the Project field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ConstrainRequest) GetProjectOk() (*Project, bool) {
-	if o == nil || o.Project == nil {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Project, true
@@ -72,101 +77,128 @@ func (o *ConstrainRequest) SetProject(v Project) {
 
 // GetSetup returns the Setup field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ConstrainRequest) GetSetup() Script {
-	if o == nil  {
+	if o == nil || IsNil(o.Setup.Get()) {
 		var ret Script
 		return ret
 	}
-	return o.Setup
+	return *o.Setup.Get()
 }
 
 // GetSetupOk returns a tuple with the Setup field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ConstrainRequest) GetSetupOk() (*Script, bool) {
-	if o == nil || o.Setup == nil {
+	if o == nil {
 		return nil, false
 	}
-	return &o.Setup, true
+	return o.Setup.Get(), o.Setup.IsSet()
 }
 
 // HasSetup returns a boolean if a field has been set.
 func (o *ConstrainRequest) HasSetup() bool {
-	if o != nil && o.Setup != nil {
+	if o != nil && o.Setup.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetSetup gets a reference to the given Script and assigns it to the Setup field.
+// SetSetup gets a reference to the given NullableScript and assigns it to the Setup field.
 func (o *ConstrainRequest) SetSetup(v Script) {
-	o.Setup = v
+	o.Setup.Set(&v)
+}
+// SetSetupNil sets the value for Setup to be an explicit nil
+func (o *ConstrainRequest) SetSetupNil() {
+	o.Setup.Set(nil)
+}
+
+// UnsetSetup ensures that no value is present for Setup, not even an explicit nil
+func (o *ConstrainRequest) UnsetSetup() {
+	o.Setup.Unset()
 }
 
 // GetRun returns the Run field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ConstrainRequest) GetRun() Script {
-	if o == nil  {
+	if o == nil || IsNil(o.Run.Get()) {
 		var ret Script
 		return ret
 	}
-	return o.Run
+	return *o.Run.Get()
 }
 
 // GetRunOk returns a tuple with the Run field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ConstrainRequest) GetRunOk() (*Script, bool) {
-	if o == nil || o.Run == nil {
+	if o == nil {
 		return nil, false
 	}
-	return &o.Run, true
+	return o.Run.Get(), o.Run.IsSet()
 }
 
 // HasRun returns a boolean if a field has been set.
 func (o *ConstrainRequest) HasRun() bool {
-	if o != nil && o.Run != nil {
+	if o != nil && o.Run.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetRun gets a reference to the given Script and assigns it to the Run field.
+// SetRun gets a reference to the given NullableScript and assigns it to the Run field.
 func (o *ConstrainRequest) SetRun(v Script) {
-	o.Run = v
+	o.Run.Set(&v)
+}
+// SetRunNil sets the value for Run to be an explicit nil
+func (o *ConstrainRequest) SetRunNil() {
+	o.Run.Set(nil)
+}
+
+// UnsetRun ensures that no value is present for Run, not even an explicit nil
+func (o *ConstrainRequest) UnsetRun() {
+	o.Run.Unset()
 }
 
 // GetTeardown returns the Teardown field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ConstrainRequest) GetTeardown() Script {
-	if o == nil  {
+	if o == nil || IsNil(o.Teardown.Get()) {
 		var ret Script
 		return ret
 	}
-	return o.Teardown
+	return *o.Teardown.Get()
 }
 
 // GetTeardownOk returns a tuple with the Teardown field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ConstrainRequest) GetTeardownOk() (*Script, bool) {
-	if o == nil || o.Teardown == nil {
+	if o == nil {
 		return nil, false
 	}
-	return &o.Teardown, true
+	return o.Teardown.Get(), o.Teardown.IsSet()
 }
 
 // HasTeardown returns a boolean if a field has been set.
 func (o *ConstrainRequest) HasTeardown() bool {
-	if o != nil && o.Teardown != nil {
+	if o != nil && o.Teardown.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetTeardown gets a reference to the given Script and assigns it to the Teardown field.
+// SetTeardown gets a reference to the given NullableScript and assigns it to the Teardown field.
 func (o *ConstrainRequest) SetTeardown(v Script) {
-	o.Teardown = v
+	o.Teardown.Set(&v)
+}
+// SetTeardownNil sets the value for Teardown to be an explicit nil
+func (o *ConstrainRequest) SetTeardownNil() {
+	o.Teardown.Set(nil)
+}
+
+// UnsetTeardown ensures that no value is present for Teardown, not even an explicit nil
+func (o *ConstrainRequest) UnsetTeardown() {
+	o.Teardown.Unset()
 }
 
 // GetResources returns the Resources field value
@@ -182,7 +214,7 @@ func (o *ConstrainRequest) GetResources() Resources {
 // GetResourcesOk returns a tuple with the Resources field value
 // and a boolean to check if the value has been set.
 func (o *ConstrainRequest) GetResourcesOk() (*Resources, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Resources, true
@@ -196,50 +228,91 @@ func (o *ConstrainRequest) SetResources(v Resources) {
 // GetIo returns the Io field value
 // If the value is explicit nil, the zero value for IO will be returned
 func (o *ConstrainRequest) GetIo() IO {
-	if o == nil {
+	if o == nil || o.Io.Get() == nil {
 		var ret IO
 		return ret
 	}
 
-	return o.Io
+	return *o.Io.Get()
 }
 
 // GetIoOk returns a tuple with the Io field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ConstrainRequest) GetIoOk() (*IO, bool) {
-	if o == nil || o.Io == nil {
+	if o == nil {
 		return nil, false
 	}
-	return &o.Io, true
+	return o.Io.Get(), o.Io.IsSet()
 }
 
 // SetIo sets field value
 func (o *ConstrainRequest) SetIo(v IO) {
-	o.Io = v
+	o.Io.Set(&v)
 }
 
 func (o ConstrainRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Project != nil {
-		toSerialize["project"] = o.Project
-	}
-	if o.Setup != nil {
-		toSerialize["setup"] = o.Setup
-	}
-	if o.Run != nil {
-		toSerialize["run"] = o.Run
-	}
-	if o.Teardown != nil {
-		toSerialize["teardown"] = o.Teardown
-	}
-	if true {
-		toSerialize["resources"] = o.Resources
-	}
-	if o.Io != nil {
-		toSerialize["io"] = o.Io
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ConstrainRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["project"] = o.Project
+	if o.Setup.IsSet() {
+		toSerialize["setup"] = o.Setup.Get()
+	}
+	if o.Run.IsSet() {
+		toSerialize["run"] = o.Run.Get()
+	}
+	if o.Teardown.IsSet() {
+		toSerialize["teardown"] = o.Teardown.Get()
+	}
+	toSerialize["resources"] = o.Resources
+	toSerialize["io"] = o.Io.Get()
+	return toSerialize, nil
+}
+
+func (o *ConstrainRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"project",
+		"resources",
+		"io",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varConstrainRequest := _ConstrainRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varConstrainRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ConstrainRequest(varConstrainRequest)
+
+	return err
 }
 
 type NullableConstrainRequest struct {

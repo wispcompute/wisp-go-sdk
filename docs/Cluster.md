@@ -13,13 +13,13 @@ Name | Type | Description | Notes
 **Metadata** | Pointer to **string** |  | [optional] 
 **ToDown** | Pointer to **bool** |  | [optional] 
 **ClusterHash** | Pointer to **NullableString** |  | [optional] 
-**Handle** | [**PickledHandleField**](PickledHandleField.md) |  | 
+**Handle** | [**NullablePickledHandleField**](PickledHandleField.md) |  | 
 
 ## Methods
 
 ### NewCluster
 
-`func NewCluster(user int32, name string, handle PickledHandleField, ) *Cluster`
+`func NewCluster(user int32, name string, handle NullablePickledHandleField, ) *Cluster`
 
 NewCluster instantiates a new Cluster object
 This constructor will assign default values to properties that have it defined,

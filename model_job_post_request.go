@@ -12,7 +12,12 @@ package wisp
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
+
+// checks if the JobPostRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &JobPostRequest{}
 
 // JobPostRequest Job post request serializer.
 type JobPostRequest struct {
@@ -20,6 +25,8 @@ type JobPostRequest struct {
 	Config ConstrainRequest `json:"config"`
 	Project Project `json:"project"`
 }
+
+type _JobPostRequest JobPostRequest
 
 // NewJobPostRequest instantiates a new JobPostRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -54,7 +61,7 @@ func (o *JobPostRequest) GetChoice() ClusterOffer {
 // GetChoiceOk returns a tuple with the Choice field value
 // and a boolean to check if the value has been set.
 func (o *JobPostRequest) GetChoiceOk() (*ClusterOffer, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Choice, true
@@ -78,7 +85,7 @@ func (o *JobPostRequest) GetConfig() ConstrainRequest {
 // GetConfigOk returns a tuple with the Config field value
 // and a boolean to check if the value has been set.
 func (o *JobPostRequest) GetConfigOk() (*ConstrainRequest, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Config, true
@@ -102,7 +109,7 @@ func (o *JobPostRequest) GetProject() Project {
 // GetProjectOk returns a tuple with the Project field value
 // and a boolean to check if the value has been set.
 func (o *JobPostRequest) GetProjectOk() (*Project, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Project, true
@@ -114,17 +121,58 @@ func (o *JobPostRequest) SetProject(v Project) {
 }
 
 func (o JobPostRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["choice"] = o.Choice
-	}
-	if true {
-		toSerialize["config"] = o.Config
-	}
-	if true {
-		toSerialize["project"] = o.Project
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o JobPostRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["choice"] = o.Choice
+	toSerialize["config"] = o.Config
+	toSerialize["project"] = o.Project
+	return toSerialize, nil
+}
+
+func (o *JobPostRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"choice",
+		"config",
+		"project",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varJobPostRequest := _JobPostRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varJobPostRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = JobPostRequest(varJobPostRequest)
+
+	return err
 }
 
 type NullableJobPostRequest struct {

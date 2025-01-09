@@ -1,12 +1,12 @@
-# \UsersApi
+# \UsersAPI
 
 All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**UsersMePublicKeyCreate**](UsersApi.md#UsersMePublicKeyCreate) | **Post** /api/users/me/public-key/ | 
-[**UsersMePublicKeyRetrieve**](UsersApi.md#UsersMePublicKeyRetrieve) | **Get** /api/users/me/public-key/ | 
-[**UsersMeRetrieve**](UsersApi.md#UsersMeRetrieve) | **Get** /api/users/me/ | 
+[**UsersMePublicKeyCreate**](UsersAPI.md#UsersMePublicKeyCreate) | **Post** /api/users/me/public-key/ | 
+[**UsersMePublicKeyRetrieve**](UsersAPI.md#UsersMePublicKeyRetrieve) | **Get** /api/users/me/public-key/ | 
+[**UsersMeRetrieve**](UsersAPI.md#UsersMeRetrieve) | **Get** /api/users/me/ | 
 
 
 
@@ -24,22 +24,22 @@ Method | HTTP request | Description
 package main
 
 import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/wispcompute/wisp-go-sdk"
 )
 
 func main() {
-    userPublicKeyRequest := *openapiclient.NewUserPublicKeyRequest("PublicKey_example") // UserPublicKeyRequest | 
+	userPublicKeyRequest := *openapiclient.NewUserPublicKeyRequest("PublicKey_example") // UserPublicKeyRequest | 
 
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.UsersApi.UsersMePublicKeyCreate(context.Background()).UserPublicKeyRequest(userPublicKeyRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `UsersApi.UsersMePublicKeyCreate``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.UsersAPI.UsersMePublicKeyCreate(context.Background()).UserPublicKeyRequest(userPublicKeyRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `UsersAPI.UsersMePublicKeyCreate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
 }
 ```
 
@@ -62,7 +62,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2), [tokenAuth](../README.md#tokenAuth)
+[tokenAuth](../README.md#tokenAuth), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2)
 
 ### HTTP request headers
 
@@ -88,23 +88,23 @@ Name | Type | Description  | Notes
 package main
 
 import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/wispcompute/wisp-go-sdk"
 )
 
 func main() {
 
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.UsersApi.UsersMePublicKeyRetrieve(context.Background()).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `UsersApi.UsersMePublicKeyRetrieve``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `UsersMePublicKeyRetrieve`: UserPublicKeyResponse
-    fmt.Fprintf(os.Stdout, "Response from `UsersApi.UsersMePublicKeyRetrieve`: %v\n", resp)
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.UsersAPI.UsersMePublicKeyRetrieve(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `UsersAPI.UsersMePublicKeyRetrieve``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UsersMePublicKeyRetrieve`: UserPublicKeyResponse
+	fmt.Fprintf(os.Stdout, "Response from `UsersAPI.UsersMePublicKeyRetrieve`: %v\n", resp)
 }
 ```
 
@@ -123,7 +123,7 @@ Other parameters are passed through a pointer to a apiUsersMePublicKeyRetrieveRe
 
 ### Authorization
 
-[oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2), [tokenAuth](../README.md#tokenAuth)
+[tokenAuth](../README.md#tokenAuth), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2)
 
 ### HTTP request headers
 
@@ -149,23 +149,23 @@ Other parameters are passed through a pointer to a apiUsersMePublicKeyRetrieveRe
 package main
 
 import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/wispcompute/wisp-go-sdk"
 )
 
 func main() {
 
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.UsersApi.UsersMeRetrieve(context.Background()).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `UsersApi.UsersMeRetrieve``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `UsersMeRetrieve`: UserResponse
-    fmt.Fprintf(os.Stdout, "Response from `UsersApi.UsersMeRetrieve`: %v\n", resp)
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.UsersAPI.UsersMeRetrieve(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `UsersAPI.UsersMeRetrieve``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UsersMeRetrieve`: UserResponse
+	fmt.Fprintf(os.Stdout, "Response from `UsersAPI.UsersMeRetrieve`: %v\n", resp)
 }
 ```
 
@@ -184,7 +184,7 @@ Other parameters are passed through a pointer to a apiUsersMeRetrieveRequest str
 
 ### Authorization
 
-[oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2), [tokenAuth](../README.md#tokenAuth)
+[tokenAuth](../README.md#tokenAuth), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2)
 
 ### HTTP request headers
 

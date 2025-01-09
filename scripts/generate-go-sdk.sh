@@ -5,7 +5,7 @@
 OPENAPI_URL="https://storage.googleapis.com/wisp-public/schema/latest.yml"
 SOURCE_DIR=$(dirname $(pwd))
 OUTPUT_DIR="./"
-DOCKER_IMAGE="openapitools/openapi-generator-cli:v5.3.0"  # OpenAPI Generator Docker image
+DOCKER_IMAGE="openapitools/openapi-generator-cli:v7.10.0"  # OpenAPI Generator Docker image
 
 echo $SOURCE_DIR
 
@@ -31,8 +31,11 @@ docker run --rm \
   -o $OUTPUT_DIR \
   --additional-properties=packageName=wisp \
   --git-user-id=wispcompute \
-  --git-repo-id=wisp-go-sdk
-  
+  --git-repo-id=wisp-go-sdk && \
+  go get golang.org/x/oauth2 && \
+  go get golang.org/x/net/context && \
+  go mod tidy
+
 if [ $? -ne 0 ]; then
     echo "Failed to generate Go SDK using Docker."
     exit 1

@@ -1,10 +1,10 @@
-# \DownloadApi
+# \DownloadAPI
 
 All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DownloadRetrieve**](DownloadApi.md#DownloadRetrieve) | **Get** /api/download/ | 
+[**DownloadRetrieve**](DownloadAPI.md#DownloadRetrieve) | **Get** /api/download/ | 
 
 
 
@@ -22,24 +22,24 @@ Method | HTTP request | Description
 package main
 
 import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/wispcompute/wisp-go-sdk"
 )
 
 func main() {
-    name := "name_example" // string | The name of the binary to download
+	name := "name_example" // string | The name of the binary to download
 
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.DownloadApi.DownloadRetrieve(context.Background()).Name(name).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `DownloadApi.DownloadRetrieve``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `DownloadRetrieve`: DownloadResponse
-    fmt.Fprintf(os.Stdout, "Response from `DownloadApi.DownloadRetrieve`: %v\n", resp)
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.DownloadAPI.DownloadRetrieve(context.Background()).Name(name).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `DownloadAPI.DownloadRetrieve``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `DownloadRetrieve`: DownloadResponse
+	fmt.Fprintf(os.Stdout, "Response from `DownloadAPI.DownloadRetrieve`: %v\n", resp)
 }
 ```
 
@@ -62,7 +62,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2), [tokenAuth](../README.md#tokenAuth)
+[tokenAuth](../README.md#tokenAuth), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2)
 
 ### HTTP request headers
 

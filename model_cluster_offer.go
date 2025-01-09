@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ClusterOffer type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ClusterOffer{}
+
 // ClusterOffer struct for ClusterOffer
 type ClusterOffer struct {
 	DiskSize NullableInt64 `json:"disk_size,omitempty"`
@@ -56,7 +59,7 @@ func NewClusterOfferWithDefaults() *ClusterOffer {
 
 // GetDiskSize returns the DiskSize field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetDiskSize() int64 {
-	if o == nil || o.DiskSize.Get() == nil {
+	if o == nil || IsNil(o.DiskSize.Get()) {
 		var ret int64
 		return ret
 	}
@@ -67,7 +70,7 @@ func (o *ClusterOffer) GetDiskSize() int64 {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetDiskSizeOk() (*int64, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.DiskSize.Get(), o.DiskSize.IsSet()
@@ -98,7 +101,7 @@ func (o *ClusterOffer) UnsetDiskSize() {
 
 // GetCloud returns the Cloud field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetCloud() string {
-	if o == nil || o.Cloud.Get() == nil {
+	if o == nil || IsNil(o.Cloud.Get()) {
 		var ret string
 		return ret
 	}
@@ -109,7 +112,7 @@ func (o *ClusterOffer) GetCloud() string {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetCloudOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.Cloud.Get(), o.Cloud.IsSet()
@@ -140,7 +143,7 @@ func (o *ClusterOffer) UnsetCloud() {
 
 // GetJobRecovery returns the JobRecovery field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetJobRecovery() string {
-	if o == nil || o.JobRecovery.Get() == nil {
+	if o == nil || IsNil(o.JobRecovery.Get()) {
 		var ret string
 		return ret
 	}
@@ -151,7 +154,7 @@ func (o *ClusterOffer) GetJobRecovery() string {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetJobRecoveryOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.JobRecovery.Get(), o.JobRecovery.IsSet()
@@ -182,7 +185,7 @@ func (o *ClusterOffer) UnsetJobRecovery() {
 
 // GetDiskTier returns the DiskTier field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetDiskTier() string {
-	if o == nil || o.DiskTier.Get() == nil {
+	if o == nil || IsNil(o.DiskTier.Get()) {
 		var ret string
 		return ret
 	}
@@ -193,7 +196,7 @@ func (o *ClusterOffer) GetDiskTier() string {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetDiskTierOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.DiskTier.Get(), o.DiskTier.IsSet()
@@ -224,7 +227,7 @@ func (o *ClusterOffer) UnsetDiskTier() {
 
 // GetMemory returns the Memory field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetMemory() int64 {
-	if o == nil || o.Memory.Get() == nil {
+	if o == nil || IsNil(o.Memory.Get()) {
 		var ret int64
 		return ret
 	}
@@ -235,7 +238,7 @@ func (o *ClusterOffer) GetMemory() int64 {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetMemoryOk() (*int64, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.Memory.Get(), o.Memory.IsSet()
@@ -266,7 +269,7 @@ func (o *ClusterOffer) UnsetMemory() {
 
 // GetAcceleratorArgs returns the AcceleratorArgs field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetAcceleratorArgs() interface{} {
-	if o == nil  {
+	if o == nil {
 		var ret interface{}
 		return ret
 	}
@@ -277,7 +280,7 @@ func (o *ClusterOffer) GetAcceleratorArgs() interface{} {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetAcceleratorArgsOk() (*interface{}, bool) {
-	if o == nil || o.AcceleratorArgs == nil {
+	if o == nil || IsNil(o.AcceleratorArgs) {
 		return nil, false
 	}
 	return &o.AcceleratorArgs, true
@@ -285,7 +288,7 @@ func (o *ClusterOffer) GetAcceleratorArgsOk() (*interface{}, bool) {
 
 // HasAcceleratorArgs returns a boolean if a field has been set.
 func (o *ClusterOffer) HasAcceleratorArgs() bool {
-	if o != nil && o.AcceleratorArgs != nil {
+	if o != nil && !IsNil(o.AcceleratorArgs) {
 		return true
 	}
 
@@ -299,7 +302,7 @@ func (o *ClusterOffer) SetAcceleratorArgs(v interface{}) {
 
 // GetRegion returns the Region field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetRegion() string {
-	if o == nil || o.Region.Get() == nil {
+	if o == nil || IsNil(o.Region.Get()) {
 		var ret string
 		return ret
 	}
@@ -310,7 +313,7 @@ func (o *ClusterOffer) GetRegion() string {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetRegionOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.Region.Get(), o.Region.IsSet()
@@ -341,7 +344,7 @@ func (o *ClusterOffer) UnsetRegion() {
 
 // GetPrice returns the Price field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetPrice() float64 {
-	if o == nil || o.Price.Get() == nil {
+	if o == nil || IsNil(o.Price.Get()) {
 		var ret float64
 		return ret
 	}
@@ -352,7 +355,7 @@ func (o *ClusterOffer) GetPrice() float64 {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetPriceOk() (*float64, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.Price.Get(), o.Price.IsSet()
@@ -383,7 +386,7 @@ func (o *ClusterOffer) UnsetPrice() {
 
 // GetStorage returns the Storage field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetStorage() string {
-	if o == nil || o.Storage.Get() == nil {
+	if o == nil || IsNil(o.Storage.Get()) {
 		var ret string
 		return ret
 	}
@@ -394,7 +397,7 @@ func (o *ClusterOffer) GetStorage() string {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetStorageOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.Storage.Get(), o.Storage.IsSet()
@@ -425,7 +428,7 @@ func (o *ClusterOffer) UnsetStorage() {
 
 // GetInstanceType returns the InstanceType field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetInstanceType() string {
-	if o == nil || o.InstanceType.Get() == nil {
+	if o == nil || IsNil(o.InstanceType.Get()) {
 		var ret string
 		return ret
 	}
@@ -436,7 +439,7 @@ func (o *ClusterOffer) GetInstanceType() string {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetInstanceTypeOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.InstanceType.Get(), o.InstanceType.IsSet()
@@ -467,7 +470,7 @@ func (o *ClusterOffer) UnsetInstanceType() {
 
 // GetCpus returns the Cpus field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetCpus() int64 {
-	if o == nil || o.Cpus.Get() == nil {
+	if o == nil || IsNil(o.Cpus.Get()) {
 		var ret int64
 		return ret
 	}
@@ -478,7 +481,7 @@ func (o *ClusterOffer) GetCpus() int64 {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetCpusOk() (*int64, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.Cpus.Get(), o.Cpus.IsSet()
@@ -509,7 +512,7 @@ func (o *ClusterOffer) UnsetCpus() {
 
 // GetAccelerators returns the Accelerators field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetAccelerators() interface{} {
-	if o == nil  {
+	if o == nil {
 		var ret interface{}
 		return ret
 	}
@@ -520,7 +523,7 @@ func (o *ClusterOffer) GetAccelerators() interface{} {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetAcceleratorsOk() (*interface{}, bool) {
-	if o == nil || o.Accelerators == nil {
+	if o == nil || IsNil(o.Accelerators) {
 		return nil, false
 	}
 	return &o.Accelerators, true
@@ -528,7 +531,7 @@ func (o *ClusterOffer) GetAcceleratorsOk() (*interface{}, bool) {
 
 // HasAccelerators returns a boolean if a field has been set.
 func (o *ClusterOffer) HasAccelerators() bool {
-	if o != nil && o.Accelerators != nil {
+	if o != nil && !IsNil(o.Accelerators) {
 		return true
 	}
 
@@ -542,7 +545,7 @@ func (o *ClusterOffer) SetAccelerators(v interface{}) {
 
 // GetUseSpot returns the UseSpot field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetUseSpot() bool {
-	if o == nil || o.UseSpot.Get() == nil {
+	if o == nil || IsNil(o.UseSpot.Get()) {
 		var ret bool
 		return ret
 	}
@@ -553,7 +556,7 @@ func (o *ClusterOffer) GetUseSpot() bool {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetUseSpotOk() (*bool, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.UseSpot.Get(), o.UseSpot.IsSet()
@@ -584,7 +587,7 @@ func (o *ClusterOffer) UnsetUseSpot() {
 
 // GetZone returns the Zone field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetZone() string {
-	if o == nil || o.Zone.Get() == nil {
+	if o == nil || IsNil(o.Zone.Get()) {
 		var ret string
 		return ret
 	}
@@ -595,7 +598,7 @@ func (o *ClusterOffer) GetZone() string {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetZoneOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.Zone.Get(), o.Zone.IsSet()
@@ -626,7 +629,7 @@ func (o *ClusterOffer) UnsetZone() {
 
 // GetImageId returns the ImageId field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetImageId() interface{} {
-	if o == nil  {
+	if o == nil {
 		var ret interface{}
 		return ret
 	}
@@ -637,7 +640,7 @@ func (o *ClusterOffer) GetImageId() interface{} {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetImageIdOk() (*interface{}, bool) {
-	if o == nil || o.ImageId == nil {
+	if o == nil || IsNil(o.ImageId) {
 		return nil, false
 	}
 	return &o.ImageId, true
@@ -645,7 +648,7 @@ func (o *ClusterOffer) GetImageIdOk() (*interface{}, bool) {
 
 // HasImageId returns a boolean if a field has been set.
 func (o *ClusterOffer) HasImageId() bool {
-	if o != nil && o.ImageId != nil {
+	if o != nil && !IsNil(o.ImageId) {
 		return true
 	}
 
@@ -659,7 +662,7 @@ func (o *ClusterOffer) SetImageId(v interface{}) {
 
 // GetPorts returns the Ports field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetPorts() interface{} {
-	if o == nil  {
+	if o == nil {
 		var ret interface{}
 		return ret
 	}
@@ -670,7 +673,7 @@ func (o *ClusterOffer) GetPorts() interface{} {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetPortsOk() (*interface{}, bool) {
-	if o == nil || o.Ports == nil {
+	if o == nil || IsNil(o.Ports) {
 		return nil, false
 	}
 	return &o.Ports, true
@@ -678,7 +681,7 @@ func (o *ClusterOffer) GetPortsOk() (*interface{}, bool) {
 
 // HasPorts returns a boolean if a field has been set.
 func (o *ClusterOffer) HasPorts() bool {
-	if o != nil && o.Ports != nil {
+	if o != nil && !IsNil(o.Ports) {
 		return true
 	}
 
@@ -692,7 +695,7 @@ func (o *ClusterOffer) SetPorts(v interface{}) {
 
 // GetLabels returns the Labels field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetLabels() interface{} {
-	if o == nil  {
+	if o == nil {
 		var ret interface{}
 		return ret
 	}
@@ -703,7 +706,7 @@ func (o *ClusterOffer) GetLabels() interface{} {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetLabelsOk() (*interface{}, bool) {
-	if o == nil || o.Labels == nil {
+	if o == nil || IsNil(o.Labels) {
 		return nil, false
 	}
 	return &o.Labels, true
@@ -711,7 +714,7 @@ func (o *ClusterOffer) GetLabelsOk() (*interface{}, bool) {
 
 // HasLabels returns a boolean if a field has been set.
 func (o *ClusterOffer) HasLabels() bool {
-	if o != nil && o.Labels != nil {
+	if o != nil && !IsNil(o.Labels) {
 		return true
 	}
 
@@ -725,7 +728,7 @@ func (o *ClusterOffer) SetLabels(v interface{}) {
 
 // GetAcceleratorCount returns the AcceleratorCount field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetAcceleratorCount() interface{} {
-	if o == nil  {
+	if o == nil {
 		var ret interface{}
 		return ret
 	}
@@ -736,7 +739,7 @@ func (o *ClusterOffer) GetAcceleratorCount() interface{} {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetAcceleratorCountOk() (*interface{}, bool) {
-	if o == nil || o.AcceleratorCount == nil {
+	if o == nil || IsNil(o.AcceleratorCount) {
 		return nil, false
 	}
 	return &o.AcceleratorCount, true
@@ -744,7 +747,7 @@ func (o *ClusterOffer) GetAcceleratorCountOk() (*interface{}, bool) {
 
 // HasAcceleratorCount returns a boolean if a field has been set.
 func (o *ClusterOffer) HasAcceleratorCount() bool {
-	if o != nil && o.AcceleratorCount != nil {
+	if o != nil && !IsNil(o.AcceleratorCount) {
 		return true
 	}
 
@@ -758,7 +761,7 @@ func (o *ClusterOffer) SetAcceleratorCount(v interface{}) {
 
 // GetRegions returns the Regions field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ClusterOffer) GetRegions() interface{} {
-	if o == nil  {
+	if o == nil {
 		var ret interface{}
 		return ret
 	}
@@ -769,7 +772,7 @@ func (o *ClusterOffer) GetRegions() interface{} {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ClusterOffer) GetRegionsOk() (*interface{}, bool) {
-	if o == nil || o.Regions == nil {
+	if o == nil || IsNil(o.Regions) {
 		return nil, false
 	}
 	return &o.Regions, true
@@ -777,7 +780,7 @@ func (o *ClusterOffer) GetRegionsOk() (*interface{}, bool) {
 
 // HasRegions returns a boolean if a field has been set.
 func (o *ClusterOffer) HasRegions() bool {
-	if o != nil && o.Regions != nil {
+	if o != nil && !IsNil(o.Regions) {
 		return true
 	}
 
@@ -790,6 +793,14 @@ func (o *ClusterOffer) SetRegions(v interface{}) {
 }
 
 func (o ClusterOffer) MarshalJSON() ([]byte, error) {
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
+	}
+	return json.Marshal(toSerialize)
+}
+
+func (o ClusterOffer) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if o.DiskSize.IsSet() {
 		toSerialize["disk_size"] = o.DiskSize.Get()
@@ -848,7 +859,7 @@ func (o ClusterOffer) MarshalJSON() ([]byte, error) {
 	if o.Regions != nil {
 		toSerialize["regions"] = o.Regions
 	}
-	return json.Marshal(toSerialize)
+	return toSerialize, nil
 }
 
 type NullableClusterOffer struct {

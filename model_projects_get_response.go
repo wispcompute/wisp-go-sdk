@@ -12,12 +12,19 @@ package wisp
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
+
+// checks if the ProjectsGetResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ProjectsGetResponse{}
 
 // ProjectsGetResponse Projects serializer.
 type ProjectsGetResponse struct {
 	Projects []Project `json:"projects"`
 }
+
+type _ProjectsGetResponse ProjectsGetResponse
 
 // NewProjectsGetResponse instantiates a new ProjectsGetResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -49,11 +56,11 @@ func (o *ProjectsGetResponse) GetProjects() []Project {
 
 // GetProjectsOk returns a tuple with the Projects field value
 // and a boolean to check if the value has been set.
-func (o *ProjectsGetResponse) GetProjectsOk() (*[]Project, bool) {
-	if o == nil  {
+func (o *ProjectsGetResponse) GetProjectsOk() ([]Project, bool) {
+	if o == nil {
 		return nil, false
 	}
-	return &o.Projects, true
+	return o.Projects, true
 }
 
 // SetProjects sets field value
@@ -62,11 +69,54 @@ func (o *ProjectsGetResponse) SetProjects(v []Project) {
 }
 
 func (o ProjectsGetResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["projects"] = o.Projects
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ProjectsGetResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["projects"] = o.Projects
+	return toSerialize, nil
+}
+
+func (o *ProjectsGetResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"projects",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varProjectsGetResponse := _ProjectsGetResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varProjectsGetResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ProjectsGetResponse(varProjectsGetResponse)
+
+	return err
 }
 
 type NullableProjectsGetResponse struct {

@@ -12,13 +12,18 @@ package wisp
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
+
+// checks if the Resources type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Resources{}
 
 // Resources Resource configuration serializer.
 type Resources struct {
-	Clouds *[]*string `json:"clouds,omitempty"`
-	Regions *[]*string `json:"regions,omitempty"`
-	Areas *[]*string `json:"areas,omitempty"`
+	Clouds []*string `json:"clouds,omitempty"`
+	Regions []*string `json:"regions,omitempty"`
+	Areas []*string `json:"areas,omitempty"`
 	Memory NullableInt32 `json:"memory,omitempty"`
 	Cpus NullableInt32 `json:"cpus,omitempty"`
 	Storage NullableInt32 `json:"storage,omitempty"`
@@ -29,6 +34,8 @@ type Resources struct {
 	AcceleratorCount NullableInt32 `json:"accelerator_count,omitempty"`
 	Platform NullableString `json:"platform,omitempty"`
 }
+
+type _Resources Resources
 
 // NewResources instantiates a new Resources object
 // This constructor will assign default values to properties that have it defined,
@@ -50,17 +57,17 @@ func NewResourcesWithDefaults() *Resources {
 
 // GetClouds returns the Clouds field value if set, zero value otherwise.
 func (o *Resources) GetClouds() []*string {
-	if o == nil || o.Clouds == nil {
+	if o == nil || IsNil(o.Clouds) {
 		var ret []*string
 		return ret
 	}
-	return *o.Clouds
+	return o.Clouds
 }
 
 // GetCloudsOk returns a tuple with the Clouds field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Resources) GetCloudsOk() (*[]*string, bool) {
-	if o == nil || o.Clouds == nil {
+func (o *Resources) GetCloudsOk() ([]*string, bool) {
+	if o == nil || IsNil(o.Clouds) {
 		return nil, false
 	}
 	return o.Clouds, true
@@ -68,7 +75,7 @@ func (o *Resources) GetCloudsOk() (*[]*string, bool) {
 
 // HasClouds returns a boolean if a field has been set.
 func (o *Resources) HasClouds() bool {
-	if o != nil && o.Clouds != nil {
+	if o != nil && !IsNil(o.Clouds) {
 		return true
 	}
 
@@ -77,22 +84,22 @@ func (o *Resources) HasClouds() bool {
 
 // SetClouds gets a reference to the given []*string and assigns it to the Clouds field.
 func (o *Resources) SetClouds(v []*string) {
-	o.Clouds = &v
+	o.Clouds = v
 }
 
 // GetRegions returns the Regions field value if set, zero value otherwise.
 func (o *Resources) GetRegions() []*string {
-	if o == nil || o.Regions == nil {
+	if o == nil || IsNil(o.Regions) {
 		var ret []*string
 		return ret
 	}
-	return *o.Regions
+	return o.Regions
 }
 
 // GetRegionsOk returns a tuple with the Regions field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Resources) GetRegionsOk() (*[]*string, bool) {
-	if o == nil || o.Regions == nil {
+func (o *Resources) GetRegionsOk() ([]*string, bool) {
+	if o == nil || IsNil(o.Regions) {
 		return nil, false
 	}
 	return o.Regions, true
@@ -100,7 +107,7 @@ func (o *Resources) GetRegionsOk() (*[]*string, bool) {
 
 // HasRegions returns a boolean if a field has been set.
 func (o *Resources) HasRegions() bool {
-	if o != nil && o.Regions != nil {
+	if o != nil && !IsNil(o.Regions) {
 		return true
 	}
 
@@ -109,22 +116,22 @@ func (o *Resources) HasRegions() bool {
 
 // SetRegions gets a reference to the given []*string and assigns it to the Regions field.
 func (o *Resources) SetRegions(v []*string) {
-	o.Regions = &v
+	o.Regions = v
 }
 
 // GetAreas returns the Areas field value if set, zero value otherwise.
 func (o *Resources) GetAreas() []*string {
-	if o == nil || o.Areas == nil {
+	if o == nil || IsNil(o.Areas) {
 		var ret []*string
 		return ret
 	}
-	return *o.Areas
+	return o.Areas
 }
 
 // GetAreasOk returns a tuple with the Areas field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Resources) GetAreasOk() (*[]*string, bool) {
-	if o == nil || o.Areas == nil {
+func (o *Resources) GetAreasOk() ([]*string, bool) {
+	if o == nil || IsNil(o.Areas) {
 		return nil, false
 	}
 	return o.Areas, true
@@ -132,7 +139,7 @@ func (o *Resources) GetAreasOk() (*[]*string, bool) {
 
 // HasAreas returns a boolean if a field has been set.
 func (o *Resources) HasAreas() bool {
-	if o != nil && o.Areas != nil {
+	if o != nil && !IsNil(o.Areas) {
 		return true
 	}
 
@@ -141,12 +148,12 @@ func (o *Resources) HasAreas() bool {
 
 // SetAreas gets a reference to the given []*string and assigns it to the Areas field.
 func (o *Resources) SetAreas(v []*string) {
-	o.Areas = &v
+	o.Areas = v
 }
 
 // GetMemory returns the Memory field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Resources) GetMemory() int32 {
-	if o == nil || o.Memory.Get() == nil {
+	if o == nil || IsNil(o.Memory.Get()) {
 		var ret int32
 		return ret
 	}
@@ -157,7 +164,7 @@ func (o *Resources) GetMemory() int32 {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Resources) GetMemoryOk() (*int32, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.Memory.Get(), o.Memory.IsSet()
@@ -188,7 +195,7 @@ func (o *Resources) UnsetMemory() {
 
 // GetCpus returns the Cpus field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Resources) GetCpus() int32 {
-	if o == nil || o.Cpus.Get() == nil {
+	if o == nil || IsNil(o.Cpus.Get()) {
 		var ret int32
 		return ret
 	}
@@ -199,7 +206,7 @@ func (o *Resources) GetCpus() int32 {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Resources) GetCpusOk() (*int32, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.Cpus.Get(), o.Cpus.IsSet()
@@ -230,7 +237,7 @@ func (o *Resources) UnsetCpus() {
 
 // GetStorage returns the Storage field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Resources) GetStorage() int32 {
-	if o == nil || o.Storage.Get() == nil {
+	if o == nil || IsNil(o.Storage.Get()) {
 		var ret int32
 		return ret
 	}
@@ -241,7 +248,7 @@ func (o *Resources) GetStorage() int32 {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Resources) GetStorageOk() (*int32, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.Storage.Get(), o.Storage.IsSet()
@@ -272,7 +279,7 @@ func (o *Resources) UnsetStorage() {
 
 // GetPersistentDisk returns the PersistentDisk field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Resources) GetPersistentDisk() int32 {
-	if o == nil || o.PersistentDisk.Get() == nil {
+	if o == nil || IsNil(o.PersistentDisk.Get()) {
 		var ret int32
 		return ret
 	}
@@ -283,7 +290,7 @@ func (o *Resources) GetPersistentDisk() int32 {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Resources) GetPersistentDiskOk() (*int32, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.PersistentDisk.Get(), o.PersistentDisk.IsSet()
@@ -326,11 +333,11 @@ func (o *Resources) GetAccelerators() []*string {
 // GetAcceleratorsOk returns a tuple with the Accelerators field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *Resources) GetAcceleratorsOk() (*[]*string, bool) {
-	if o == nil || o.Accelerators == nil {
+func (o *Resources) GetAcceleratorsOk() ([]*string, bool) {
+	if o == nil || IsNil(o.Accelerators) {
 		return nil, false
 	}
-	return &o.Accelerators, true
+	return o.Accelerators, true
 }
 
 // SetAccelerators sets field value
@@ -340,7 +347,7 @@ func (o *Resources) SetAccelerators(v []*string) {
 
 // GetComputeCapability returns the ComputeCapability field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Resources) GetComputeCapability() string {
-	if o == nil || o.ComputeCapability.Get() == nil {
+	if o == nil || IsNil(o.ComputeCapability.Get()) {
 		var ret string
 		return ret
 	}
@@ -351,7 +358,7 @@ func (o *Resources) GetComputeCapability() string {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Resources) GetComputeCapabilityOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.ComputeCapability.Get(), o.ComputeCapability.IsSet()
@@ -382,7 +389,7 @@ func (o *Resources) UnsetComputeCapability() {
 
 // GetVram returns the Vram field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Resources) GetVram() int32 {
-	if o == nil || o.Vram.Get() == nil {
+	if o == nil || IsNil(o.Vram.Get()) {
 		var ret int32
 		return ret
 	}
@@ -393,7 +400,7 @@ func (o *Resources) GetVram() int32 {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Resources) GetVramOk() (*int32, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.Vram.Get(), o.Vram.IsSet()
@@ -424,7 +431,7 @@ func (o *Resources) UnsetVram() {
 
 // GetAcceleratorCount returns the AcceleratorCount field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Resources) GetAcceleratorCount() int32 {
-	if o == nil || o.AcceleratorCount.Get() == nil {
+	if o == nil || IsNil(o.AcceleratorCount.Get()) {
 		var ret int32
 		return ret
 	}
@@ -435,7 +442,7 @@ func (o *Resources) GetAcceleratorCount() int32 {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Resources) GetAcceleratorCountOk() (*int32, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.AcceleratorCount.Get(), o.AcceleratorCount.IsSet()
@@ -466,7 +473,7 @@ func (o *Resources) UnsetAcceleratorCount() {
 
 // GetPlatform returns the Platform field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Resources) GetPlatform() string {
-	if o == nil || o.Platform.Get() == nil {
+	if o == nil || IsNil(o.Platform.Get()) {
 		var ret string
 		return ret
 	}
@@ -477,7 +484,7 @@ func (o *Resources) GetPlatform() string {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Resources) GetPlatformOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.Platform.Get(), o.Platform.IsSet()
@@ -507,14 +514,22 @@ func (o *Resources) UnsetPlatform() {
 }
 
 func (o Resources) MarshalJSON() ([]byte, error) {
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
+	}
+	return json.Marshal(toSerialize)
+}
+
+func (o Resources) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Clouds != nil {
+	if !IsNil(o.Clouds) {
 		toSerialize["clouds"] = o.Clouds
 	}
-	if o.Regions != nil {
+	if !IsNil(o.Regions) {
 		toSerialize["regions"] = o.Regions
 	}
-	if o.Areas != nil {
+	if !IsNil(o.Areas) {
 		toSerialize["areas"] = o.Areas
 	}
 	if o.Memory.IsSet() {
@@ -544,7 +559,44 @@ func (o Resources) MarshalJSON() ([]byte, error) {
 	if o.Platform.IsSet() {
 		toSerialize["platform"] = o.Platform.Get()
 	}
-	return json.Marshal(toSerialize)
+	return toSerialize, nil
+}
+
+func (o *Resources) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"accelerators",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varResources := _Resources{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varResources)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Resources(varResources)
+
+	return err
 }
 
 type NullableResources struct {

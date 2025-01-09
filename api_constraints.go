@@ -12,23 +12,19 @@ package wisp
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io"
+	"net/http"
+	"net/url"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
-// ConstraintsApiService ConstraintsApi service
-type ConstraintsApiService service
+// ConstraintsAPIService ConstraintsAPI service
+type ConstraintsAPIService service
 
 type ApiConstraintsCreateRequest struct {
-	ctx _context.Context
-	ApiService *ConstraintsApiService
+	ctx context.Context
+	ApiService *ConstraintsAPIService
 	constrainRequest *ConstrainRequest
 }
 
@@ -37,7 +33,7 @@ func (r ApiConstraintsCreateRequest) ConstrainRequest(constrainRequest Constrain
 	return r
 }
 
-func (r ApiConstraintsCreateRequest) Execute() (ConstrainResponse, *_nethttp.Response, error) {
+func (r ApiConstraintsCreateRequest) Execute() (*ConstrainResponse, *http.Response, error) {
 	return r.ApiService.ConstraintsCreateExecute(r)
 }
 
@@ -46,10 +42,10 @@ ConstraintsCreate Method for ConstraintsCreate
 
 Constrain clusters based on resource specification.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiConstraintsCreateRequest
 */
-func (a *ConstraintsApiService) ConstraintsCreate(ctx _context.Context) ApiConstraintsCreateRequest {
+func (a *ConstraintsAPIService) ConstraintsCreate(ctx context.Context) ApiConstraintsCreateRequest {
 	return ApiConstraintsCreateRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -58,26 +54,24 @@ func (a *ConstraintsApiService) ConstraintsCreate(ctx _context.Context) ApiConst
 
 // Execute executes the request
 //  @return ConstrainResponse
-func (a *ConstraintsApiService) ConstraintsCreateExecute(r ApiConstraintsCreateRequest) (ConstrainResponse, *_nethttp.Response, error) {
+func (a *ConstraintsAPIService) ConstraintsCreateExecute(r ApiConstraintsCreateRequest) (*ConstrainResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  ConstrainResponse
+		formFiles            []formFile
+		localVarReturnValue  *ConstrainResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConstraintsApiService.ConstraintsCreate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConstraintsAPIService.ConstraintsCreate")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/api/constraints/"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.constrainRequest == nil {
 		return localVarReturnValue, nil, reportError("constrainRequest is required and must be specified")
 	}
@@ -115,7 +109,7 @@ func (a *ConstraintsApiService) ConstraintsCreateExecute(r ApiConstraintsCreateR
 			}
 		}
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -125,15 +119,15 @@ func (a *ConstraintsApiService) ConstraintsCreateExecute(r ApiConstraintsCreateR
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -142,7 +136,7 @@ func (a *ConstraintsApiService) ConstraintsCreateExecute(r ApiConstraintsCreateR
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -153,8 +147,8 @@ func (a *ConstraintsApiService) ConstraintsCreateExecute(r ApiConstraintsCreateR
 }
 
 type ApiConstraintsPartialUpdateRequest struct {
-	ctx _context.Context
-	ApiService *ConstraintsApiService
+	ctx context.Context
+	ApiService *ConstraintsAPIService
 	patchedConstrainPatchRequest *PatchedConstrainPatchRequest
 }
 
@@ -163,7 +157,7 @@ func (r ApiConstraintsPartialUpdateRequest) PatchedConstrainPatchRequest(patched
 	return r
 }
 
-func (r ApiConstraintsPartialUpdateRequest) Execute() (ConstrainRequest, *_nethttp.Response, error) {
+func (r ApiConstraintsPartialUpdateRequest) Execute() (*ConstrainRequest, *http.Response, error) {
 	return r.ApiService.ConstraintsPartialUpdateExecute(r)
 }
 
@@ -172,10 +166,10 @@ ConstraintsPartialUpdate Method for ConstraintsPartialUpdate
 
 Validate the configuration if the cluster is already running.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiConstraintsPartialUpdateRequest
 */
-func (a *ConstraintsApiService) ConstraintsPartialUpdate(ctx _context.Context) ApiConstraintsPartialUpdateRequest {
+func (a *ConstraintsAPIService) ConstraintsPartialUpdate(ctx context.Context) ApiConstraintsPartialUpdateRequest {
 	return ApiConstraintsPartialUpdateRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -184,26 +178,24 @@ func (a *ConstraintsApiService) ConstraintsPartialUpdate(ctx _context.Context) A
 
 // Execute executes the request
 //  @return ConstrainRequest
-func (a *ConstraintsApiService) ConstraintsPartialUpdateExecute(r ApiConstraintsPartialUpdateRequest) (ConstrainRequest, *_nethttp.Response, error) {
+func (a *ConstraintsAPIService) ConstraintsPartialUpdateExecute(r ApiConstraintsPartialUpdateRequest) (*ConstrainRequest, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPatch
+		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  ConstrainRequest
+		formFiles            []formFile
+		localVarReturnValue  *ConstrainRequest
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConstraintsApiService.ConstraintsPartialUpdate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConstraintsAPIService.ConstraintsPartialUpdate")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/api/constraints/"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/x-www-form-urlencoded", "multipart/form-data"}
@@ -238,7 +230,7 @@ func (a *ConstraintsApiService) ConstraintsPartialUpdateExecute(r ApiConstraints
 			}
 		}
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -248,15 +240,15 @@ func (a *ConstraintsApiService) ConstraintsPartialUpdateExecute(r ApiConstraints
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -265,7 +257,7 @@ func (a *ConstraintsApiService) ConstraintsPartialUpdateExecute(r ApiConstraints
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}

@@ -12,23 +12,19 @@ package wisp
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io"
+	"net/http"
+	"net/url"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
-// UsersApiService UsersApi service
-type UsersApiService service
+// UsersAPIService UsersAPI service
+type UsersAPIService service
 
 type ApiUsersMePublicKeyCreateRequest struct {
-	ctx _context.Context
-	ApiService *UsersApiService
+	ctx context.Context
+	ApiService *UsersAPIService
 	userPublicKeyRequest *UserPublicKeyRequest
 }
 
@@ -37,7 +33,7 @@ func (r ApiUsersMePublicKeyCreateRequest) UserPublicKeyRequest(userPublicKeyRequ
 	return r
 }
 
-func (r ApiUsersMePublicKeyCreateRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiUsersMePublicKeyCreateRequest) Execute() (*http.Response, error) {
 	return r.ApiService.UsersMePublicKeyCreateExecute(r)
 }
 
@@ -46,10 +42,10 @@ UsersMePublicKeyCreate Method for UsersMePublicKeyCreate
 
 Set the user's public key.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiUsersMePublicKeyCreateRequest
 */
-func (a *UsersApiService) UsersMePublicKeyCreate(ctx _context.Context) ApiUsersMePublicKeyCreateRequest {
+func (a *UsersAPIService) UsersMePublicKeyCreate(ctx context.Context) ApiUsersMePublicKeyCreateRequest {
 	return ApiUsersMePublicKeyCreateRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -57,25 +53,23 @@ func (a *UsersApiService) UsersMePublicKeyCreate(ctx _context.Context) ApiUsersM
 }
 
 // Execute executes the request
-func (a *UsersApiService) UsersMePublicKeyCreateExecute(r ApiUsersMePublicKeyCreateRequest) (*_nethttp.Response, error) {
+func (a *UsersAPIService) UsersMePublicKeyCreateExecute(r ApiUsersMePublicKeyCreateRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersApiService.UsersMePublicKeyCreate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.UsersMePublicKeyCreate")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/api/users/me/public-key/"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.userPublicKeyRequest == nil {
 		return nil, reportError("userPublicKeyRequest is required and must be specified")
 	}
@@ -113,7 +107,7 @@ func (a *UsersApiService) UsersMePublicKeyCreateExecute(r ApiUsersMePublicKeyCre
 			}
 		}
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -123,15 +117,15 @@ func (a *UsersApiService) UsersMePublicKeyCreateExecute(r ApiUsersMePublicKeyCre
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -142,12 +136,11 @@ func (a *UsersApiService) UsersMePublicKeyCreateExecute(r ApiUsersMePublicKeyCre
 }
 
 type ApiUsersMePublicKeyRetrieveRequest struct {
-	ctx _context.Context
-	ApiService *UsersApiService
+	ctx context.Context
+	ApiService *UsersAPIService
 }
 
-
-func (r ApiUsersMePublicKeyRetrieveRequest) Execute() (UserPublicKeyResponse, *_nethttp.Response, error) {
+func (r ApiUsersMePublicKeyRetrieveRequest) Execute() (*UserPublicKeyResponse, *http.Response, error) {
 	return r.ApiService.UsersMePublicKeyRetrieveExecute(r)
 }
 
@@ -156,10 +149,10 @@ UsersMePublicKeyRetrieve Method for UsersMePublicKeyRetrieve
 
 Get the user's public key.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiUsersMePublicKeyRetrieveRequest
 */
-func (a *UsersApiService) UsersMePublicKeyRetrieve(ctx _context.Context) ApiUsersMePublicKeyRetrieveRequest {
+func (a *UsersAPIService) UsersMePublicKeyRetrieve(ctx context.Context) ApiUsersMePublicKeyRetrieveRequest {
 	return ApiUsersMePublicKeyRetrieveRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -168,26 +161,24 @@ func (a *UsersApiService) UsersMePublicKeyRetrieve(ctx _context.Context) ApiUser
 
 // Execute executes the request
 //  @return UserPublicKeyResponse
-func (a *UsersApiService) UsersMePublicKeyRetrieveExecute(r ApiUsersMePublicKeyRetrieveRequest) (UserPublicKeyResponse, *_nethttp.Response, error) {
+func (a *UsersAPIService) UsersMePublicKeyRetrieveExecute(r ApiUsersMePublicKeyRetrieveRequest) (*UserPublicKeyResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  UserPublicKeyResponse
+		formFiles            []formFile
+		localVarReturnValue  *UserPublicKeyResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersApiService.UsersMePublicKeyRetrieve")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.UsersMePublicKeyRetrieve")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/api/users/me/public-key/"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -220,7 +211,7 @@ func (a *UsersApiService) UsersMePublicKeyRetrieveExecute(r ApiUsersMePublicKeyR
 			}
 		}
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -230,15 +221,15 @@ func (a *UsersApiService) UsersMePublicKeyRetrieveExecute(r ApiUsersMePublicKeyR
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -247,7 +238,7 @@ func (a *UsersApiService) UsersMePublicKeyRetrieveExecute(r ApiUsersMePublicKeyR
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -258,12 +249,11 @@ func (a *UsersApiService) UsersMePublicKeyRetrieveExecute(r ApiUsersMePublicKeyR
 }
 
 type ApiUsersMeRetrieveRequest struct {
-	ctx _context.Context
-	ApiService *UsersApiService
+	ctx context.Context
+	ApiService *UsersAPIService
 }
 
-
-func (r ApiUsersMeRetrieveRequest) Execute() (UserResponse, *_nethttp.Response, error) {
+func (r ApiUsersMeRetrieveRequest) Execute() (*UserResponse, *http.Response, error) {
 	return r.ApiService.UsersMeRetrieveExecute(r)
 }
 
@@ -272,10 +262,10 @@ UsersMeRetrieve Method for UsersMeRetrieve
 
 Get the user information
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiUsersMeRetrieveRequest
 */
-func (a *UsersApiService) UsersMeRetrieve(ctx _context.Context) ApiUsersMeRetrieveRequest {
+func (a *UsersAPIService) UsersMeRetrieve(ctx context.Context) ApiUsersMeRetrieveRequest {
 	return ApiUsersMeRetrieveRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -284,26 +274,24 @@ func (a *UsersApiService) UsersMeRetrieve(ctx _context.Context) ApiUsersMeRetrie
 
 // Execute executes the request
 //  @return UserResponse
-func (a *UsersApiService) UsersMeRetrieveExecute(r ApiUsersMeRetrieveRequest) (UserResponse, *_nethttp.Response, error) {
+func (a *UsersAPIService) UsersMeRetrieveExecute(r ApiUsersMeRetrieveRequest) (*UserResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  UserResponse
+		formFiles            []formFile
+		localVarReturnValue  *UserResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersApiService.UsersMeRetrieve")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UsersAPIService.UsersMeRetrieve")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/api/users/me/"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -336,7 +324,7 @@ func (a *UsersApiService) UsersMeRetrieveExecute(r ApiUsersMeRetrieveRequest) (U
 			}
 		}
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -346,15 +334,15 @@ func (a *UsersApiService) UsersMeRetrieveExecute(r ApiUsersMeRetrieveRequest) (U
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -363,7 +351,7 @@ func (a *UsersApiService) UsersMeRetrieveExecute(r ApiUsersMeRetrieveRequest) (U
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}

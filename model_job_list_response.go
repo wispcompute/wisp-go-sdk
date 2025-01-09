@@ -12,12 +12,19 @@ package wisp
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
+
+// checks if the JobListResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &JobListResponse{}
 
 // JobListResponse Job list response serializer.
 type JobListResponse struct {
 	Jobs []Job `json:"jobs"`
 }
+
+type _JobListResponse JobListResponse
 
 // NewJobListResponse instantiates a new JobListResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -49,11 +56,11 @@ func (o *JobListResponse) GetJobs() []Job {
 
 // GetJobsOk returns a tuple with the Jobs field value
 // and a boolean to check if the value has been set.
-func (o *JobListResponse) GetJobsOk() (*[]Job, bool) {
-	if o == nil  {
+func (o *JobListResponse) GetJobsOk() ([]Job, bool) {
+	if o == nil {
 		return nil, false
 	}
-	return &o.Jobs, true
+	return o.Jobs, true
 }
 
 // SetJobs sets field value
@@ -62,11 +69,54 @@ func (o *JobListResponse) SetJobs(v []Job) {
 }
 
 func (o JobListResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["jobs"] = o.Jobs
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o JobListResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["jobs"] = o.Jobs
+	return toSerialize, nil
+}
+
+func (o *JobListResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"jobs",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varJobListResponse := _JobListResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varJobListResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = JobListResponse(varJobListResponse)
+
+	return err
 }
 
 type NullableJobListResponse struct {

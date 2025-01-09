@@ -13,7 +13,12 @@ package wisp
 import (
 	"encoding/json"
 	"time"
+	"bytes"
+	"fmt"
 )
+
+// checks if the LatestClusterLog type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &LatestClusterLog{}
 
 // LatestClusterLog Latest cluster log serializer.
 type LatestClusterLog struct {
@@ -21,6 +26,8 @@ type LatestClusterLog struct {
 	Status LatestClusterLogStatusEnum `json:"status"`
 	Message string `json:"message"`
 }
+
+type _LatestClusterLog LatestClusterLog
 
 // NewLatestClusterLog instantiates a new LatestClusterLog object
 // This constructor will assign default values to properties that have it defined,
@@ -55,7 +62,7 @@ func (o *LatestClusterLog) GetTimestamp() time.Time {
 // GetTimestampOk returns a tuple with the Timestamp field value
 // and a boolean to check if the value has been set.
 func (o *LatestClusterLog) GetTimestampOk() (*time.Time, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Timestamp, true
@@ -79,7 +86,7 @@ func (o *LatestClusterLog) GetStatus() LatestClusterLogStatusEnum {
 // GetStatusOk returns a tuple with the Status field value
 // and a boolean to check if the value has been set.
 func (o *LatestClusterLog) GetStatusOk() (*LatestClusterLogStatusEnum, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Status, true
@@ -103,7 +110,7 @@ func (o *LatestClusterLog) GetMessage() string {
 // GetMessageOk returns a tuple with the Message field value
 // and a boolean to check if the value has been set.
 func (o *LatestClusterLog) GetMessageOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Message, true
@@ -115,17 +122,58 @@ func (o *LatestClusterLog) SetMessage(v string) {
 }
 
 func (o LatestClusterLog) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["timestamp"] = o.Timestamp
-	}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["message"] = o.Message
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o LatestClusterLog) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["timestamp"] = o.Timestamp
+	toSerialize["status"] = o.Status
+	toSerialize["message"] = o.Message
+	return toSerialize, nil
+}
+
+func (o *LatestClusterLog) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"timestamp",
+		"status",
+		"message",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varLatestClusterLog := _LatestClusterLog{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varLatestClusterLog)
+
+	if err != nil {
+		return err
+	}
+
+	*o = LatestClusterLog(varLatestClusterLog)
+
+	return err
 }
 
 type NullableLatestClusterLog struct {

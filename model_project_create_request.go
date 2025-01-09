@@ -12,12 +12,19 @@ package wisp
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
+
+// checks if the ProjectCreateRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ProjectCreateRequest{}
 
 // ProjectCreateRequest Project create request serializer.
 type ProjectCreateRequest struct {
 	Name string `json:"name"`
 }
+
+type _ProjectCreateRequest ProjectCreateRequest
 
 // NewProjectCreateRequest instantiates a new ProjectCreateRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -50,7 +57,7 @@ func (o *ProjectCreateRequest) GetName() string {
 // GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
 func (o *ProjectCreateRequest) GetNameOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Name, true
@@ -62,11 +69,54 @@ func (o *ProjectCreateRequest) SetName(v string) {
 }
 
 func (o ProjectCreateRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ProjectCreateRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	return toSerialize, nil
+}
+
+func (o *ProjectCreateRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varProjectCreateRequest := _ProjectCreateRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varProjectCreateRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ProjectCreateRequest(varProjectCreateRequest)
+
+	return err
 }
 
 type NullableProjectCreateRequest struct {

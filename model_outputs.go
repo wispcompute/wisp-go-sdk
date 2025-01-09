@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Outputs type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Outputs{}
+
 // Outputs Outputs configuration serializer.
 type Outputs struct {
 	Buckets []Bucket `json:"buckets,omitempty"`
@@ -38,7 +41,7 @@ func NewOutputsWithDefaults() *Outputs {
 
 // GetBuckets returns the Buckets field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Outputs) GetBuckets() []Bucket {
-	if o == nil  {
+	if o == nil {
 		var ret []Bucket
 		return ret
 	}
@@ -48,16 +51,16 @@ func (o *Outputs) GetBuckets() []Bucket {
 // GetBucketsOk returns a tuple with the Buckets field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *Outputs) GetBucketsOk() (*[]Bucket, bool) {
-	if o == nil || o.Buckets == nil {
+func (o *Outputs) GetBucketsOk() ([]Bucket, bool) {
+	if o == nil || IsNil(o.Buckets) {
 		return nil, false
 	}
-	return &o.Buckets, true
+	return o.Buckets, true
 }
 
 // HasBuckets returns a boolean if a field has been set.
 func (o *Outputs) HasBuckets() bool {
-	if o != nil && o.Buckets != nil {
+	if o != nil && !IsNil(o.Buckets) {
 		return true
 	}
 
@@ -70,11 +73,19 @@ func (o *Outputs) SetBuckets(v []Bucket) {
 }
 
 func (o Outputs) MarshalJSON() ([]byte, error) {
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
+	}
+	return json.Marshal(toSerialize)
+}
+
+func (o Outputs) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if o.Buckets != nil {
 		toSerialize["buckets"] = o.Buckets
 	}
-	return json.Marshal(toSerialize)
+	return toSerialize, nil
 }
 
 type NullableOutputs struct {

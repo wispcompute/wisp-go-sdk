@@ -14,10 +14,13 @@ import (
 	"encoding/json"
 )
 
+// checks if the IO type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &IO{}
+
 // IO IO configuration serializer.
 type IO struct {
-	Inputs Inputs `json:"inputs,omitempty"`
-	Outputs Outputs `json:"outputs,omitempty"`
+	Inputs NullableInputs `json:"inputs,omitempty"`
+	Outputs NullableOutputs `json:"outputs,omitempty"`
 }
 
 // NewIO instantiates a new IO object
@@ -39,79 +42,105 @@ func NewIOWithDefaults() *IO {
 
 // GetInputs returns the Inputs field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *IO) GetInputs() Inputs {
-	if o == nil  {
+	if o == nil || IsNil(o.Inputs.Get()) {
 		var ret Inputs
 		return ret
 	}
-	return o.Inputs
+	return *o.Inputs.Get()
 }
 
 // GetInputsOk returns a tuple with the Inputs field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *IO) GetInputsOk() (*Inputs, bool) {
-	if o == nil || o.Inputs == nil {
+	if o == nil {
 		return nil, false
 	}
-	return &o.Inputs, true
+	return o.Inputs.Get(), o.Inputs.IsSet()
 }
 
 // HasInputs returns a boolean if a field has been set.
 func (o *IO) HasInputs() bool {
-	if o != nil && o.Inputs != nil {
+	if o != nil && o.Inputs.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetInputs gets a reference to the given Inputs and assigns it to the Inputs field.
+// SetInputs gets a reference to the given NullableInputs and assigns it to the Inputs field.
 func (o *IO) SetInputs(v Inputs) {
-	o.Inputs = v
+	o.Inputs.Set(&v)
+}
+// SetInputsNil sets the value for Inputs to be an explicit nil
+func (o *IO) SetInputsNil() {
+	o.Inputs.Set(nil)
+}
+
+// UnsetInputs ensures that no value is present for Inputs, not even an explicit nil
+func (o *IO) UnsetInputs() {
+	o.Inputs.Unset()
 }
 
 // GetOutputs returns the Outputs field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *IO) GetOutputs() Outputs {
-	if o == nil  {
+	if o == nil || IsNil(o.Outputs.Get()) {
 		var ret Outputs
 		return ret
 	}
-	return o.Outputs
+	return *o.Outputs.Get()
 }
 
 // GetOutputsOk returns a tuple with the Outputs field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *IO) GetOutputsOk() (*Outputs, bool) {
-	if o == nil || o.Outputs == nil {
+	if o == nil {
 		return nil, false
 	}
-	return &o.Outputs, true
+	return o.Outputs.Get(), o.Outputs.IsSet()
 }
 
 // HasOutputs returns a boolean if a field has been set.
 func (o *IO) HasOutputs() bool {
-	if o != nil && o.Outputs != nil {
+	if o != nil && o.Outputs.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetOutputs gets a reference to the given Outputs and assigns it to the Outputs field.
+// SetOutputs gets a reference to the given NullableOutputs and assigns it to the Outputs field.
 func (o *IO) SetOutputs(v Outputs) {
-	o.Outputs = v
+	o.Outputs.Set(&v)
+}
+// SetOutputsNil sets the value for Outputs to be an explicit nil
+func (o *IO) SetOutputsNil() {
+	o.Outputs.Set(nil)
+}
+
+// UnsetOutputs ensures that no value is present for Outputs, not even an explicit nil
+func (o *IO) UnsetOutputs() {
+	o.Outputs.Unset()
 }
 
 func (o IO) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Inputs != nil {
-		toSerialize["inputs"] = o.Inputs
-	}
-	if o.Outputs != nil {
-		toSerialize["outputs"] = o.Outputs
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o IO) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Inputs.IsSet() {
+		toSerialize["inputs"] = o.Inputs.Get()
+	}
+	if o.Outputs.IsSet() {
+		toSerialize["outputs"] = o.Outputs.Get()
+	}
+	return toSerialize, nil
 }
 
 type NullableIO struct {

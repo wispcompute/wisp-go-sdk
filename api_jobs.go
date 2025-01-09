@@ -12,24 +12,20 @@ package wisp
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io"
+	"net/http"
+	"net/url"
 	"strings"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
-// JobsApiService JobsApi service
-type JobsApiService service
+// JobsAPIService JobsAPI service
+type JobsAPIService service
 
 type ApiCreateJobRequest struct {
-	ctx _context.Context
-	ApiService *JobsApiService
+	ctx context.Context
+	ApiService *JobsAPIService
 	jobPostRequest *JobPostRequest
 }
 
@@ -38,7 +34,7 @@ func (r ApiCreateJobRequest) JobPostRequest(jobPostRequest JobPostRequest) ApiCr
 	return r
 }
 
-func (r ApiCreateJobRequest) Execute() (JobGetResponse, *_nethttp.Response, error) {
+func (r ApiCreateJobRequest) Execute() (*JobGetResponse, *http.Response, error) {
 	return r.ApiService.CreateJobExecute(r)
 }
 
@@ -47,10 +43,10 @@ CreateJob Method for CreateJob
 
 Launch a cluster configuration.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiCreateJobRequest
 */
-func (a *JobsApiService) CreateJob(ctx _context.Context) ApiCreateJobRequest {
+func (a *JobsAPIService) CreateJob(ctx context.Context) ApiCreateJobRequest {
 	return ApiCreateJobRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -59,26 +55,24 @@ func (a *JobsApiService) CreateJob(ctx _context.Context) ApiCreateJobRequest {
 
 // Execute executes the request
 //  @return JobGetResponse
-func (a *JobsApiService) CreateJobExecute(r ApiCreateJobRequest) (JobGetResponse, *_nethttp.Response, error) {
+func (a *JobsAPIService) CreateJobExecute(r ApiCreateJobRequest) (*JobGetResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  JobGetResponse
+		formFiles            []formFile
+		localVarReturnValue  *JobGetResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobsApiService.CreateJob")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobsAPIService.CreateJob")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/api/jobs/"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.jobPostRequest == nil {
 		return localVarReturnValue, nil, reportError("jobPostRequest is required and must be specified")
 	}
@@ -116,7 +110,7 @@ func (a *JobsApiService) CreateJobExecute(r ApiCreateJobRequest) (JobGetResponse
 			}
 		}
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -126,15 +120,15 @@ func (a *JobsApiService) CreateJobExecute(r ApiCreateJobRequest) (JobGetResponse
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -143,7 +137,7 @@ func (a *JobsApiService) CreateJobExecute(r ApiCreateJobRequest) (JobGetResponse
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -154,13 +148,12 @@ func (a *JobsApiService) CreateJobExecute(r ApiCreateJobRequest) (JobGetResponse
 }
 
 type ApiJobsDestroyRequest struct {
-	ctx _context.Context
-	ApiService *JobsApiService
+	ctx context.Context
+	ApiService *JobsAPIService
 	jobId string
 }
 
-
-func (r ApiJobsDestroyRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiJobsDestroyRequest) Execute() (*http.Response, error) {
 	return r.ApiService.JobsDestroyExecute(r)
 }
 
@@ -169,11 +162,11 @@ JobsDestroy Method for JobsDestroy
 
 Delete a job
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param jobId
  @return ApiJobsDestroyRequest
 */
-func (a *JobsApiService) JobsDestroy(ctx _context.Context, jobId string) ApiJobsDestroyRequest {
+func (a *JobsAPIService) JobsDestroy(ctx context.Context, jobId string) ApiJobsDestroyRequest {
 	return ApiJobsDestroyRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -182,26 +175,24 @@ func (a *JobsApiService) JobsDestroy(ctx _context.Context, jobId string) ApiJobs
 }
 
 // Execute executes the request
-func (a *JobsApiService) JobsDestroyExecute(r ApiJobsDestroyRequest) (*_nethttp.Response, error) {
+func (a *JobsAPIService) JobsDestroyExecute(r ApiJobsDestroyRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobsApiService.JobsDestroy")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobsAPIService.JobsDestroy")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/api/jobs/{job_id}/"
-	localVarPath = strings.Replace(localVarPath, "{"+"job_id"+"}", _neturl.PathEscape(parameterToString(r.jobId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"job_id"+"}", url.PathEscape(parameterValueToString(r.jobId, "jobId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -234,7 +225,7 @@ func (a *JobsApiService) JobsDestroyExecute(r ApiJobsDestroyRequest) (*_nethttp.
 			}
 		}
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -244,15 +235,15 @@ func (a *JobsApiService) JobsDestroyExecute(r ApiJobsDestroyRequest) (*_nethttp.
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -263,13 +254,12 @@ func (a *JobsApiService) JobsDestroyExecute(r ApiJobsDestroyRequest) (*_nethttp.
 }
 
 type ApiJobsRetrieveRequest struct {
-	ctx _context.Context
-	ApiService *JobsApiService
+	ctx context.Context
+	ApiService *JobsAPIService
 	jobId string
 }
 
-
-func (r ApiJobsRetrieveRequest) Execute() (JobGetResponse, *_nethttp.Response, error) {
+func (r ApiJobsRetrieveRequest) Execute() (*JobGetResponse, *http.Response, error) {
 	return r.ApiService.JobsRetrieveExecute(r)
 }
 
@@ -278,11 +268,11 @@ JobsRetrieve Method for JobsRetrieve
 
 Get the job for the user.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param jobId
  @return ApiJobsRetrieveRequest
 */
-func (a *JobsApiService) JobsRetrieve(ctx _context.Context, jobId string) ApiJobsRetrieveRequest {
+func (a *JobsAPIService) JobsRetrieve(ctx context.Context, jobId string) ApiJobsRetrieveRequest {
 	return ApiJobsRetrieveRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -292,27 +282,25 @@ func (a *JobsApiService) JobsRetrieve(ctx _context.Context, jobId string) ApiJob
 
 // Execute executes the request
 //  @return JobGetResponse
-func (a *JobsApiService) JobsRetrieveExecute(r ApiJobsRetrieveRequest) (JobGetResponse, *_nethttp.Response, error) {
+func (a *JobsAPIService) JobsRetrieveExecute(r ApiJobsRetrieveRequest) (*JobGetResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  JobGetResponse
+		formFiles            []formFile
+		localVarReturnValue  *JobGetResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobsApiService.JobsRetrieve")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobsAPIService.JobsRetrieve")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/api/jobs/{job_id}/"
-	localVarPath = strings.Replace(localVarPath, "{"+"job_id"+"}", _neturl.PathEscape(parameterToString(r.jobId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"job_id"+"}", url.PathEscape(parameterValueToString(r.jobId, "jobId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -345,7 +333,7 @@ func (a *JobsApiService) JobsRetrieveExecute(r ApiJobsRetrieveRequest) (JobGetRe
 			}
 		}
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -355,15 +343,15 @@ func (a *JobsApiService) JobsRetrieveExecute(r ApiJobsRetrieveRequest) (JobGetRe
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -372,7 +360,7 @@ func (a *JobsApiService) JobsRetrieveExecute(r ApiJobsRetrieveRequest) (JobGetRe
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}

@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Inputs** | Pointer to [**Inputs**](Inputs.md) |  | [optional] 
-**Outputs** | Pointer to [**Outputs**](Outputs.md) |  | [optional] 
+**Inputs** | Pointer to [**NullableInputs**](Inputs.md) |  | [optional] 
+**Outputs** | Pointer to [**NullableOutputs**](Outputs.md) |  | [optional] 
 
 ## Methods
 

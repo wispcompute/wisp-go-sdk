@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PatchedConstrainPatchRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PatchedConstrainPatchRequest{}
+
 // PatchedConstrainPatchRequest Serializer for cluster constraint patch request.
 type PatchedConstrainPatchRequest struct {
 	JobId *string `json:"job_id,omitempty"`
@@ -39,7 +42,7 @@ func NewPatchedConstrainPatchRequestWithDefaults() *PatchedConstrainPatchRequest
 
 // GetJobId returns the JobId field value if set, zero value otherwise.
 func (o *PatchedConstrainPatchRequest) GetJobId() string {
-	if o == nil || o.JobId == nil {
+	if o == nil || IsNil(o.JobId) {
 		var ret string
 		return ret
 	}
@@ -49,7 +52,7 @@ func (o *PatchedConstrainPatchRequest) GetJobId() string {
 // GetJobIdOk returns a tuple with the JobId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PatchedConstrainPatchRequest) GetJobIdOk() (*string, bool) {
-	if o == nil || o.JobId == nil {
+	if o == nil || IsNil(o.JobId) {
 		return nil, false
 	}
 	return o.JobId, true
@@ -57,7 +60,7 @@ func (o *PatchedConstrainPatchRequest) GetJobIdOk() (*string, bool) {
 
 // HasJobId returns a boolean if a field has been set.
 func (o *PatchedConstrainPatchRequest) HasJobId() bool {
-	if o != nil && o.JobId != nil {
+	if o != nil && !IsNil(o.JobId) {
 		return true
 	}
 
@@ -71,7 +74,7 @@ func (o *PatchedConstrainPatchRequest) SetJobId(v string) {
 
 // GetConfig returns the Config field value if set, zero value otherwise.
 func (o *PatchedConstrainPatchRequest) GetConfig() ConstrainRequest {
-	if o == nil || o.Config == nil {
+	if o == nil || IsNil(o.Config) {
 		var ret ConstrainRequest
 		return ret
 	}
@@ -81,7 +84,7 @@ func (o *PatchedConstrainPatchRequest) GetConfig() ConstrainRequest {
 // GetConfigOk returns a tuple with the Config field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PatchedConstrainPatchRequest) GetConfigOk() (*ConstrainRequest, bool) {
-	if o == nil || o.Config == nil {
+	if o == nil || IsNil(o.Config) {
 		return nil, false
 	}
 	return o.Config, true
@@ -89,7 +92,7 @@ func (o *PatchedConstrainPatchRequest) GetConfigOk() (*ConstrainRequest, bool) {
 
 // HasConfig returns a boolean if a field has been set.
 func (o *PatchedConstrainPatchRequest) HasConfig() bool {
-	if o != nil && o.Config != nil {
+	if o != nil && !IsNil(o.Config) {
 		return true
 	}
 
@@ -102,14 +105,22 @@ func (o *PatchedConstrainPatchRequest) SetConfig(v ConstrainRequest) {
 }
 
 func (o PatchedConstrainPatchRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.JobId != nil {
-		toSerialize["job_id"] = o.JobId
-	}
-	if o.Config != nil {
-		toSerialize["config"] = o.Config
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PatchedConstrainPatchRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.JobId) {
+		toSerialize["job_id"] = o.JobId
+	}
+	if !IsNil(o.Config) {
+		toSerialize["config"] = o.Config
+	}
+	return toSerialize, nil
 }
 
 type NullablePatchedConstrainPatchRequest struct {

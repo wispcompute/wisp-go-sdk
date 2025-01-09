@@ -14,11 +14,14 @@ import (
 	"encoding/json"
 )
 
+// checks if the PickledHandleField type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PickledHandleField{}
+
 // PickledHandleField Custom field serializer for pickled handle data.
 type PickledHandleField struct {
 	StableInternalIp NullableString `json:"stable_internal_ip,omitempty"`
 	StableExternalIp NullableString `json:"stable_external_ip,omitempty"`
-	StableSshPorts *[]int32 `json:"stable_ssh_ports,omitempty"`
+	StableSshPorts []int32 `json:"stable_ssh_ports,omitempty"`
 	SshUser NullableString `json:"ssh_user,omitempty"`
 }
 
@@ -41,7 +44,7 @@ func NewPickledHandleFieldWithDefaults() *PickledHandleField {
 
 // GetStableInternalIp returns the StableInternalIp field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *PickledHandleField) GetStableInternalIp() string {
-	if o == nil || o.StableInternalIp.Get() == nil {
+	if o == nil || IsNil(o.StableInternalIp.Get()) {
 		var ret string
 		return ret
 	}
@@ -52,7 +55,7 @@ func (o *PickledHandleField) GetStableInternalIp() string {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *PickledHandleField) GetStableInternalIpOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.StableInternalIp.Get(), o.StableInternalIp.IsSet()
@@ -83,7 +86,7 @@ func (o *PickledHandleField) UnsetStableInternalIp() {
 
 // GetStableExternalIp returns the StableExternalIp field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *PickledHandleField) GetStableExternalIp() string {
-	if o == nil || o.StableExternalIp.Get() == nil {
+	if o == nil || IsNil(o.StableExternalIp.Get()) {
 		var ret string
 		return ret
 	}
@@ -94,7 +97,7 @@ func (o *PickledHandleField) GetStableExternalIp() string {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *PickledHandleField) GetStableExternalIpOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.StableExternalIp.Get(), o.StableExternalIp.IsSet()
@@ -125,17 +128,17 @@ func (o *PickledHandleField) UnsetStableExternalIp() {
 
 // GetStableSshPorts returns the StableSshPorts field value if set, zero value otherwise.
 func (o *PickledHandleField) GetStableSshPorts() []int32 {
-	if o == nil || o.StableSshPorts == nil {
+	if o == nil || IsNil(o.StableSshPorts) {
 		var ret []int32
 		return ret
 	}
-	return *o.StableSshPorts
+	return o.StableSshPorts
 }
 
 // GetStableSshPortsOk returns a tuple with the StableSshPorts field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *PickledHandleField) GetStableSshPortsOk() (*[]int32, bool) {
-	if o == nil || o.StableSshPorts == nil {
+func (o *PickledHandleField) GetStableSshPortsOk() ([]int32, bool) {
+	if o == nil || IsNil(o.StableSshPorts) {
 		return nil, false
 	}
 	return o.StableSshPorts, true
@@ -143,7 +146,7 @@ func (o *PickledHandleField) GetStableSshPortsOk() (*[]int32, bool) {
 
 // HasStableSshPorts returns a boolean if a field has been set.
 func (o *PickledHandleField) HasStableSshPorts() bool {
-	if o != nil && o.StableSshPorts != nil {
+	if o != nil && !IsNil(o.StableSshPorts) {
 		return true
 	}
 
@@ -152,12 +155,12 @@ func (o *PickledHandleField) HasStableSshPorts() bool {
 
 // SetStableSshPorts gets a reference to the given []int32 and assigns it to the StableSshPorts field.
 func (o *PickledHandleField) SetStableSshPorts(v []int32) {
-	o.StableSshPorts = &v
+	o.StableSshPorts = v
 }
 
 // GetSshUser returns the SshUser field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *PickledHandleField) GetSshUser() string {
-	if o == nil || o.SshUser.Get() == nil {
+	if o == nil || IsNil(o.SshUser.Get()) {
 		var ret string
 		return ret
 	}
@@ -168,7 +171,7 @@ func (o *PickledHandleField) GetSshUser() string {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *PickledHandleField) GetSshUserOk() (*string, bool) {
-	if o == nil  {
+	if o == nil {
 		return nil, false
 	}
 	return o.SshUser.Get(), o.SshUser.IsSet()
@@ -198,6 +201,14 @@ func (o *PickledHandleField) UnsetSshUser() {
 }
 
 func (o PickledHandleField) MarshalJSON() ([]byte, error) {
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
+	}
+	return json.Marshal(toSerialize)
+}
+
+func (o PickledHandleField) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if o.StableInternalIp.IsSet() {
 		toSerialize["stable_internal_ip"] = o.StableInternalIp.Get()
@@ -205,13 +216,13 @@ func (o PickledHandleField) MarshalJSON() ([]byte, error) {
 	if o.StableExternalIp.IsSet() {
 		toSerialize["stable_external_ip"] = o.StableExternalIp.Get()
 	}
-	if o.StableSshPorts != nil {
+	if !IsNil(o.StableSshPorts) {
 		toSerialize["stable_ssh_ports"] = o.StableSshPorts
 	}
 	if o.SshUser.IsSet() {
 		toSerialize["ssh_user"] = o.SshUser.Get()
 	}
-	return json.Marshal(toSerialize)
+	return toSerialize, nil
 }
 
 type NullablePickledHandleField struct {

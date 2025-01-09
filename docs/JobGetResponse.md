@@ -5,13 +5,13 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Job** | [**Job**](Job.md) |  | 
-**LatestClusterLog** | [**LatestClusterLog**](LatestClusterLog.md) |  | 
+**LatestClusterLog** | [**NullableLatestClusterLog**](LatestClusterLog.md) |  | 
 
 ## Methods
 
 ### NewJobGetResponse
 
-`func NewJobGetResponse(job Job, latestClusterLog LatestClusterLog, ) *JobGetResponse`
+`func NewJobGetResponse(job Job, latestClusterLog NullableLatestClusterLog, ) *JobGetResponse`
 
 NewJobGetResponse instantiates a new JobGetResponse object
 This constructor will assign default values to properties that have it defined,

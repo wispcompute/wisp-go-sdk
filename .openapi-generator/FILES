@@ -15,8 +15,8 @@ docs/ClusterOffer.md
 docs/ClusterStatusEnum.md
 docs/ConstrainRequest.md
 docs/ConstrainResponse.md
-docs/ConstraintsApi.md
-docs/DownloadApi.md
+docs/ConstraintsAPI.md
+docs/DownloadAPI.md
 docs/DownloadResponse.md
 docs/IO.md
 docs/Inputs.md
@@ -24,7 +24,7 @@ docs/Job.md
 docs/JobGetResponse.md
 docs/JobListResponse.md
 docs/JobPostRequest.md
-docs/JobsApi.md
+docs/JobsAPI.md
 docs/LatestClusterLog.md
 docs/LatestClusterLogStatusEnum.md
 docs/Outputs.md
@@ -32,14 +32,14 @@ docs/PatchedConstrainPatchRequest.md
 docs/PickledHandleField.md
 docs/Project.md
 docs/ProjectCreateRequest.md
-docs/ProjectsApi.md
+docs/ProjectsAPI.md
 docs/ProjectsGetResponse.md
 docs/Resources.md
 docs/Script.md
 docs/UserPublicKeyRequest.md
 docs/UserPublicKeyResponse.md
 docs/UserResponse.md
-docs/UsersApi.md
+docs/UsersAPI.md
 git_push.sh
 go.mod
 go.sum
