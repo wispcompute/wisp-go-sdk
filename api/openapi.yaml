@@ -6,6 +6,125 @@ info:
 servers:
 - url: /
 paths:
+  /api/clusters/:
+    get:
+      description: Retrieve a list of all Clusters for the whole organization.
+      operationId: clusters_retrieve
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterListResponse'
+          description: ""
+      security:
+      - tokenAuth: []
+      - oauth2: []
+      tags:
+      - clusters
+  /api/clusters/{cluster_name}/{action}/:
+    post:
+      description: "Perform an action (start, stop, pause, resume) on a Cluster."
+      operationId: clusters_create
+      parameters:
+      - explode: false
+        in: path
+        name: action
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: cluster_name
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: wait
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterActionResponse'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                additionalProperties: {}
+                description: Unspecified response body
+                type: object
+          description: ""
+        "401":
+          content:
+            application/json:
+              schema:
+                additionalProperties: {}
+                description: Unspecified response body
+                type: object
+          description: ""
+        "404":
+          content:
+            application/json:
+              schema:
+                additionalProperties: {}
+                description: Unspecified response body
+                type: object
+          description: ""
+        "409":
+          content:
+            application/json:
+              schema:
+                additionalProperties: {}
+                description: Unspecified response body
+                type: object
+          description: ""
+      security:
+      - tokenAuth: []
+      - oauth2: []
+      tags:
+      - clusters
+  /api/clusters/{cluster_name}/status/:
+    get:
+      description: Retrieve the current status of a Cluster.
+      operationId: clusters_status_retrieve
+      parameters:
+      - explode: false
+        in: path
+        name: cluster_name
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterStatusResponse'
+          description: ""
+        "404":
+          content:
+            application/json:
+              schema:
+                additionalProperties: {}
+                description: Unspecified response body
+                type: object
+          description: ""
+      security:
+      - tokenAuth: []
+      - oauth2: []
+      tags:
+      - clusters
   /api/constraints/:
     patch:
       description: Validate the configuration if the cluster is already running.
@@ -349,9 +468,21 @@ components:
       type: object
     Cluster:
       description: Cluster serializer.
+      example:
+        to_down: true
+        metadata: metadata
+        launched_at: -7746104769210155008
+        last_use: last_use
+        name: name
+        handle: ""
+        user:
+          email: email
+        cluster_hash: cluster_hash
+        autostop: 1895322125605019648
+        status: INIT
       properties:
         user:
-          type: integer
+          $ref: '#/components/schemas/User'
         name:
           maxLength: 255
           type: string
@@ -388,6 +519,58 @@ components:
       - handle
       - name
       - user
+      type: object
+    ClusterActionResponse:
+      description: Cluster action response serializer.
+      example:
+        cluster_name: cluster_name
+        message: message
+        status: status
+      properties:
+        cluster_name:
+          type: string
+        status:
+          type: string
+        message:
+          type: string
+      required:
+      - cluster_name
+      - message
+      - status
+      type: object
+    ClusterListResponse:
+      description: Cluster list response serializer.
+      example:
+        clusters:
+        - to_down: true
+          metadata: metadata
+          launched_at: -7746104769210155008
+          last_use: last_use
+          name: name
+          handle: ""
+          user:
+            email: email
+          cluster_hash: cluster_hash
+          autostop: 1895322125605019648
+          status: INIT
+        - to_down: true
+          metadata: metadata
+          launched_at: -7746104769210155008
+          last_use: last_use
+          name: name
+          handle: ""
+          user:
+            email: email
+          cluster_hash: cluster_hash
+          autostop: 1895322125605019648
+          status: INIT
+      properties:
+        clusters:
+          items:
+            $ref: '#/components/schemas/Cluster'
+          type: array
+      required:
+      - clusters
       type: object
     ClusterOffer:
       example:
@@ -491,6 +674,20 @@ components:
       - STOPPED
       - ERROR
       type: string
+    ClusterStatusResponse:
+      description: Cluster status response serializer.
+      example:
+        cluster_name: cluster_name
+        status: status
+      properties:
+        cluster_name:
+          type: string
+        status:
+          type: string
+      required:
+      - cluster_name
+      - status
+      type: object
     ConstrainRequest:
       description: |-
         Configuration serializer for cluster constraints.
@@ -1045,6 +1242,19 @@ components:
           type: string
       required:
       - script
+      type: object
+    User:
+      description: User serializer.
+      example:
+        email: email
+      properties:
+        email:
+          format: email
+          maxLength: 254
+          title: Email address
+          type: string
+      required:
+      - email
       type: object
     UserPublicKeyRequest:
       example:

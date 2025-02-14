@@ -21,7 +21,7 @@ var _ MappedNullable = &Cluster{}
 
 // Cluster Cluster serializer.
 type Cluster struct {
-	User int32 `json:"user"`
+	User User `json:"user"`
 	Name string `json:"name"`
 	LaunchedAt NullableInt64 `json:"launched_at,omitempty"`
 	LastUse NullableString `json:"last_use,omitempty"`
@@ -39,7 +39,7 @@ type _Cluster Cluster
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCluster(user int32, name string, handle NullablePickledHandleField) *Cluster {
+func NewCluster(user User, name string, handle NullablePickledHandleField) *Cluster {
 	this := Cluster{}
 	this.User = user
 	this.Name = name
@@ -56,9 +56,9 @@ func NewClusterWithDefaults() *Cluster {
 }
 
 // GetUser returns the User field value
-func (o *Cluster) GetUser() int32 {
+func (o *Cluster) GetUser() User {
 	if o == nil {
-		var ret int32
+		var ret User
 		return ret
 	}
 
@@ -67,7 +67,7 @@ func (o *Cluster) GetUser() int32 {
 
 // GetUserOk returns a tuple with the User field value
 // and a boolean to check if the value has been set.
-func (o *Cluster) GetUserOk() (*int32, bool) {
+func (o *Cluster) GetUserOk() (*User, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -75,7 +75,7 @@ func (o *Cluster) GetUserOk() (*int32, bool) {
 }
 
 // SetUser sets field value
-func (o *Cluster) SetUser(v int32) {
+func (o *Cluster) SetUser(v User) {
 	o.User = v
 }
 

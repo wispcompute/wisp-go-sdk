@@ -79,6 +79,9 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*ClustersAPI* | [**ClustersCreate**](docs/ClustersAPI.md#clusterscreate) | **Post** /api/clusters/{cluster_name}/{action}/ | 
+*ClustersAPI* | [**ClustersRetrieve**](docs/ClustersAPI.md#clustersretrieve) | **Get** /api/clusters/ | 
+*ClustersAPI* | [**ClustersStatusRetrieve**](docs/ClustersAPI.md#clustersstatusretrieve) | **Get** /api/clusters/{cluster_name}/status/ | 
 *ConstraintsAPI* | [**ConstraintsCreate**](docs/ConstraintsAPI.md#constraintscreate) | **Post** /api/constraints/ | 
 *ConstraintsAPI* | [**ConstraintsPartialUpdate**](docs/ConstraintsAPI.md#constraintspartialupdate) | **Patch** /api/constraints/ | 
 *DownloadAPI* | [**DownloadRetrieve**](docs/DownloadAPI.md#downloadretrieve) | **Get** /api/download/ | 
@@ -99,8 +102,11 @@ Class | Method | HTTP request | Description
 
  - [Bucket](docs/Bucket.md)
  - [Cluster](docs/Cluster.md)
+ - [ClusterActionResponse](docs/ClusterActionResponse.md)
+ - [ClusterListResponse](docs/ClusterListResponse.md)
  - [ClusterOffer](docs/ClusterOffer.md)
  - [ClusterStatusEnum](docs/ClusterStatusEnum.md)
+ - [ClusterStatusResponse](docs/ClusterStatusResponse.md)
  - [ConstrainRequest](docs/ConstrainRequest.md)
  - [ConstrainResponse](docs/ConstrainResponse.md)
  - [DownloadResponse](docs/DownloadResponse.md)
@@ -120,6 +126,7 @@ Class | Method | HTTP request | Description
  - [ProjectsGetResponse](docs/ProjectsGetResponse.md)
  - [Resources](docs/Resources.md)
  - [Script](docs/Script.md)
+ - [User](docs/User.md)
  - [UserPublicKeyRequest](docs/UserPublicKeyRequest.md)
  - [UserPublicKeyResponse](docs/UserPublicKeyResponse.md)
  - [UserResponse](docs/UserResponse.md)

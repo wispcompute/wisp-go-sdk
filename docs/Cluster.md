@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**User** | **int32** |  | 
+**User** | [**User**](User.md) |  | 
 **Name** | **string** |  | 
 **LaunchedAt** | Pointer to **NullableInt64** |  | [optional] 
 **LastUse** | Pointer to **NullableString** |  | [optional] 
@@ -19,7 +19,7 @@ Name | Type | Description | Notes
 
 ### NewCluster
 
-`func NewCluster(user int32, name string, handle NullablePickledHandleField, ) *Cluster`
+`func NewCluster(user User, name string, handle NullablePickledHandleField, ) *Cluster`
 
 NewCluster instantiates a new Cluster object
 This constructor will assign default values to properties that have it defined,
@@ -36,20 +36,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetUser
 
-`func (o *Cluster) GetUser() int32`
+`func (o *Cluster) GetUser() User`
 
 GetUser returns the User field if non-nil, zero value otherwise.
 
 ### GetUserOk
 
-`func (o *Cluster) GetUserOk() (*int32, bool)`
+`func (o *Cluster) GetUserOk() (*User, bool)`
 
 GetUserOk returns a tuple with the User field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetUser
 
-`func (o *Cluster) SetUser(v int32)`
+`func (o *Cluster) SetUser(v User)`
 
 SetUser sets User field to given value.
 

@@ -50,6 +50,8 @@ type APIClient struct {
 
 	// API Services
 
+	ClustersAPI *ClustersAPIService
+
 	ConstraintsAPI *ConstraintsAPIService
 
 	DownloadAPI *DownloadAPIService
@@ -77,6 +79,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
+	c.ClustersAPI = (*ClustersAPIService)(&c.common)
 	c.ConstraintsAPI = (*ConstraintsAPIService)(&c.common)
 	c.DownloadAPI = (*DownloadAPIService)(&c.common)
 	c.JobsAPI = (*JobsAPIService)(&c.common)

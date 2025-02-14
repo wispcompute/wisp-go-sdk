@@ -2,6 +2,7 @@
 .travis.yml
 README.md
 api/openapi.yaml
+api_clusters.go
 api_constraints.go
 api_download.go
 api_jobs.go
@@ -11,8 +12,12 @@ client.go
 configuration.go
 docs/Bucket.md
 docs/Cluster.md
+docs/ClusterActionResponse.md
+docs/ClusterListResponse.md
 docs/ClusterOffer.md
 docs/ClusterStatusEnum.md
+docs/ClusterStatusResponse.md
+docs/ClustersAPI.md
 docs/ConstrainRequest.md
 docs/ConstrainResponse.md
 docs/ConstraintsAPI.md
@@ -36,6 +41,7 @@ docs/ProjectsAPI.md
 docs/ProjectsGetResponse.md
 docs/Resources.md
 docs/Script.md
+docs/User.md
 docs/UserPublicKeyRequest.md
 docs/UserPublicKeyResponse.md
 docs/UserResponse.md
@@ -45,8 +51,11 @@ go.mod
 go.sum
 model_bucket.go
 model_cluster.go
+model_cluster_action_response.go
+model_cluster_list_response.go
 model_cluster_offer.go
 model_cluster_status_enum.go
+model_cluster_status_response.go
 model_constrain_request.go
 model_constrain_response.go
 model_download_response.go
@@ -66,6 +75,7 @@ model_project_create_request.go
 model_projects_get_response.go
 model_resources.go
 model_script.go
+model_user.go
 model_user_public_key_request.go
 model_user_public_key_response.go
 model_user_response.go
