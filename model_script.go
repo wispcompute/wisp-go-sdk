@@ -21,7 +21,7 @@ var _ MappedNullable = &Script{}
 
 // Script Script configuration serializer.
 type Script struct {
-	Script NullableString `json:"script"`
+	Script []string `json:"script"`
 }
 
 type _Script Script
@@ -30,7 +30,7 @@ type _Script Script
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewScript(script NullableString) *Script {
+func NewScript(script []string) *Script {
 	this := Script{}
 	this.Script = script
 	return &this
@@ -45,29 +45,27 @@ func NewScriptWithDefaults() *Script {
 }
 
 // GetScript returns the Script field value
-// If the value is explicit nil, the zero value for string will be returned
-func (o *Script) GetScript() string {
-	if o == nil || o.Script.Get() == nil {
-		var ret string
+func (o *Script) GetScript() []string {
+	if o == nil {
+		var ret []string
 		return ret
 	}
 
-	return *o.Script.Get()
+	return o.Script
 }
 
 // GetScriptOk returns a tuple with the Script field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *Script) GetScriptOk() (*string, bool) {
+func (o *Script) GetScriptOk() ([]string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.Script.Get(), o.Script.IsSet()
+	return o.Script, true
 }
 
 // SetScript sets field value
-func (o *Script) SetScript(v string) {
-	o.Script.Set(&v)
+func (o *Script) SetScript(v []string) {
+	o.Script = v
 }
 
 func (o Script) MarshalJSON() ([]byte, error) {
@@ -80,7 +78,7 @@ func (o Script) MarshalJSON() ([]byte, error) {
 
 func (o Script) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["script"] = o.Script.Get()
+	toSerialize["script"] = o.Script
 	return toSerialize, nil
 }
 

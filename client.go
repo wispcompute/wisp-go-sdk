@@ -56,6 +56,8 @@ type APIClient struct {
 
 	DownloadAPI *DownloadAPIService
 
+	JobAPI *JobAPIService
+
 	JobsAPI *JobsAPIService
 
 	ProjectsAPI *ProjectsAPIService
@@ -82,6 +84,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.ClustersAPI = (*ClustersAPIService)(&c.common)
 	c.ConstraintsAPI = (*ConstraintsAPIService)(&c.common)
 	c.DownloadAPI = (*DownloadAPIService)(&c.common)
+	c.JobAPI = (*JobAPIService)(&c.common)
 	c.JobsAPI = (*JobsAPIService)(&c.common)
 	c.ProjectsAPI = (*ProjectsAPIService)(&c.common)
 	c.UsersAPI = (*UsersAPIService)(&c.common)

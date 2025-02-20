@@ -87,7 +87,7 @@ Name | Type | Description  | Notes
 
 ## ClustersRetrieve
 
-> ClusterListResponse ClustersRetrieve(ctx).Execute()
+> ClusterListResponse ClustersRetrieve(ctx).Constraints(constraints).Execute()
 
 
 
@@ -102,14 +102,16 @@ import (
 	"context"
 	"fmt"
 	"os"
+    "time"
 	openapiclient "github.com/wispcompute/wisp-go-sdk"
 )
 
 func main() {
+	constraints := *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), "TODO") // ConstrainRequest |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ClustersAPI.ClustersRetrieve(context.Background()).Execute()
+	resp, r, err := apiClient.ClustersAPI.ClustersRetrieve(context.Background()).Constraints(constraints).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.ClustersRetrieve``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -121,12 +123,16 @@ func main() {
 
 ### Path Parameters
 
-This endpoint does not need any parameter.
+
 
 ### Other Parameters
 
 Other parameters are passed through a pointer to a apiClustersRetrieveRequest struct via the builder pattern
 
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **constraints** | [**ConstrainRequest**](ConstrainRequest.md) |  | 
 
 ### Return type
 

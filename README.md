@@ -85,6 +85,7 @@ Class | Method | HTTP request | Description
 *ConstraintsAPI* | [**ConstraintsCreate**](docs/ConstraintsAPI.md#constraintscreate) | **Post** /api/constraints/ | 
 *ConstraintsAPI* | [**ConstraintsPartialUpdate**](docs/ConstraintsAPI.md#constraintspartialupdate) | **Patch** /api/constraints/ | 
 *DownloadAPI* | [**DownloadRetrieve**](docs/DownloadAPI.md#downloadretrieve) | **Get** /api/download/ | 
+*JobAPI* | [**CreateJobWithoutCluster**](docs/JobAPI.md#createjobwithoutcluster) | **Post** /api/job/ | 
 *JobsAPI* | [**CreateJob**](docs/JobsAPI.md#createjob) | **Post** /api/jobs/ | 
 *JobsAPI* | [**JobsDestroy**](docs/JobsAPI.md#jobsdestroy) | **Delete** /api/jobs/{job_id}/ | 
 *JobsAPI* | [**JobsRetrieve**](docs/JobsAPI.md#jobsretrieve) | **Get** /api/jobs/{job_id}/ | 
@@ -126,6 +127,7 @@ Class | Method | HTTP request | Description
  - [ProjectsGetResponse](docs/ProjectsGetResponse.md)
  - [Resources](docs/Resources.md)
  - [Script](docs/Script.md)
+ - [TempJobPostRequest](docs/TempJobPostRequest.md)
  - [User](docs/User.md)
  - [UserPublicKeyRequest](docs/UserPublicKeyRequest.md)
  - [UserPublicKeyResponse](docs/UserPublicKeyResponse.md)

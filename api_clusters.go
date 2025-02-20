@@ -202,6 +202,12 @@ func (a *ClustersAPIService) ClustersCreateExecute(r ApiClustersCreateRequest) (
 type ApiClustersRetrieveRequest struct {
 	ctx context.Context
 	ApiService *ClustersAPIService
+	constraints *ConstrainRequest
+}
+
+func (r ApiClustersRetrieveRequest) Constraints(constraints ConstrainRequest) ApiClustersRetrieveRequest {
+	r.constraints = &constraints
+	return r
 }
 
 func (r ApiClustersRetrieveRequest) Execute() (*ClusterListResponse, *http.Response, error) {
@@ -244,6 +250,9 @@ func (a *ClustersAPIService) ClustersRetrieveExecute(r ApiClustersRetrieveReques
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if r.constraints != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "constraints", r.constraints, "form", "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 

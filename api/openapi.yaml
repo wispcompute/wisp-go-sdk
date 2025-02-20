@@ -10,6 +10,14 @@ paths:
     get:
       description: Retrieve a list of all Clusters for the whole organization.
       operationId: clusters_retrieve
+      parameters:
+      - explode: true
+        in: query
+        name: constraints
+        required: false
+        schema:
+          $ref: '#/components/schemas/ConstrainRequest'
+        style: form
       responses:
         "200":
           content:
@@ -211,6 +219,34 @@ paths:
       - oauth2: []
       tags:
       - download
+  /api/job/:
+    post:
+      description: Create a new job on the specified cluster.
+      operationId: create_job_without_cluster
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TempJobPostRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TempJobPostRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TempJobPostRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobGetResponse'
+          description: ""
+      security:
+      - tokenAuth: []
+      - oauth2: []
+      tags:
+      - job
   /api/jobs/:
     post:
       description: Launch a cluster configuration.
@@ -1238,10 +1274,71 @@ components:
       description: Script configuration serializer.
       properties:
         script:
-          nullable: true
-          type: string
+          items:
+            type: string
+          type: array
       required:
       - script
+      type: object
+    TempJobPostRequest:
+      description: Job detail post request serialier
+      example:
+        cluster:
+          to_down: true
+          metadata: metadata
+          launched_at: -7746104769210155008
+          last_use: last_use
+          name: name
+          handle: ""
+          user:
+            email: email
+          cluster_hash: cluster_hash
+          autostop: 1895322125605019648
+          status: INIT
+        project:
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          project_id: project_id
+          name: name
+          created_at: 2000-01-23T04:56:07.000+00:00
+          type: type
+        config:
+          io: ""
+          project: ""
+          setup: ""
+          resources:
+            regions:
+            - regions
+            - regions
+            memory: 0
+            cpus: 6
+            compute_capability: compute_capability
+            persistent_disk: 5
+            accelerators:
+            - accelerators
+            - accelerators
+            areas:
+            - areas
+            - areas
+            clouds:
+            - clouds
+            - clouds
+            storage: 1
+            accelerator_count: 2
+            platform: platform
+            vram: 5
+          run: ""
+          teardown: ""
+      properties:
+        cluster:
+          $ref: '#/components/schemas/Cluster'
+        config:
+          $ref: '#/components/schemas/ConstrainRequest'
+        project:
+          $ref: '#/components/schemas/Project'
+      required:
+      - cluster
+      - config
+      - project
       type: object
     User:
       description: User serializer.
