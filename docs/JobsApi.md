@@ -4,15 +4,15 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateJob**](JobsAPI.md#CreateJob) | **Post** /api/jobs/ | 
+[**JobsCreate**](JobsAPI.md#JobsCreate) | **Post** /api/jobs/ | 
 [**JobsDestroy**](JobsAPI.md#JobsDestroy) | **Delete** /api/jobs/{job_id}/ | 
 [**JobsRetrieve**](JobsAPI.md#JobsRetrieve) | **Get** /api/jobs/{job_id}/ | 
 
 
 
-## CreateJob
+## JobsCreate
 
-> JobGetResponse CreateJob(ctx).JobPostRequest(jobPostRequest).Execute()
+> JobGetResponse JobsCreate(ctx).TempJobPostRequest(tempJobPostRequest).Execute()
 
 
 
@@ -32,17 +32,17 @@ import (
 )
 
 func main() {
-	jobPostRequest := *openapiclient.NewJobPostRequest(*openapiclient.NewClusterOffer(), *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), "TODO"), *openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now())) // JobPostRequest | 
+	tempJobPostRequest := *openapiclient.NewTempJobPostRequest(*openapiclient.NewCluster(*openapiclient.NewUser("Email_example"), "Name_example", "TODO"), *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), "TODO"), *openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now())) // TempJobPostRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.JobsAPI.CreateJob(context.Background()).JobPostRequest(jobPostRequest).Execute()
+	resp, r, err := apiClient.JobsAPI.JobsCreate(context.Background()).TempJobPostRequest(tempJobPostRequest).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `JobsAPI.CreateJob``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `JobsAPI.JobsCreate``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `CreateJob`: JobGetResponse
-	fmt.Fprintf(os.Stdout, "Response from `JobsAPI.CreateJob`: %v\n", resp)
+	// response from `JobsCreate`: JobGetResponse
+	fmt.Fprintf(os.Stdout, "Response from `JobsAPI.JobsCreate`: %v\n", resp)
 }
 ```
 
@@ -52,12 +52,12 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiCreateJobRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiJobsCreateRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **jobPostRequest** | [**JobPostRequest**](JobPostRequest.md) |  | 
+ **tempJobPostRequest** | [**TempJobPostRequest**](TempJobPostRequest.md) |  | 
 
 ### Return type
 

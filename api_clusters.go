@@ -23,7 +23,7 @@ import (
 // ClustersAPIService ClustersAPI service
 type ClustersAPIService service
 
-type ApiClustersCreateRequest struct {
+type ApiClusterActionCreateRequest struct {
 	ctx context.Context
 	ApiService *ClustersAPIService
 	action string
@@ -31,27 +31,27 @@ type ApiClustersCreateRequest struct {
 	wait *bool
 }
 
-func (r ApiClustersCreateRequest) Wait(wait bool) ApiClustersCreateRequest {
+func (r ApiClusterActionCreateRequest) Wait(wait bool) ApiClusterActionCreateRequest {
 	r.wait = &wait
 	return r
 }
 
-func (r ApiClustersCreateRequest) Execute() (*ClusterActionResponse, *http.Response, error) {
-	return r.ApiService.ClustersCreateExecute(r)
+func (r ApiClusterActionCreateRequest) Execute() (*ClusterActionResponse, *http.Response, error) {
+	return r.ApiService.ClusterActionCreateExecute(r)
 }
 
 /*
-ClustersCreate Method for ClustersCreate
+ClusterActionCreate Method for ClusterActionCreate
 
 Perform an action (start, stop, pause, resume) on a Cluster.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param action
  @param clusterName
- @return ApiClustersCreateRequest
+ @return ApiClusterActionCreateRequest
 */
-func (a *ClustersAPIService) ClustersCreate(ctx context.Context, action string, clusterName string) ApiClustersCreateRequest {
-	return ApiClustersCreateRequest{
+func (a *ClustersAPIService) ClusterActionCreate(ctx context.Context, action string, clusterName string) ApiClusterActionCreateRequest {
+	return ApiClusterActionCreateRequest{
 		ApiService: a,
 		ctx: ctx,
 		action: action,
@@ -61,7 +61,7 @@ func (a *ClustersAPIService) ClustersCreate(ctx context.Context, action string, 
 
 // Execute executes the request
 //  @return ClusterActionResponse
-func (a *ClustersAPIService) ClustersCreateExecute(r ApiClustersCreateRequest) (*ClusterActionResponse, *http.Response, error) {
+func (a *ClustersAPIService) ClusterActionCreateExecute(r ApiClusterActionCreateRequest) (*ClusterActionResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
@@ -69,7 +69,7 @@ func (a *ClustersAPIService) ClustersCreateExecute(r ApiClustersCreateRequest) (
 		localVarReturnValue  *ClusterActionResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ClustersAPIService.ClustersCreate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ClustersAPIService.ClusterActionCreate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -183,6 +183,130 @@ func (a *ClustersAPIService) ClustersCreateExecute(r ApiClustersCreateRequest) (
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiClustersCreateRequest struct {
+	ctx context.Context
+	ApiService *ClustersAPIService
+	clusterPostRequest *ClusterPostRequest
+}
+
+func (r ApiClustersCreateRequest) ClusterPostRequest(clusterPostRequest ClusterPostRequest) ApiClustersCreateRequest {
+	r.clusterPostRequest = &clusterPostRequest
+	return r
+}
+
+func (r ApiClustersCreateRequest) Execute() (*ClusterPostResponse, *http.Response, error) {
+	return r.ApiService.ClustersCreateExecute(r)
+}
+
+/*
+ClustersCreate Method for ClustersCreate
+
+Launch a cluster configuration.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiClustersCreateRequest
+*/
+func (a *ClustersAPIService) ClustersCreate(ctx context.Context) ApiClustersCreateRequest {
+	return ApiClustersCreateRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return ClusterPostResponse
+func (a *ClustersAPIService) ClustersCreateExecute(r ApiClustersCreateRequest) (*ClusterPostResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *ClusterPostResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ClustersAPIService.ClustersCreate")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/clusters/"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.clusterPostRequest == nil {
+		return localVarReturnValue, nil, reportError("clusterPostRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json", "application/x-www-form-urlencoded", "multipart/form-data"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.clusterPostRequest
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["tokenAuth"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

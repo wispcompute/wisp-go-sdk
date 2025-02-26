@@ -1,38 +1,35 @@
 openapi: 3.0.3
 info:
-  description: Wisp API
   title: Wisp API
   version: 1.0.0
-servers:
-- url: /
+  description: Wisp API
 paths:
   /api/clusters/:
     get:
-      description: Retrieve a list of all Clusters for the whole organization.
       operationId: clusters_retrieve
+      description: Retrieve a list of all Clusters for the whole organization.
       parameters:
-      - explode: true
-        in: query
+      - in: query
         name: constraints
-        required: false
         schema:
           $ref: '#/components/schemas/ConstrainRequest'
-        style: form
+      tags:
+      - clusters
+      security:
+      - tokenAuth: []
+      - oauth2: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClusterListResponse'
-          description: ""
-      security:
-      - tokenAuth: []
-      - oauth2: []
+          description: ''
+    post:
+      operationId: clusters_create
+      description: Launch a cluster configuration.
       tags:
       - clusters
-    post:
-      description: Launch a cluster configuration.
-      operationId: clusters_create
       requestBody:
         content:
           application/json:
@@ -45,151 +42,116 @@ paths:
             schema:
               $ref: '#/components/schemas/ClusterPostRequest'
         required: true
+      security:
+      - tokenAuth: []
+      - oauth2: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClusterPostResponse'
-          description: ""
+          description: ''
+  /api/clusters/{cluster_name}/{action}/:
+    post:
+      operationId: cluster_action_create
+      description: Perform an action (start, stop, pause, resume) on a Cluster.
+      parameters:
+      - in: path
+        name: action
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: cluster_name
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: wait
+        schema:
+          type: boolean
+          default: false
+      tags:
+      - clusters
       security:
       - tokenAuth: []
       - oauth2: []
-      tags:
-      - clusters
-  /api/clusters/{cluster_name}/{action}/:
-    post:
-      description: "Perform an action (start, stop, pause, resume) on a Cluster."
-      operationId: cluster_action_create
-      parameters:
-      - explode: false
-        in: path
-        name: action
-        required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: cluster_name
-        required: true
-        schema:
-          type: string
-        style: simple
-      - explode: true
-        in: query
-        name: wait
-        required: false
-        schema:
-          default: false
-          type: boolean
-        style: form
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClusterActionResponse'
-          description: ""
-        "400":
+          description: ''
+        '400':
           content:
             application/json:
               schema:
+                type: object
                 additionalProperties: {}
                 description: Unspecified response body
-                type: object
-          description: ""
-        "401":
+          description: ''
+        '401':
           content:
             application/json:
               schema:
+                type: object
                 additionalProperties: {}
                 description: Unspecified response body
-                type: object
-          description: ""
-        "404":
+          description: ''
+        '404':
           content:
             application/json:
               schema:
+                type: object
                 additionalProperties: {}
                 description: Unspecified response body
-                type: object
-          description: ""
-        "409":
+          description: ''
+        '409':
           content:
             application/json:
               schema:
+                type: object
                 additionalProperties: {}
                 description: Unspecified response body
-                type: object
-          description: ""
+          description: ''
+  /api/clusters/{cluster_name}/status/:
+    get:
+      operationId: clusters_status_retrieve
+      description: Retrieve the current status of a Cluster.
+      parameters:
+      - in: path
+        name: cluster_name
+        schema:
+          type: string
+        required: true
+      tags:
+      - clusters
       security:
       - tokenAuth: []
       - oauth2: []
-      tags:
-      - clusters
-  /api/clusters/{cluster_name}/status/:
-    get:
-      description: Retrieve the current status of a Cluster.
-      operationId: clusters_status_retrieve
-      parameters:
-      - explode: false
-        in: path
-        name: cluster_name
-        required: true
-        schema:
-          type: string
-        style: simple
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClusterStatusResponse'
-          description: ""
-        "404":
+          description: ''
+        '404':
           content:
             application/json:
               schema:
+                type: object
                 additionalProperties: {}
                 description: Unspecified response body
-                type: object
-          description: ""
-      security:
-      - tokenAuth: []
-      - oauth2: []
-      tags:
-      - clusters
+          description: ''
   /api/constraints/:
-    patch:
-      description: Validate the configuration if the cluster is already running.
-      operationId: constraints_partial_update
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedConstrainPatchRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedConstrainPatchRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedConstrainPatchRequest'
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConstrainRequest'
-          description: ""
-      security:
-      - tokenAuth: []
-      - oauth2: []
+    post:
+      operationId: constraints_create
+      description: Constrain clusters based on resource specification.
       tags:
       - constraints
-    post:
-      description: Constrain clusters based on resource specification.
-      operationId: constraints_create
       requestBody:
         content:
           application/json:
@@ -202,20 +164,45 @@ paths:
             schema:
               $ref: '#/components/schemas/ConstrainRequest'
         required: true
+      security:
+      - tokenAuth: []
+      - oauth2: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConstrainResponse'
-          description: ""
+          description: ''
+    patch:
+      operationId: constraints_partial_update
+      description: Validate the configuration if the cluster is already running.
+      tags:
+      - constraints
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedConstrainPatchRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedConstrainPatchRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedConstrainPatchRequest'
       security:
       - tokenAuth: []
       - oauth2: []
-      tags:
-      - constraints
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstrainRequest'
+          description: ''
   /api/download/:
     get:
+      operationId: download_retrieve
       description: |-
         Generate a signed download URL for the requested Wisp CLI binary.
 
@@ -224,32 +211,31 @@ paths:
 
         Returns:
             Response: Contains either the signed URL or an error message.
-      operationId: download_retrieve
       parameters:
-      - description: The name of the binary to download
-        explode: true
-        in: query
+      - in: query
         name: name
-        required: true
         schema:
           type: string
-        style: form
+        description: The name of the binary to download
+        required: true
+      tags:
+      - download
+      security:
+      - tokenAuth: []
+      - oauth2: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DownloadResponse'
-          description: ""
-      security:
-      - tokenAuth: []
-      - oauth2: []
-      tags:
-      - download
+          description: ''
   /api/jobs/:
     post:
-      description: Create a new job on the specified cluster.
       operationId: jobs_create
+      description: Create a new job on the specified cluster.
+      tags:
+      - jobs
       requestBody:
         content:
           application/json:
@@ -262,80 +248,76 @@ paths:
             schema:
               $ref: '#/components/schemas/TempJobPostRequest'
         required: true
+      security:
+      - tokenAuth: []
+      - oauth2: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/JobGetResponse'
-          description: ""
-      security:
-      - tokenAuth: []
-      - oauth2: []
-      tags:
-      - jobs
+          description: ''
   /api/jobs/{job_id}/:
-    delete:
-      description: Delete a job
-      operationId: jobs_destroy
+    get:
+      operationId: jobs_retrieve
+      description: Get the job for the user.
       parameters:
-      - explode: false
-        in: path
+      - in: path
         name: job_id
-        required: true
         schema:
           type: string
-        style: simple
-      responses:
-        "204":
-          description: No response body
+        required: true
+      tags:
+      - jobs
       security:
       - tokenAuth: []
       - oauth2: []
-      tags:
-      - jobs
-    get:
-      description: Get the job for the user.
-      operationId: jobs_retrieve
-      parameters:
-      - explode: false
-        in: path
-        name: job_id
-        required: true
-        schema:
-          type: string
-        style: simple
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/JobGetResponse'
-          description: ""
+          description: ''
+    delete:
+      operationId: jobs_destroy
+      description: Delete a job
+      parameters:
+      - in: path
+        name: job_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - jobs
       security:
       - tokenAuth: []
       - oauth2: []
-      tags:
-      - jobs
+      responses:
+        '204':
+          description: No response body
   /api/projects/:
     get:
-      description: List all projects for the authenticated user.
       operationId: list_projects
+      description: List all projects for the authenticated user.
+      tags:
+      - projects
+      security:
+      - tokenAuth: []
+      - oauth2: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProjectsGetResponse'
-          description: ""
-      security:
-      - tokenAuth: []
-      - oauth2: []
+          description: ''
+    post:
+      operationId: create_project
+      description: Create a new project.
       tags:
       - projects
-    post:
-      description: Create a new project.
-      operationId: create_project
       requestBody:
         content:
           application/json:
@@ -348,152 +330,144 @@ paths:
             schema:
               $ref: '#/components/schemas/ProjectCreateRequest'
         required: true
+      security:
+      - tokenAuth: []
+      - oauth2: []
       responses:
-        "201":
+        '201':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Project'
-          description: ""
-      security:
-      - tokenAuth: []
-      - oauth2: []
-      tags:
-      - projects
+          description: ''
   /api/projects/{project_id}/:
-    delete:
-      description: Delete a specific project.
-      operationId: delete_project
+    get:
+      operationId: retrieve_project
+      description: Retrieve a specific project.
       parameters:
-      - explode: false
-        in: path
+      - in: path
         name: project_id
-        required: true
         schema:
           type: string
-        style: simple
-      responses:
-        "204":
-          description: No response body
+        required: true
+      tags:
+      - projects
       security:
       - tokenAuth: []
       - oauth2: []
-      tags:
-      - projects
-    get:
-      description: Retrieve a specific project.
-      operationId: retrieve_project
-      parameters:
-      - explode: false
-        in: path
-        name: project_id
-        required: true
-        schema:
-          type: string
-        style: simple
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Project'
-          description: ""
+          description: ''
+    delete:
+      operationId: delete_project
+      description: Delete a specific project.
+      parameters:
+      - in: path
+        name: project_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - projects
       security:
       - tokenAuth: []
       - oauth2: []
-      tags:
-      - projects
+      responses:
+        '204':
+          description: No response body
   /api/projects/{project_id}/jobs/:
     get:
-      description: Get the jobs for the user.
       operationId: projects_jobs_retrieve
+      description: Get the jobs for the user.
       parameters:
-      - explode: false
-        in: path
+      - in: path
         name: project_id
-        required: true
         schema:
           type: string
-        style: simple
+        required: true
+      tags:
+      - projects
+      security:
+      - tokenAuth: []
+      - oauth2: []
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/JobListResponse'
-          description: ""
+          description: ''
+  /api/provision/{provision_id}:
+    get:
+      operationId: provision_retrieve
+      description: Retrieve the current status of a Cluster.
+      parameters:
+      - in: path
+        name: provision_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - provision
       security:
       - tokenAuth: []
       - oauth2: []
-      tags:
-      - projects
-  /api/provision/{provision_id}:
-    get:
-      description: Retrieve the current status of a Cluster.
-      operationId: provision_retrieve
-      parameters:
-      - explode: false
-        in: path
-        name: provision_id
-        required: true
-        schema:
-          type: string
-        style: simple
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProvisionLog'
-          description: ""
-        "404":
+          description: ''
+        '404':
           content:
             application/json:
               schema:
+                type: object
                 additionalProperties: {}
                 description: Unspecified response body
-                type: object
-          description: ""
+          description: ''
+  /api/users/me/:
+    get:
+      operationId: users_me_retrieve
+      description: Get the user information
+      tags:
+      - users
       security:
       - tokenAuth: []
       - oauth2: []
-      tags:
-      - provision
-  /api/users/me/:
-    get:
-      description: Get the user information
-      operationId: users_me_retrieve
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserResponse'
-          description: ""
+          description: ''
+  /api/users/me/public-key/:
+    get:
+      operationId: users_me_public_key_retrieve
+      description: Get the user's public key.
+      tags:
+      - users
       security:
       - tokenAuth: []
       - oauth2: []
-      tags:
-      - users
-  /api/users/me/public-key/:
-    get:
-      description: Get the user's public key.
-      operationId: users_me_public_key_retrieve
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserPublicKeyResponse'
-          description: ""
-      security:
-      - tokenAuth: []
-      - oauth2: []
+          description: ''
+    post:
+      operationId: users_me_public_key_create
+      description: Set the user's public key.
       tags:
       - users
-    post:
-      description: Set the user's public key.
-      operationId: users_me_public_key_create
       requestBody:
         content:
           application/json:
@@ -506,78 +480,65 @@ paths:
             schema:
               $ref: '#/components/schemas/UserPublicKeyRequest'
         required: true
-      responses:
-        "200":
-          description: No response body
       security:
       - tokenAuth: []
       - oauth2: []
-      tags:
-      - users
+      responses:
+        '200':
+          description: No response body
 components:
   schemas:
     Bucket:
+      type: object
       description: Bucket configuration serializer.
       properties:
         name:
-          nullable: true
           type: string
+          nullable: true
         mode:
-          nullable: true
           type: string
+          nullable: true
         mount_location:
-          nullable: true
           type: string
+          nullable: true
       required:
       - mode
       - mount_location
       - name
-      type: object
     Cluster:
+      type: object
       description: Cluster serializer.
-      example:
-        to_down: true
-        metadata: metadata
-        launched_at: -7746104769210155008
-        last_use: last_use
-        name: name
-        handle: ""
-        user:
-          email: email
-        cluster_hash: cluster_hash
-        autostop: 1895322125605019648
-        status: INIT
       properties:
         user:
           $ref: '#/components/schemas/User'
         name:
-          maxLength: 255
           type: string
+          maxLength: 255
         launched_at:
-          format: int64
+          type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
+          format: int64
           nullable: true
-          type: integer
         last_use:
-          maxLength: 255
-          nullable: true
           type: string
+          nullable: true
+          maxLength: 255
         status:
           $ref: '#/components/schemas/ClusterStatusEnum'
         autostop:
-          format: int64
+          type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
-          type: integer
+          format: int64
         metadata:
           type: string
         to_down:
           type: boolean
         cluster_hash:
-          maxLength: 255
-          nullable: true
           type: string
+          nullable: true
+          maxLength: 255
         handle:
           allOf:
           - $ref: '#/components/schemas/PickledHandleField'
@@ -586,13 +547,9 @@ components:
       - handle
       - name
       - user
-      type: object
     ClusterActionResponse:
+      type: object
       description: Cluster action response serializer.
-      example:
-        cluster_name: cluster_name
-        message: message
-        status: status
       properties:
         cluster_name:
           type: string
@@ -604,120 +561,76 @@ components:
       - cluster_name
       - message
       - status
-      type: object
     ClusterListResponse:
+      type: object
       description: Cluster list response serializer.
-      example:
-        clusters:
-        - to_down: true
-          metadata: metadata
-          launched_at: -7746104769210155008
-          last_use: last_use
-          name: name
-          handle: ""
-          user:
-            email: email
-          cluster_hash: cluster_hash
-          autostop: 1895322125605019648
-          status: INIT
-        - to_down: true
-          metadata: metadata
-          launched_at: -7746104769210155008
-          last_use: last_use
-          name: name
-          handle: ""
-          user:
-            email: email
-          cluster_hash: cluster_hash
-          autostop: 1895322125605019648
-          status: INIT
       properties:
         clusters:
+          type: array
           items:
             $ref: '#/components/schemas/Cluster'
-          type: array
       required:
       - clusters
-      type: object
     ClusterOffer:
-      example:
-        accelerator_args: ""
-        memory: 1895322125605019648
-        regions: ""
-        cpus: 1774823812569044992
-        disk_size: -7746104769210155008
-        storage: storage
-        ports: ""
-        accelerator_count: ""
-        disk_tier: disk_tier
-        job_recovery: job_recovery
-        labels: ""
-        cloud: cloud
-        zone: zone
-        price: 1.4658129805029452
-        accelerators: ""
-        use_spot: true
-        region: region
-        image_id: ""
-        instance_type: instance_type
+      type: object
       properties:
         disk_size:
-          format: int64
+          type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
+          format: int64
           nullable: true
-          type: integer
         cloud:
-          maxLength: 100
-          nullable: true
           type: string
+          nullable: true
+          maxLength: 100
         job_recovery:
-          maxLength: 100
-          nullable: true
           type: string
+          nullable: true
+          maxLength: 100
         disk_tier:
-          maxLength: 100
-          nullable: true
           type: string
+          nullable: true
+          maxLength: 100
         memory:
-          format: int64
+          type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
+          format: int64
           nullable: true
-          type: integer
         accelerator_args:
           nullable: true
         region:
-          maxLength: 100
-          nullable: true
           type: string
+          nullable: true
+          maxLength: 100
         price:
+          type: number
           format: double
           nullable: true
-          type: number
         storage:
-          maxLength: 100
-          nullable: true
           type: string
+          nullable: true
+          maxLength: 100
         instance_type:
-          maxLength: 100
-          nullable: true
           type: string
+          nullable: true
+          maxLength: 100
         cpus:
-          format: int64
+          type: integer
           maximum: 9223372036854775807
           minimum: -9223372036854775808
+          format: int64
           nullable: true
-          type: integer
         accelerators:
           nullable: true
         use_spot:
-          nullable: true
           type: boolean
-        zone:
-          maxLength: 100
           nullable: true
+        zone:
           type: string
+          nullable: true
+          maxLength: 100
         image_id:
           nullable: true
         ports:
@@ -728,63 +641,9 @@ components:
           nullable: true
         regions:
           nullable: true
-      type: object
     ClusterPostRequest:
+      type: object
       description: Clister post request serializer.
-      example:
-        project:
-          updated_at: 2000-01-23T04:56:07.000+00:00
-          project_id: project_id
-          name: name
-          created_at: 2000-01-23T04:56:07.000+00:00
-          type: type
-        choice:
-          accelerator_args: ""
-          memory: 1895322125605019648
-          regions: ""
-          cpus: 1774823812569044992
-          disk_size: -7746104769210155008
-          storage: storage
-          ports: ""
-          accelerator_count: ""
-          disk_tier: disk_tier
-          job_recovery: job_recovery
-          labels: ""
-          cloud: cloud
-          zone: zone
-          price: 1.4658129805029452
-          accelerators: ""
-          use_spot: true
-          region: region
-          image_id: ""
-          instance_type: instance_type
-        config:
-          io: ""
-          project: ""
-          setup: ""
-          resources:
-            regions:
-            - regions
-            - regions
-            memory: 5
-            cpus: 2
-            compute_capability: compute_capability
-            persistent_disk: 9
-            accelerators:
-            - accelerators
-            - accelerators
-            areas:
-            - areas
-            - areas
-            clouds:
-            - clouds
-            - clouds
-            storage: 7
-            accelerator_count: 2
-            platform: platform
-            vram: 3
-          run: ""
-          teardown: ""
       properties:
         choice:
           $ref: '#/components/schemas/ClusterOffer'
@@ -796,33 +655,28 @@ components:
       - choice
       - config
       - project
-      type: object
     ClusterPostResponse:
-      example:
-        provision_log_id: provision_log_id
+      type: object
       properties:
         provision_log_id:
           type: string
       required:
       - provision_log_id
-      type: object
     ClusterStatusEnum:
-      description: |-
-        * `INIT` - INIT
-        * `UP` - UP
-        * `STOPPED` - STOPPED
-        * `ERROR` - ERROR
       enum:
       - INIT
       - UP
       - STOPPED
       - ERROR
       type: string
+      description: |-
+        * `INIT` - INIT
+        * `UP` - UP
+        * `STOPPED` - STOPPED
+        * `ERROR` - ERROR
     ClusterStatusResponse:
+      type: object
       description: Cluster status response serializer.
-      example:
-        cluster_name: cluster_name
-        status: status
       properties:
         cluster_name:
           type: string
@@ -831,40 +685,13 @@ components:
       required:
       - cluster_name
       - status
-      type: object
     ConstrainRequest:
+      type: object
       description: |-
         Configuration serializer for cluster constraints.
 
         Validates the full configuration schema including project details,
         scripts, resource requirements, and IO specifications.
-      example:
-        io: ""
-        project: ""
-        setup: ""
-        resources:
-          regions:
-          - regions
-          - regions
-          memory: 5
-          cpus: 2
-          compute_capability: compute_capability
-          persistent_disk: 9
-          accelerators:
-          - accelerators
-          - accelerators
-          areas:
-          - areas
-          - areas
-          clouds:
-          - clouds
-          - clouds
-          storage: 7
-          accelerator_count: 2
-          platform: platform
-          vram: 3
-        run: ""
-        teardown: ""
       properties:
         project:
           allOf:
@@ -892,66 +719,23 @@ components:
       - io
       - project
       - resources
-      type: object
     ConstrainResponse:
+      type: object
       description: |-
         Serializer for cluster constraint response.
 
         Fields:
             choice (list): List of cluster offers matching the constraints
-      example:
-        choice:
-        - accelerator_args: ""
-          memory: 1895322125605019648
-          regions: ""
-          cpus: 1774823812569044992
-          disk_size: -7746104769210155008
-          storage: storage
-          ports: ""
-          accelerator_count: ""
-          disk_tier: disk_tier
-          job_recovery: job_recovery
-          labels: ""
-          cloud: cloud
-          zone: zone
-          price: 1.4658129805029452
-          accelerators: ""
-          use_spot: true
-          region: region
-          image_id: ""
-          instance_type: instance_type
-        - accelerator_args: ""
-          memory: 1895322125605019648
-          regions: ""
-          cpus: 1774823812569044992
-          disk_size: -7746104769210155008
-          storage: storage
-          ports: ""
-          accelerator_count: ""
-          disk_tier: disk_tier
-          job_recovery: job_recovery
-          labels: ""
-          cloud: cloud
-          zone: zone
-          price: 1.4658129805029452
-          accelerators: ""
-          use_spot: true
-          region: region
-          image_id: ""
-          instance_type: instance_type
       properties:
         choice:
+          type: array
           items:
             $ref: '#/components/schemas/ClusterOffer'
-          type: array
       required:
       - choice
-      type: object
     DownloadResponse:
+      type: object
       description: Download response serializer.
-      example:
-        binary: binary
-        url: url
       properties:
         url:
           type: string
@@ -960,8 +744,8 @@ components:
       required:
       - binary
       - url
-      type: object
     IO:
+      type: object
       description: IO configuration serializer.
       properties:
         inputs:
@@ -972,53 +756,43 @@ components:
           allOf:
           - $ref: '#/components/schemas/Outputs'
           nullable: true
-      type: object
     Inputs:
+      type: object
       description: Inputs configuration serializer.
       properties:
         buckets:
+          type: array
           items:
             $ref: '#/components/schemas/Bucket'
           nullable: true
-          type: array
-      type: object
     Job:
+      type: object
       description: Job serializer.
-      example:
-        cluster: ""
-        updated_at: 2000-01-23T04:56:07.000+00:00
-        finished_at: 2000-01-23T04:56:07.000+00:00
-        configuration: configuration
-        job_id: job_id
-        name: name
-        created_at: 2000-01-23T04:56:07.000+00:00
-        started_at: 2000-01-23T04:56:07.000+00:00
-        logs: logs
       properties:
         name:
-          maxLength: 255
           type: string
+          maxLength: 255
         job_id:
-          maxLength: 255
           type: string
+          maxLength: 255
         configuration:
           type: string
         created_at:
+          type: string
           format: date-time
           readOnly: true
-          type: string
         updated_at:
+          type: string
           format: date-time
           readOnly: true
-          type: string
         started_at:
+          type: string
           format: date-time
           nullable: true
-          type: string
         finished_at:
+          type: string
           format: date-time
           nullable: true
-          type: string
         logs:
           type: string
         cluster:
@@ -1033,21 +807,9 @@ components:
       - logs
       - name
       - updated_at
-      type: object
     JobGetResponse:
+      type: object
       description: Job get response serializer.
-      example:
-        job:
-          cluster: ""
-          updated_at: 2000-01-23T04:56:07.000+00:00
-          finished_at: 2000-01-23T04:56:07.000+00:00
-          configuration: configuration
-          job_id: job_id
-          name: name
-          created_at: 2000-01-23T04:56:07.000+00:00
-          started_at: 2000-01-23T04:56:07.000+00:00
-          logs: logs
-        latest_cluster_log: ""
       properties:
         job:
           $ref: '#/components/schemas/Job'
@@ -1058,44 +820,24 @@ components:
       required:
       - job
       - latest_cluster_log
-      type: object
     JobListResponse:
+      type: object
       description: Job list response serializer.
-      example:
-        jobs:
-        - cluster: ""
-          updated_at: 2000-01-23T04:56:07.000+00:00
-          finished_at: 2000-01-23T04:56:07.000+00:00
-          configuration: configuration
-          job_id: job_id
-          name: name
-          created_at: 2000-01-23T04:56:07.000+00:00
-          started_at: 2000-01-23T04:56:07.000+00:00
-          logs: logs
-        - cluster: ""
-          updated_at: 2000-01-23T04:56:07.000+00:00
-          finished_at: 2000-01-23T04:56:07.000+00:00
-          configuration: configuration
-          job_id: job_id
-          name: name
-          created_at: 2000-01-23T04:56:07.000+00:00
-          started_at: 2000-01-23T04:56:07.000+00:00
-          logs: logs
       properties:
         jobs:
+          type: array
           items:
             $ref: '#/components/schemas/Job'
-          type: array
       required:
       - jobs
-      type: object
     LatestClusterLog:
+      type: object
       description: Latest cluster log serializer.
       properties:
         timestamp:
+          type: string
           format: date-time
           readOnly: true
-          type: string
         status:
           $ref: '#/components/schemas/LatestClusterLogStatusEnum'
         message:
@@ -1104,88 +846,53 @@ components:
       - message
       - status
       - timestamp
-      type: object
     LatestClusterLogStatusEnum:
-      description: |-
-        * `UPDATING` - UPDATING
-        * `DONE` - DONE
-        * `CLUSTER_ERROR` - CLUSTER_ERROR
       enum:
       - UPDATING
       - DONE
       - CLUSTER_ERROR
       type: string
+      description: |-
+        * `UPDATING` - UPDATING
+        * `DONE` - DONE
+        * `CLUSTER_ERROR` - CLUSTER_ERROR
     Outputs:
+      type: object
       description: Outputs configuration serializer.
       properties:
         buckets:
+          type: array
           items:
             $ref: '#/components/schemas/Bucket'
           nullable: true
-          type: array
-      type: object
     PatchedConstrainPatchRequest:
+      type: object
       description: Serializer for cluster constraint patch request.
-      example:
-        job_id: job_id
-        config:
-          io: ""
-          project: ""
-          setup: ""
-          resources:
-            regions:
-            - regions
-            - regions
-            memory: 5
-            cpus: 2
-            compute_capability: compute_capability
-            persistent_disk: 9
-            accelerators:
-            - accelerators
-            - accelerators
-            areas:
-            - areas
-            - areas
-            clouds:
-            - clouds
-            - clouds
-            storage: 7
-            accelerator_count: 2
-            platform: platform
-            vram: 3
-          run: ""
-          teardown: ""
       properties:
         job_id:
           type: string
         config:
           $ref: '#/components/schemas/ConstrainRequest'
-      type: object
     PickledHandleField:
+      type: object
       description: Custom field serializer for pickled handle data.
       properties:
         stable_internal_ip:
-          nullable: true
           type: string
+          nullable: true
         stable_external_ip:
-          nullable: true
           type: string
+          nullable: true
         stable_ssh_ports:
+          type: array
           items:
             type: integer
-          type: array
         ssh_user:
-          nullable: true
           type: string
-      type: object
+          nullable: true
     Project:
+      type: object
       description: Project serializer.
-      example:
-        updated_at: 2000-01-23T04:56:07.000+00:00
-        project_id: project_id
-        name: name
-        created_at: 2000-01-23T04:56:07.000+00:00
-        type: type
       properties:
         name:
           type: string
@@ -1194,108 +901,66 @@ components:
         type:
           type: string
         created_at:
-          format: date-time
           type: string
+          format: date-time
         updated_at:
-          format: date-time
           type: string
+          format: date-time
       required:
       - created_at
       - name
       - project_id
       - type
       - updated_at
-      type: object
     ProjectCreateRequest:
+      type: object
       description: Project create request serializer.
-      example:
-        name: name
       properties:
         name:
           type: string
       required:
       - name
-      type: object
     ProjectsGetResponse:
+      type: object
       description: Projects serializer.
-      example:
-        projects:
-        - updated_at: 2000-01-23T04:56:07.000+00:00
-          project_id: project_id
-          name: name
-          created_at: 2000-01-23T04:56:07.000+00:00
-          type: type
-        - updated_at: 2000-01-23T04:56:07.000+00:00
-          project_id: project_id
-          name: name
-          created_at: 2000-01-23T04:56:07.000+00:00
-          type: type
       properties:
         projects:
+          type: array
           items:
             $ref: '#/components/schemas/Project'
-          type: array
       required:
       - projects
-      type: object
     ProvisionLog:
-      example:
-        cluster:
-          to_down: true
-          metadata: metadata
-          launched_at: -7746104769210155008
-          last_use: last_use
-          name: name
-          handle: ""
-          user:
-            email: email
-          cluster_hash: cluster_hash
-          autostop: 1895322125605019648
-          status: INIT
-        provision_id: provision_id
-        updated_at: 2000-01-23T04:56:07.000+00:00
-        step_name: step_name
-        started_at: 2000-01-23T04:56:07.000+00:00
-        message: message
-        status: PENDING
+      type: object
       properties:
         cluster:
           $ref: '#/components/schemas/Cluster'
         provision_id:
-          maxLength: 255
           type: string
+          maxLength: 255
         step_name:
-          maxLength: 255
           type: string
+          maxLength: 255
         status:
           $ref: '#/components/schemas/ProvisionLogStatusEnum'
         message:
+          type: string
           nullable: true
-          type: string
         started_at:
+          type: string
           format: date-time
           readOnly: true
-          type: string
         updated_at:
+          type: string
           format: date-time
           readOnly: true
-          type: string
       required:
       - cluster
       - provision_id
       - started_at
       - step_name
       - updated_at
-      type: object
     ProvisionLogStatusEnum:
-      description: |-
-        * `PENDING` - PROVISION_PENDING
-        * `IN_PROGRESS` - PROVISION_IN_PROGRESS
-        * `TRANSFER_SSH` - PROVISION_TRANSFER_SSH
-        * `SETUP_BUCKETS` - PROVISION_SETUP_BUCKETS
-        * `SYNC_FILE_MOUNTS` - PROVISION_SYNC_FILE_MOUNTS
-        * `COMPLETED` - PROVISION_COMPLETED
-        * `FAILED` - PROVISION_FAILED
       enum:
       - PENDING
       - IN_PROGRESS
@@ -1305,136 +970,78 @@ components:
       - COMPLETED
       - FAILED
       type: string
+      description: |-
+        * `PENDING` - PROVISION_PENDING
+        * `IN_PROGRESS` - PROVISION_IN_PROGRESS
+        * `TRANSFER_SSH` - PROVISION_TRANSFER_SSH
+        * `SETUP_BUCKETS` - PROVISION_SETUP_BUCKETS
+        * `SYNC_FILE_MOUNTS` - PROVISION_SYNC_FILE_MOUNTS
+        * `COMPLETED` - PROVISION_COMPLETED
+        * `FAILED` - PROVISION_FAILED
     Resources:
+      type: object
       description: Resource configuration serializer.
-      example:
-        regions:
-        - regions
-        - regions
-        memory: 5
-        cpus: 2
-        compute_capability: compute_capability
-        persistent_disk: 9
-        accelerators:
-        - accelerators
-        - accelerators
-        areas:
-        - areas
-        - areas
-        clouds:
-        - clouds
-        - clouds
-        storage: 7
-        accelerator_count: 2
-        platform: platform
-        vram: 3
       properties:
         clouds:
-          items:
-            nullable: true
-            type: string
           type: array
+          items:
+            type: string
+            nullable: true
         regions:
-          items:
-            nullable: true
-            type: string
           type: array
+          items:
+            type: string
+            nullable: true
         areas:
-          items:
-            nullable: true
-            type: string
           type: array
+          items:
+            type: string
+            nullable: true
         memory:
-          nullable: true
           type: integer
+          nullable: true
         cpus:
-          nullable: true
           type: integer
+          nullable: true
         storage:
-          nullable: true
           type: integer
+          nullable: true
         persistent_disk:
-          nullable: true
           type: integer
+          nullable: true
         accelerators:
-          items:
-            nullable: true
-            type: string
-          nullable: true
           type: array
+          items:
+            type: string
+            nullable: true
+          nullable: true
         compute_capability:
-          nullable: true
           type: string
+          nullable: true
         vram:
-          nullable: true
           type: integer
+          nullable: true
         accelerator_count:
-          nullable: true
           type: integer
-        platform:
           nullable: true
+        platform:
           type: string
+          nullable: true
       required:
       - accelerators
-      type: object
     Script:
+      type: object
       description: Script configuration serializer.
       properties:
         script:
+          type: array
           items:
             type: string
-          type: array
       required:
       - script
-      type: object
     TempJobPostRequest:
+      type: object
       description: Job detail post request serialier
-      example:
-        cluster:
-          to_down: true
-          metadata: metadata
-          launched_at: -7746104769210155008
-          last_use: last_use
-          name: name
-          handle: ""
-          user:
-            email: email
-          cluster_hash: cluster_hash
-          autostop: 1895322125605019648
-          status: INIT
-        project:
-          updated_at: 2000-01-23T04:56:07.000+00:00
-          project_id: project_id
-          name: name
-          created_at: 2000-01-23T04:56:07.000+00:00
-          type: type
-        config:
-          io: ""
-          project: ""
-          setup: ""
-          resources:
-            regions:
-            - regions
-            - regions
-            memory: 5
-            cpus: 2
-            compute_capability: compute_capability
-            persistent_disk: 9
-            accelerators:
-            - accelerators
-            - accelerators
-            areas:
-            - areas
-            - areas
-            clouds:
-            - clouds
-            - clouds
-            storage: 7
-            accelerator_count: 2
-            platform: platform
-            vram: 3
-          run: ""
-          teardown: ""
       properties:
         cluster:
           $ref: '#/components/schemas/Cluster'
@@ -1446,71 +1053,62 @@ components:
       - cluster
       - config
       - project
-      type: object
     User:
+      type: object
       description: User serializer.
-      example:
-        email: email
       properties:
         email:
-          format: email
-          maxLength: 254
-          title: Email address
           type: string
+          format: email
+          title: Email address
+          maxLength: 254
       required:
       - email
-      type: object
     UserPublicKeyRequest:
-      example:
-        public_key: public_key
+      type: object
       properties:
         public_key:
           type: string
       required:
       - public_key
-      type: object
     UserPublicKeyResponse:
-      example:
-        public_key: public_key
+      type: object
       properties:
         public_key:
           type: string
       required:
       - public_key
-      type: object
     UserResponse:
-      example:
-        email: email
+      type: object
       properties:
         email:
+          type: string
           format: email
           readOnly: true
-          type: string
       required:
       - email
-      type: object
   securitySchemes:
     oauth2:
+      type: oauth2
       flows:
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access
+            write: Write access
+        clientCredentials:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access
+            write: Write access
         authorizationCode:
           authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
           scopes:
             read: Read access
             write: Write access
-          tokenUrl: /o/token/
-        clientCredentials:
-          scopes:
-            read: Read access
-            write: Write access
-          tokenUrl: /o/token/
-        password:
-          scopes:
-            read: Read access
-            write: Write access
-          tokenUrl: /o/token/
-      type: oauth2
     tokenAuth:
-      description: Token-based authentication with required prefix "Token"
+      type: apiKey
       in: header
       name: Authorization
-      type: apiKey
+      description: Token-based authentication with required prefix "Token"

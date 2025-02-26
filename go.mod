@@ -1,10 +1,10 @@
 module github.com/wispcompute/wisp-go-sdk
 
-go 1.18
+go 1.23.0
 
 require (
 	github.com/stretchr/testify v1.10.0
-	golang.org/x/oauth2 v0.26.0
+	golang.org/x/oauth2 v0.27.0
 )
 
 require (

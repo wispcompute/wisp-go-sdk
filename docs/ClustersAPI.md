@@ -4,15 +4,16 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**ClustersCreate**](ClustersAPI.md#ClustersCreate) | **Post** /api/clusters/{cluster_name}/{action}/ | 
+[**ClusterActionCreate**](ClustersAPI.md#ClusterActionCreate) | **Post** /api/clusters/{cluster_name}/{action}/ | 
+[**ClustersCreate**](ClustersAPI.md#ClustersCreate) | **Post** /api/clusters/ | 
 [**ClustersRetrieve**](ClustersAPI.md#ClustersRetrieve) | **Get** /api/clusters/ | 
 [**ClustersStatusRetrieve**](ClustersAPI.md#ClustersStatusRetrieve) | **Get** /api/clusters/{cluster_name}/status/ | 
 
 
 
-## ClustersCreate
+## ClusterActionCreate
 
-> ClusterActionResponse ClustersCreate(ctx, action, clusterName).Wait(wait).Execute()
+> ClusterActionResponse ClusterActionCreate(ctx, action, clusterName).Wait(wait).Execute()
 
 
 
@@ -37,13 +38,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ClustersAPI.ClustersCreate(context.Background(), action, clusterName).Wait(wait).Execute()
+	resp, r, err := apiClient.ClustersAPI.ClusterActionCreate(context.Background(), action, clusterName).Wait(wait).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.ClustersCreate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.ClusterActionCreate``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ClustersCreate`: ClusterActionResponse
-	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.ClustersCreate`: %v\n", resp)
+	// response from `ClusterActionCreate`: ClusterActionResponse
+	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.ClusterActionCreate`: %v\n", resp)
 }
 ```
 
@@ -58,7 +59,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiClustersCreateRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiClusterActionCreateRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -78,6 +79,73 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ClustersCreate
+
+> ClusterPostResponse ClustersCreate(ctx).ClusterPostRequest(clusterPostRequest).Execute()
+
+
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+    "time"
+	openapiclient "github.com/wispcompute/wisp-go-sdk"
+)
+
+func main() {
+	clusterPostRequest := *openapiclient.NewClusterPostRequest(*openapiclient.NewClusterOffer(), *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), "TODO"), *openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now())) // ClusterPostRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ClustersAPI.ClustersCreate(context.Background()).ClusterPostRequest(clusterPostRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ClustersAPI.ClustersCreate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ClustersCreate`: ClusterPostResponse
+	fmt.Fprintf(os.Stdout, "Response from `ClustersAPI.ClustersCreate`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiClustersCreateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **clusterPostRequest** | [**ClusterPostRequest**](ClusterPostRequest.md) |  | 
+
+### Return type
+
+[**ClusterPostResponse**](ClusterPostResponse.md)
+
+### Authorization
+
+[tokenAuth](../README.md#tokenAuth), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: application/json, application/x-www-form-urlencoded, multipart/form-data
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

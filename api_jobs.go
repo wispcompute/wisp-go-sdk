@@ -23,31 +23,31 @@ import (
 // JobsAPIService JobsAPI service
 type JobsAPIService service
 
-type ApiCreateJobRequest struct {
+type ApiJobsCreateRequest struct {
 	ctx context.Context
 	ApiService *JobsAPIService
-	jobPostRequest *JobPostRequest
+	tempJobPostRequest *TempJobPostRequest
 }
 
-func (r ApiCreateJobRequest) JobPostRequest(jobPostRequest JobPostRequest) ApiCreateJobRequest {
-	r.jobPostRequest = &jobPostRequest
+func (r ApiJobsCreateRequest) TempJobPostRequest(tempJobPostRequest TempJobPostRequest) ApiJobsCreateRequest {
+	r.tempJobPostRequest = &tempJobPostRequest
 	return r
 }
 
-func (r ApiCreateJobRequest) Execute() (*JobGetResponse, *http.Response, error) {
-	return r.ApiService.CreateJobExecute(r)
+func (r ApiJobsCreateRequest) Execute() (*JobGetResponse, *http.Response, error) {
+	return r.ApiService.JobsCreateExecute(r)
 }
 
 /*
-CreateJob Method for CreateJob
+JobsCreate Method for JobsCreate
 
-Launch a cluster configuration.
+Create a new job on the specified cluster.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateJobRequest
+ @return ApiJobsCreateRequest
 */
-func (a *JobsAPIService) CreateJob(ctx context.Context) ApiCreateJobRequest {
-	return ApiCreateJobRequest{
+func (a *JobsAPIService) JobsCreate(ctx context.Context) ApiJobsCreateRequest {
+	return ApiJobsCreateRequest{
 		ApiService: a,
 		ctx: ctx,
 	}
@@ -55,7 +55,7 @@ func (a *JobsAPIService) CreateJob(ctx context.Context) ApiCreateJobRequest {
 
 // Execute executes the request
 //  @return JobGetResponse
-func (a *JobsAPIService) CreateJobExecute(r ApiCreateJobRequest) (*JobGetResponse, *http.Response, error) {
+func (a *JobsAPIService) JobsCreateExecute(r ApiJobsCreateRequest) (*JobGetResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
@@ -63,7 +63,7 @@ func (a *JobsAPIService) CreateJobExecute(r ApiCreateJobRequest) (*JobGetRespons
 		localVarReturnValue  *JobGetResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobsAPIService.CreateJob")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobsAPIService.JobsCreate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -73,8 +73,8 @@ func (a *JobsAPIService) CreateJobExecute(r ApiCreateJobRequest) (*JobGetRespons
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.jobPostRequest == nil {
-		return localVarReturnValue, nil, reportError("jobPostRequest is required and must be specified")
+	if r.tempJobPostRequest == nil {
+		return localVarReturnValue, nil, reportError("tempJobPostRequest is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -95,7 +95,7 @@ func (a *JobsAPIService) CreateJobExecute(r ApiCreateJobRequest) (*JobGetRespons
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.jobPostRequest
+	localVarPostBody = r.tempJobPostRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
