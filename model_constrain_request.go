@@ -26,6 +26,7 @@ type ConstrainRequest struct {
 	Run NullableScript `json:"run,omitempty"`
 	Teardown NullableScript `json:"teardown,omitempty"`
 	Resources Resources `json:"resources"`
+	JobConfig NullableJobConfig `json:"job_config"`
 	Io NullableIO `json:"io"`
 }
 
@@ -35,10 +36,11 @@ type _ConstrainRequest ConstrainRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewConstrainRequest(project Project, resources Resources, io NullableIO) *ConstrainRequest {
+func NewConstrainRequest(project Project, resources Resources, jobConfig NullableJobConfig, io NullableIO) *ConstrainRequest {
 	this := ConstrainRequest{}
 	this.Project = project
 	this.Resources = resources
+	this.JobConfig = jobConfig
 	this.Io = io
 	return &this
 }
@@ -225,6 +227,32 @@ func (o *ConstrainRequest) SetResources(v Resources) {
 	o.Resources = v
 }
 
+// GetJobConfig returns the JobConfig field value
+// If the value is explicit nil, the zero value for JobConfig will be returned
+func (o *ConstrainRequest) GetJobConfig() JobConfig {
+	if o == nil || o.JobConfig.Get() == nil {
+		var ret JobConfig
+		return ret
+	}
+
+	return *o.JobConfig.Get()
+}
+
+// GetJobConfigOk returns a tuple with the JobConfig field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ConstrainRequest) GetJobConfigOk() (*JobConfig, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.JobConfig.Get(), o.JobConfig.IsSet()
+}
+
+// SetJobConfig sets field value
+func (o *ConstrainRequest) SetJobConfig(v JobConfig) {
+	o.JobConfig.Set(&v)
+}
+
 // GetIo returns the Io field value
 // If the value is explicit nil, the zero value for IO will be returned
 func (o *ConstrainRequest) GetIo() IO {
@@ -272,6 +300,7 @@ func (o ConstrainRequest) ToMap() (map[string]interface{}, error) {
 		toSerialize["teardown"] = o.Teardown.Get()
 	}
 	toSerialize["resources"] = o.Resources
+	toSerialize["job_config"] = o.JobConfig.Get()
 	toSerialize["io"] = o.Io.Get()
 	return toSerialize, nil
 }
@@ -283,6 +312,7 @@ func (o *ConstrainRequest) UnmarshalJSON(data []byte) (err error) {
 	requiredProperties := []string{
 		"project",
 		"resources",
+		"job_config",
 		"io",
 	}
 

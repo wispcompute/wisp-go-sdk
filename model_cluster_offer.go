@@ -19,17 +19,17 @@ var _ MappedNullable = &ClusterOffer{}
 
 // ClusterOffer struct for ClusterOffer
 type ClusterOffer struct {
-	DiskSize NullableInt64 `json:"disk_size,omitempty"`
+	DiskSize NullableInt32 `json:"disk_size,omitempty"`
 	Cloud NullableString `json:"cloud,omitempty"`
 	JobRecovery NullableString `json:"job_recovery,omitempty"`
 	DiskTier NullableString `json:"disk_tier,omitempty"`
-	Memory NullableInt64 `json:"memory,omitempty"`
+	Memory NullableInt32 `json:"memory,omitempty"`
 	AcceleratorArgs interface{} `json:"accelerator_args,omitempty"`
 	Region NullableString `json:"region,omitempty"`
 	Price NullableFloat64 `json:"price,omitempty"`
 	Storage NullableString `json:"storage,omitempty"`
 	InstanceType NullableString `json:"instance_type,omitempty"`
-	Cpus NullableInt64 `json:"cpus,omitempty"`
+	Cpus NullableInt32 `json:"cpus,omitempty"`
 	Accelerators interface{} `json:"accelerators,omitempty"`
 	UseSpot NullableBool `json:"use_spot,omitempty"`
 	Zone NullableString `json:"zone,omitempty"`
@@ -58,9 +58,9 @@ func NewClusterOfferWithDefaults() *ClusterOffer {
 }
 
 // GetDiskSize returns the DiskSize field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *ClusterOffer) GetDiskSize() int64 {
+func (o *ClusterOffer) GetDiskSize() int32 {
 	if o == nil || IsNil(o.DiskSize.Get()) {
-		var ret int64
+		var ret int32
 		return ret
 	}
 	return *o.DiskSize.Get()
@@ -69,7 +69,7 @@ func (o *ClusterOffer) GetDiskSize() int64 {
 // GetDiskSizeOk returns a tuple with the DiskSize field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *ClusterOffer) GetDiskSizeOk() (*int64, bool) {
+func (o *ClusterOffer) GetDiskSizeOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -85,8 +85,8 @@ func (o *ClusterOffer) HasDiskSize() bool {
 	return false
 }
 
-// SetDiskSize gets a reference to the given NullableInt64 and assigns it to the DiskSize field.
-func (o *ClusterOffer) SetDiskSize(v int64) {
+// SetDiskSize gets a reference to the given NullableInt32 and assigns it to the DiskSize field.
+func (o *ClusterOffer) SetDiskSize(v int32) {
 	o.DiskSize.Set(&v)
 }
 // SetDiskSizeNil sets the value for DiskSize to be an explicit nil
@@ -226,9 +226,9 @@ func (o *ClusterOffer) UnsetDiskTier() {
 }
 
 // GetMemory returns the Memory field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *ClusterOffer) GetMemory() int64 {
+func (o *ClusterOffer) GetMemory() int32 {
 	if o == nil || IsNil(o.Memory.Get()) {
-		var ret int64
+		var ret int32
 		return ret
 	}
 	return *o.Memory.Get()
@@ -237,7 +237,7 @@ func (o *ClusterOffer) GetMemory() int64 {
 // GetMemoryOk returns a tuple with the Memory field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *ClusterOffer) GetMemoryOk() (*int64, bool) {
+func (o *ClusterOffer) GetMemoryOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -253,8 +253,8 @@ func (o *ClusterOffer) HasMemory() bool {
 	return false
 }
 
-// SetMemory gets a reference to the given NullableInt64 and assigns it to the Memory field.
-func (o *ClusterOffer) SetMemory(v int64) {
+// SetMemory gets a reference to the given NullableInt32 and assigns it to the Memory field.
+func (o *ClusterOffer) SetMemory(v int32) {
 	o.Memory.Set(&v)
 }
 // SetMemoryNil sets the value for Memory to be an explicit nil
@@ -469,9 +469,9 @@ func (o *ClusterOffer) UnsetInstanceType() {
 }
 
 // GetCpus returns the Cpus field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *ClusterOffer) GetCpus() int64 {
+func (o *ClusterOffer) GetCpus() int32 {
 	if o == nil || IsNil(o.Cpus.Get()) {
-		var ret int64
+		var ret int32
 		return ret
 	}
 	return *o.Cpus.Get()
@@ -480,7 +480,7 @@ func (o *ClusterOffer) GetCpus() int64 {
 // GetCpusOk returns a tuple with the Cpus field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *ClusterOffer) GetCpusOk() (*int64, bool) {
+func (o *ClusterOffer) GetCpusOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -496,8 +496,8 @@ func (o *ClusterOffer) HasCpus() bool {
 	return false
 }
 
-// SetCpus gets a reference to the given NullableInt64 and assigns it to the Cpus field.
-func (o *ClusterOffer) SetCpus(v int64) {
+// SetCpus gets a reference to the given NullableInt32 and assigns it to the Cpus field.
+func (o *ClusterOffer) SetCpus(v int32) {
 	o.Cpus.Set(&v)
 }
 // SetCpusNil sets the value for Cpus to be an explicit nil

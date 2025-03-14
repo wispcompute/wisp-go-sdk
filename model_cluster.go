@@ -23,10 +23,10 @@ var _ MappedNullable = &Cluster{}
 type Cluster struct {
 	User User `json:"user"`
 	Name string `json:"name"`
-	LaunchedAt NullableInt64 `json:"launched_at,omitempty"`
+	LaunchedAt NullableInt32 `json:"launched_at,omitempty"`
 	LastUse NullableString `json:"last_use,omitempty"`
 	Status *ClusterStatusEnum `json:"status,omitempty"`
-	Autostop *int64 `json:"autostop,omitempty"`
+	Autostop *int32 `json:"autostop,omitempty"`
 	Metadata *string `json:"metadata,omitempty"`
 	ToDown *bool `json:"to_down,omitempty"`
 	ClusterHash NullableString `json:"cluster_hash,omitempty"`
@@ -104,9 +104,9 @@ func (o *Cluster) SetName(v string) {
 }
 
 // GetLaunchedAt returns the LaunchedAt field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *Cluster) GetLaunchedAt() int64 {
+func (o *Cluster) GetLaunchedAt() int32 {
 	if o == nil || IsNil(o.LaunchedAt.Get()) {
-		var ret int64
+		var ret int32
 		return ret
 	}
 	return *o.LaunchedAt.Get()
@@ -115,7 +115,7 @@ func (o *Cluster) GetLaunchedAt() int64 {
 // GetLaunchedAtOk returns a tuple with the LaunchedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *Cluster) GetLaunchedAtOk() (*int64, bool) {
+func (o *Cluster) GetLaunchedAtOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -131,8 +131,8 @@ func (o *Cluster) HasLaunchedAt() bool {
 	return false
 }
 
-// SetLaunchedAt gets a reference to the given NullableInt64 and assigns it to the LaunchedAt field.
-func (o *Cluster) SetLaunchedAt(v int64) {
+// SetLaunchedAt gets a reference to the given NullableInt32 and assigns it to the LaunchedAt field.
+func (o *Cluster) SetLaunchedAt(v int32) {
 	o.LaunchedAt.Set(&v)
 }
 // SetLaunchedAtNil sets the value for LaunchedAt to be an explicit nil
@@ -220,9 +220,9 @@ func (o *Cluster) SetStatus(v ClusterStatusEnum) {
 }
 
 // GetAutostop returns the Autostop field value if set, zero value otherwise.
-func (o *Cluster) GetAutostop() int64 {
+func (o *Cluster) GetAutostop() int32 {
 	if o == nil || IsNil(o.Autostop) {
-		var ret int64
+		var ret int32
 		return ret
 	}
 	return *o.Autostop
@@ -230,7 +230,7 @@ func (o *Cluster) GetAutostop() int64 {
 
 // GetAutostopOk returns a tuple with the Autostop field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Cluster) GetAutostopOk() (*int64, bool) {
+func (o *Cluster) GetAutostopOk() (*int32, bool) {
 	if o == nil || IsNil(o.Autostop) {
 		return nil, false
 	}
@@ -246,8 +246,8 @@ func (o *Cluster) HasAutostop() bool {
 	return false
 }
 
-// SetAutostop gets a reference to the given int64 and assigns it to the Autostop field.
-func (o *Cluster) SetAutostop(v int64) {
+// SetAutostop gets a reference to the given int32 and assigns it to the Autostop field.
+func (o *Cluster) SetAutostop(v int32) {
 	o.Autostop = &v
 }
 

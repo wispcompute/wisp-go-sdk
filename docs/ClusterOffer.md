@@ -4,17 +4,17 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**DiskSize** | Pointer to **NullableInt64** |  | [optional] 
+**DiskSize** | Pointer to **NullableInt32** |  | [optional] 
 **Cloud** | Pointer to **NullableString** |  | [optional] 
 **JobRecovery** | Pointer to **NullableString** |  | [optional] 
 **DiskTier** | Pointer to **NullableString** |  | [optional] 
-**Memory** | Pointer to **NullableInt64** |  | [optional] 
+**Memory** | Pointer to **NullableInt32** |  | [optional] 
 **AcceleratorArgs** | Pointer to **interface{}** |  | [optional] 
 **Region** | Pointer to **NullableString** |  | [optional] 
 **Price** | Pointer to **NullableFloat64** |  | [optional] 
 **Storage** | Pointer to **NullableString** |  | [optional] 
 **InstanceType** | Pointer to **NullableString** |  | [optional] 
-**Cpus** | Pointer to **NullableInt64** |  | [optional] 
+**Cpus** | Pointer to **NullableInt32** |  | [optional] 
 **Accelerators** | Pointer to **interface{}** |  | [optional] 
 **UseSpot** | Pointer to **NullableBool** |  | [optional] 
 **Zone** | Pointer to **NullableString** |  | [optional] 
@@ -45,20 +45,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetDiskSize
 
-`func (o *ClusterOffer) GetDiskSize() int64`
+`func (o *ClusterOffer) GetDiskSize() int32`
 
 GetDiskSize returns the DiskSize field if non-nil, zero value otherwise.
 
 ### GetDiskSizeOk
 
-`func (o *ClusterOffer) GetDiskSizeOk() (*int64, bool)`
+`func (o *ClusterOffer) GetDiskSizeOk() (*int32, bool)`
 
 GetDiskSizeOk returns a tuple with the DiskSize field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetDiskSize
 
-`func (o *ClusterOffer) SetDiskSize(v int64)`
+`func (o *ClusterOffer) SetDiskSize(v int32)`
 
 SetDiskSize sets DiskSize field to given value.
 
@@ -185,20 +185,20 @@ HasDiskTier returns a boolean if a field has been set.
 UnsetDiskTier ensures that no value is present for DiskTier, not even an explicit nil
 ### GetMemory
 
-`func (o *ClusterOffer) GetMemory() int64`
+`func (o *ClusterOffer) GetMemory() int32`
 
 GetMemory returns the Memory field if non-nil, zero value otherwise.
 
 ### GetMemoryOk
 
-`func (o *ClusterOffer) GetMemoryOk() (*int64, bool)`
+`func (o *ClusterOffer) GetMemoryOk() (*int32, bool)`
 
 GetMemoryOk returns a tuple with the Memory field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetMemory
 
-`func (o *ClusterOffer) SetMemory(v int64)`
+`func (o *ClusterOffer) SetMemory(v int32)`
 
 SetMemory sets Memory field to given value.
 
@@ -395,20 +395,20 @@ HasInstanceType returns a boolean if a field has been set.
 UnsetInstanceType ensures that no value is present for InstanceType, not even an explicit nil
 ### GetCpus
 
-`func (o *ClusterOffer) GetCpus() int64`
+`func (o *ClusterOffer) GetCpus() int32`
 
 GetCpus returns the Cpus field if non-nil, zero value otherwise.
 
 ### GetCpusOk
 
-`func (o *ClusterOffer) GetCpusOk() (*int64, bool)`
+`func (o *ClusterOffer) GetCpusOk() (*int32, bool)`
 
 GetCpusOk returns a tuple with the Cpus field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetCpus
 
-`func (o *ClusterOffer) SetCpus(v int64)`
+`func (o *ClusterOffer) SetCpus(v int32)`
 
 SetCpus sets Cpus field to given value.
 

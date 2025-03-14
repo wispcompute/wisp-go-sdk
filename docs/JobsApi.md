@@ -6,6 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**JobsCreate**](JobsAPI.md#JobsCreate) | **Post** /api/jobs/ | 
 [**JobsDestroy**](JobsAPI.md#JobsDestroy) | **Delete** /api/jobs/{job_id}/ | 
+[**JobsPartialUpdate**](JobsAPI.md#JobsPartialUpdate) | **Patch** /api/jobs/{job_id}/ | 
 [**JobsRetrieve**](JobsAPI.md#JobsRetrieve) | **Get** /api/jobs/{job_id}/ | 
 
 
@@ -32,7 +33,7 @@ import (
 )
 
 func main() {
-	tempJobPostRequest := *openapiclient.NewTempJobPostRequest(*openapiclient.NewCluster(*openapiclient.NewUser("Email_example"), "Name_example", "TODO"), *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), "TODO"), *openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now())) // TempJobPostRequest | 
+	tempJobPostRequest := *openapiclient.NewTempJobPostRequest(*openapiclient.NewCluster(*openapiclient.NewUser("Email_example"), "Name_example", "TODO"), *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), "TODO", "TODO"), *openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now())) // TempJobPostRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -139,6 +140,78 @@ Name | Type | Description  | Notes
 
 - **Content-Type**: Not defined
 - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## JobsPartialUpdate
+
+> JobUpdateResponse JobsPartialUpdate(ctx, jobId).PatchedJobUpdateRequest(patchedJobUpdateRequest).Execute()
+
+
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/wispcompute/wisp-go-sdk"
+)
+
+func main() {
+	jobId := "jobId_example" // string | 
+	patchedJobUpdateRequest := *openapiclient.NewPatchedJobUpdateRequest() // PatchedJobUpdateRequest |  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.JobsAPI.JobsPartialUpdate(context.Background(), jobId).PatchedJobUpdateRequest(patchedJobUpdateRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `JobsAPI.JobsPartialUpdate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `JobsPartialUpdate`: JobUpdateResponse
+	fmt.Fprintf(os.Stdout, "Response from `JobsAPI.JobsPartialUpdate`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**jobId** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiJobsPartialUpdateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **patchedJobUpdateRequest** | [**PatchedJobUpdateRequest**](PatchedJobUpdateRequest.md) |  | 
+
+### Return type
+
+[**JobUpdateResponse**](JobUpdateResponse.md)
+
+### Authorization
+
+[tokenAuth](../README.md#tokenAuth), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2), [oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: application/json, application/x-www-form-urlencoded, multipart/form-data
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

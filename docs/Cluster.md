@@ -6,10 +6,10 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **User** | [**User**](User.md) |  | 
 **Name** | **string** |  | 
-**LaunchedAt** | Pointer to **NullableInt64** |  | [optional] 
+**LaunchedAt** | Pointer to **NullableInt32** |  | [optional] 
 **LastUse** | Pointer to **NullableString** |  | [optional] 
 **Status** | Pointer to [**ClusterStatusEnum**](ClusterStatusEnum.md) |  | [optional] 
-**Autostop** | Pointer to **int64** |  | [optional] 
+**Autostop** | Pointer to **int32** |  | [optional] 
 **Metadata** | Pointer to **string** |  | [optional] 
 **ToDown** | Pointer to **bool** |  | [optional] 
 **ClusterHash** | Pointer to **NullableString** |  | [optional] 
@@ -76,20 +76,20 @@ SetName sets Name field to given value.
 
 ### GetLaunchedAt
 
-`func (o *Cluster) GetLaunchedAt() int64`
+`func (o *Cluster) GetLaunchedAt() int32`
 
 GetLaunchedAt returns the LaunchedAt field if non-nil, zero value otherwise.
 
 ### GetLaunchedAtOk
 
-`func (o *Cluster) GetLaunchedAtOk() (*int64, bool)`
+`func (o *Cluster) GetLaunchedAtOk() (*int32, bool)`
 
 GetLaunchedAtOk returns a tuple with the LaunchedAt field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetLaunchedAt
 
-`func (o *Cluster) SetLaunchedAt(v int64)`
+`func (o *Cluster) SetLaunchedAt(v int32)`
 
 SetLaunchedAt sets LaunchedAt field to given value.
 
@@ -171,20 +171,20 @@ HasStatus returns a boolean if a field has been set.
 
 ### GetAutostop
 
-`func (o *Cluster) GetAutostop() int64`
+`func (o *Cluster) GetAutostop() int32`
 
 GetAutostop returns the Autostop field if non-nil, zero value otherwise.
 
 ### GetAutostopOk
 
-`func (o *Cluster) GetAutostopOk() (*int64, bool)`
+`func (o *Cluster) GetAutostopOk() (*int32, bool)`
 
 GetAutostopOk returns a tuple with the Autostop field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAutostop
 
-`func (o *Cluster) SetAutostop(v int64)`
+`func (o *Cluster) SetAutostop(v int32)`
 
 SetAutostop sets Autostop field to given value.
 

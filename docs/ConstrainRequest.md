@@ -9,13 +9,14 @@ Name | Type | Description | Notes
 **Run** | Pointer to [**NullableScript**](Script.md) |  | [optional] 
 **Teardown** | Pointer to [**NullableScript**](Script.md) |  | [optional] 
 **Resources** | [**Resources**](Resources.md) |  | 
+**JobConfig** | [**NullableJobConfig**](JobConfig.md) |  | 
 **Io** | [**NullableIO**](IO.md) |  | 
 
 ## Methods
 
 ### NewConstrainRequest
 
-`func NewConstrainRequest(project Project, resources Resources, io NullableIO, ) *ConstrainRequest`
+`func NewConstrainRequest(project Project, resources Resources, jobConfig NullableJobConfig, io NullableIO, ) *ConstrainRequest`
 
 NewConstrainRequest instantiates a new ConstrainRequest object
 This constructor will assign default values to properties that have it defined,
@@ -175,6 +176,36 @@ and a boolean to check if the value has been set.
 SetResources sets Resources field to given value.
 
 
+### GetJobConfig
+
+`func (o *ConstrainRequest) GetJobConfig() JobConfig`
+
+GetJobConfig returns the JobConfig field if non-nil, zero value otherwise.
+
+### GetJobConfigOk
+
+`func (o *ConstrainRequest) GetJobConfigOk() (*JobConfig, bool)`
+
+GetJobConfigOk returns a tuple with the JobConfig field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetJobConfig
+
+`func (o *ConstrainRequest) SetJobConfig(v JobConfig)`
+
+SetJobConfig sets JobConfig field to given value.
+
+
+### SetJobConfigNil
+
+`func (o *ConstrainRequest) SetJobConfigNil(b bool)`
+
+ SetJobConfigNil sets the value for JobConfig to be an explicit nil
+
+### UnsetJobConfig
+`func (o *ConstrainRequest) UnsetJobConfig()`
+
+UnsetJobConfig ensures that no value is present for JobConfig, not even an explicit nil
 ### GetIo
 
 `func (o *ConstrainRequest) GetIo() IO`

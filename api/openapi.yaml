@@ -317,6 +317,40 @@ paths:
       - oauth2: []
       tags:
       - jobs
+    patch:
+      description: "Update job status with logs, exit code and finished time"
+      operationId: jobs_partial_update
+      parameters:
+      - explode: false
+        in: path
+        name: job_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedJobUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedJobUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedJobUpdateRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobUpdateResponse'
+          description: ""
+      security:
+      - tokenAuth: []
+      - oauth2: []
+      tags:
+      - jobs
   /api/projects/:
     get:
       description: List all projects for the authenticated user.
@@ -516,6 +550,20 @@ paths:
       - users
 components:
   schemas:
+    AutoStop:
+      properties:
+        id:
+          readOnly: true
+          type: integer
+        enabled:
+          type: boolean
+        timeout_minutes:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+      required:
+      - id
+      type: object
     Bucket:
       description: Bucket configuration serializer.
       properties:
@@ -538,14 +586,14 @@ components:
       example:
         to_down: true
         metadata: metadata
-        launched_at: -7746104769210155008
+        launched_at: -1803530559
         last_use: last_use
         name: name
         handle: ""
         user:
           email: email
         cluster_hash: cluster_hash
-        autostop: 1895322125605019648
+        autostop: 441289069
         status: INIT
       properties:
         user:
@@ -554,9 +602,8 @@ components:
           maxLength: 255
           type: string
         launched_at:
-          format: int64
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
+          maximum: 2147483647
+          minimum: -2147483648
           nullable: true
           type: integer
         last_use:
@@ -566,9 +613,8 @@ components:
         status:
           $ref: '#/components/schemas/ClusterStatusEnum'
         autostop:
-          format: int64
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
+          maximum: 2147483647
+          minimum: -2147483648
           type: integer
         metadata:
           type: string
@@ -611,25 +657,25 @@ components:
         clusters:
         - to_down: true
           metadata: metadata
-          launched_at: -7746104769210155008
+          launched_at: -1803530559
           last_use: last_use
           name: name
           handle: ""
           user:
             email: email
           cluster_hash: cluster_hash
-          autostop: 1895322125605019648
+          autostop: 441289069
           status: INIT
         - to_down: true
           metadata: metadata
-          launched_at: -7746104769210155008
+          launched_at: -1803530559
           last_use: last_use
           name: name
           handle: ""
           user:
             email: email
           cluster_hash: cluster_hash
-          autostop: 1895322125605019648
+          autostop: 441289069
           status: INIT
       properties:
         clusters:
@@ -642,10 +688,10 @@ components:
     ClusterOffer:
       example:
         accelerator_args: ""
-        memory: 1895322125605019648
+        memory: 441289069
         regions: ""
-        cpus: 1774823812569044992
-        disk_size: -7746104769210155008
+        cpus: 413233370
+        disk_size: -1803530559
         storage: storage
         ports: ""
         accelerator_count: ""
@@ -662,9 +708,8 @@ components:
         instance_type: instance_type
       properties:
         disk_size:
-          format: int64
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
+          maximum: 2147483647
+          minimum: -2147483648
           nullable: true
           type: integer
         cloud:
@@ -680,9 +725,8 @@ components:
           nullable: true
           type: string
         memory:
-          format: int64
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
+          maximum: 2147483647
+          minimum: -2147483648
           nullable: true
           type: integer
         accelerator_args:
@@ -704,9 +748,8 @@ components:
           nullable: true
           type: string
         cpus:
-          format: int64
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
+          maximum: 2147483647
+          minimum: -2147483648
           nullable: true
           type: integer
         accelerators:
@@ -740,10 +783,10 @@ components:
           type: type
         choice:
           accelerator_args: ""
-          memory: 1895322125605019648
+          memory: 441289069
           regions: ""
-          cpus: 1774823812569044992
-          disk_size: -7746104769210155008
+          cpus: 413233370
+          disk_size: -1803530559
           storage: storage
           ports: ""
           accelerator_count: ""
@@ -759,6 +802,7 @@ components:
           image_id: ""
           instance_type: instance_type
         config:
+          job_config: ""
           io: ""
           project: ""
           setup: ""
@@ -839,6 +883,7 @@ components:
         Validates the full configuration schema including project details,
         scripts, resource requirements, and IO specifications.
       example:
+        job_config: ""
         io: ""
         project: ""
         setup: ""
@@ -884,12 +929,17 @@ components:
           nullable: true
         resources:
           $ref: '#/components/schemas/Resources'
+        job_config:
+          allOf:
+          - $ref: '#/components/schemas/JobConfig'
+          nullable: true
         io:
           allOf:
           - $ref: '#/components/schemas/IO'
           nullable: true
       required:
       - io
+      - job_config
       - project
       - resources
       type: object
@@ -902,10 +952,10 @@ components:
       example:
         choice:
         - accelerator_args: ""
-          memory: 1895322125605019648
+          memory: 441289069
           regions: ""
-          cpus: 1774823812569044992
-          disk_size: -7746104769210155008
+          cpus: 413233370
+          disk_size: -1803530559
           storage: storage
           ports: ""
           accelerator_count: ""
@@ -921,10 +971,10 @@ components:
           image_id: ""
           instance_type: instance_type
         - accelerator_args: ""
-          memory: 1895322125605019648
+          memory: 441289069
           regions: ""
-          cpus: 1774823812569044992
-          disk_size: -7746104769210155008
+          cpus: 413233370
+          disk_size: -1803530559
           storage: storage
           ports: ""
           accelerator_count: ""
@@ -1034,6 +1084,21 @@ components:
       - name
       - updated_at
       type: object
+    JobConfig:
+      description: Config for the job. Not to be confused with the job itself.
+      properties:
+        id:
+          readOnly: true
+          type: integer
+        autostop:
+          $ref: '#/components/schemas/AutoStop'
+        notifications:
+          $ref: '#/components/schemas/NotificationConfig'
+      required:
+      - autostop
+      - id
+      - notifications
+      type: object
     JobGetResponse:
       description: Job get response serializer.
       example:
@@ -1089,6 +1154,16 @@ components:
       required:
       - jobs
       type: object
+    JobUpdateResponse:
+      description: Job update response serializer.
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      required:
+      - message
+      type: object
     LatestClusterLog:
       description: Latest cluster log serializer.
       properties:
@@ -1115,6 +1190,22 @@ components:
       - DONE
       - CLUSTER_ERROR
       type: string
+    NotificationConfig:
+      properties:
+        id:
+          readOnly: true
+          type: integer
+        email_on_success:
+          type: boolean
+        email_on_failure:
+          type: boolean
+        email_recipient:
+          format: email
+          maxLength: 254
+          type: string
+      required:
+      - id
+      type: object
     Outputs:
       description: Outputs configuration serializer.
       properties:
@@ -1129,6 +1220,7 @@ components:
       example:
         job_id: job_id
         config:
+          job_config: ""
           io: ""
           project: ""
           setup: ""
@@ -1160,6 +1252,21 @@ components:
           type: string
         config:
           $ref: '#/components/schemas/ConstrainRequest'
+      type: object
+    PatchedJobUpdateRequest:
+      description: Job update request serializer.
+      example:
+        finished_at: 2000-01-23T04:56:07.000+00:00
+        exit_code: 0
+        logs: logs
+      properties:
+        logs:
+          type: string
+        exit_code:
+          type: integer
+        finished_at:
+          format: date-time
+          type: string
       type: object
     PickledHandleField:
       description: Custom field serializer for pickled handle data.
@@ -1243,14 +1350,14 @@ components:
         cluster:
           to_down: true
           metadata: metadata
-          launched_at: -7746104769210155008
+          launched_at: -1803530559
           last_use: last_use
           name: name
           handle: ""
           user:
             email: email
           cluster_hash: cluster_hash
-          autostop: 1895322125605019648
+          autostop: 441289069
           status: INIT
         provision_id: provision_id
         updated_at: 2000-01-23T04:56:07.000+00:00
@@ -1393,14 +1500,14 @@ components:
         cluster:
           to_down: true
           metadata: metadata
-          launched_at: -7746104769210155008
+          launched_at: -1803530559
           last_use: last_use
           name: name
           handle: ""
           user:
             email: email
           cluster_hash: cluster_hash
-          autostop: 1895322125605019648
+          autostop: 441289069
           status: INIT
         project:
           updated_at: 2000-01-23T04:56:07.000+00:00
@@ -1409,6 +1516,7 @@ components:
           created_at: 2000-01-23T04:56:07.000+00:00
           type: type
         config:
+          job_config: ""
           io: ""
           project: ""
           setup: ""
@@ -1493,21 +1601,21 @@ components:
     oauth2:
       flows:
         authorizationCode:
-          authorizationUrl: /o/authorize/
+          authorizationUrl: /accounts/o/authorize/
           scopes:
             read: Read access
             write: Write access
-          tokenUrl: /o/token/
+          tokenUrl: /accounts/o/token/
         clientCredentials:
           scopes:
             read: Read access
             write: Write access
-          tokenUrl: /o/token/
+          tokenUrl: /accounts/o/token/
         password:
           scopes:
             read: Read access
             write: Write access
-          tokenUrl: /o/token/
+          tokenUrl: /accounts/o/token/
       type: oauth2
     tokenAuth:
       description: Token-based authentication with required prefix "Token"
