@@ -280,6 +280,38 @@ paths:
               schema:
                 $ref: '#/components/schemas/JobGetResponse'
           description: ''
+    patch:
+      operationId: jobs_partial_update
+      description: Update job status with logs, exit code and finished time
+      parameters:
+      - in: path
+        name: job_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedJobUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedJobUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedJobUpdateRequest'
+      security:
+      - tokenAuth: []
+      - oauth2: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobUpdateResponse'
+          description: ''
     delete:
       operationId: jobs_destroy
       description: Delete a job
@@ -488,6 +520,20 @@ paths:
           description: No response body
 components:
   schemas:
+    AutoStop:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        enabled:
+          type: boolean
+        timeout_minutes:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+      required:
+      - id
     Bucket:
       type: object
       description: Bucket configuration serializer.
@@ -516,9 +562,8 @@ components:
           maxLength: 255
         launched_at:
           type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
+          maximum: 2147483647
+          minimum: -2147483648
           nullable: true
         last_use:
           type: string
@@ -528,9 +573,8 @@ components:
           $ref: '#/components/schemas/ClusterStatusEnum'
         autostop:
           type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
+          maximum: 2147483647
+          minimum: -2147483648
         metadata:
           type: string
         to_down:
@@ -576,9 +620,8 @@ components:
       properties:
         disk_size:
           type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
+          maximum: 2147483647
+          minimum: -2147483648
           nullable: true
         cloud:
           type: string
@@ -594,9 +637,8 @@ components:
           maxLength: 100
         memory:
           type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
+          maximum: 2147483647
+          minimum: -2147483648
           nullable: true
         accelerator_args:
           nullable: true
@@ -618,9 +660,8 @@ components:
           maxLength: 100
         cpus:
           type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
+          maximum: 2147483647
+          minimum: -2147483648
           nullable: true
         accelerators:
           nullable: true
@@ -711,12 +752,17 @@ components:
           nullable: true
         resources:
           $ref: '#/components/schemas/Resources'
+        job_config:
+          allOf:
+          - $ref: '#/components/schemas/JobConfig'
+          nullable: true
         io:
           allOf:
           - $ref: '#/components/schemas/IO'
           nullable: true
       required:
       - io
+      - job_config
       - project
       - resources
     ConstrainResponse:
@@ -807,6 +853,21 @@ components:
       - logs
       - name
       - updated_at
+    JobConfig:
+      type: object
+      description: Config for the job. Not to be confused with the job itself.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        autostop:
+          $ref: '#/components/schemas/AutoStop'
+        notifications:
+          $ref: '#/components/schemas/NotificationConfig'
+      required:
+      - autostop
+      - id
+      - notifications
     JobGetResponse:
       type: object
       description: Job get response serializer.
@@ -830,6 +891,14 @@ components:
             $ref: '#/components/schemas/Job'
       required:
       - jobs
+    JobUpdateResponse:
+      type: object
+      description: Job update response serializer.
+      properties:
+        message:
+          type: string
+      required:
+      - message
     LatestClusterLog:
       type: object
       description: Latest cluster log serializer.
@@ -856,6 +925,22 @@ components:
         * `UPDATING` - UPDATING
         * `DONE` - DONE
         * `CLUSTER_ERROR` - CLUSTER_ERROR
+    NotificationConfig:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email_on_success:
+          type: boolean
+        email_on_failure:
+          type: boolean
+        email_recipient:
+          type: string
+          format: email
+          maxLength: 254
+      required:
+      - id
     Outputs:
       type: object
       description: Outputs configuration serializer.
@@ -873,6 +958,17 @@ components:
           type: string
         config:
           $ref: '#/components/schemas/ConstrainRequest'
+    PatchedJobUpdateRequest:
+      type: object
+      description: Job update request serializer.
+      properties:
+        logs:
+          type: string
+        exit_code:
+          type: integer
+        finished_at:
+          type: string
+          format: date-time
     PickledHandleField:
       type: object
       description: Custom field serializer for pickled handle data.
@@ -1092,18 +1188,18 @@ components:
       type: oauth2
       flows:
         password:
-          tokenUrl: /o/token/
+          tokenUrl: /accounts/o/token/
           scopes:
             read: Read access
             write: Write access
         clientCredentials:
-          tokenUrl: /o/token/
+          tokenUrl: /accounts/o/token/
           scopes:
             read: Read access
             write: Write access
         authorizationCode:
-          authorizationUrl: /o/authorize/
-          tokenUrl: /o/token/
+          authorizationUrl: /accounts/o/authorize/
+          tokenUrl: /accounts/o/token/
           scopes:
             read: Read access
             write: Write access
