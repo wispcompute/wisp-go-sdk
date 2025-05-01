@@ -6,6 +6,34 @@ info:
 servers:
 - url: /
 paths:
+  /api/analyze:
+    post:
+      description: Estimate optimal cloud resources based on workload metadata
+      operationId: analyze_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyzeGetRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AnalyzeGetRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AnalyzeGetRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyzeGetResponse'
+          description: ""
+      security:
+      - tokenAuth: []
+      - oauth2: []
+      tags:
+      - analyze
   /api/clusters/:
     get:
       description: Retrieve a list of all Clusters for the whole organization.
@@ -550,6 +578,160 @@ paths:
       - users
 components:
   schemas:
+    AnalyzeGetRequest:
+      example:
+        current_resources:
+          accelerator_args: ""
+          memory: 441289069
+          regions: ""
+          cpus: 413233370
+          disk_size: -1803530559
+          storage: storage
+          ports: ""
+          accelerator_count: ""
+          disk_tier: disk_tier
+          job_recovery: job_recovery
+          labels: ""
+          cloud: cloud
+          zone: zone
+          price: 1.4658129805029452
+          accelerators: ""
+          use_spot: true
+          region: region
+          image_id: ""
+          instance_type: instance_type
+        workload:
+          workload_type: batch
+          workload_prompt: workload_prompt
+          cost_perf_weight: -0.8398343619077977
+        constraints:
+          regions:
+          - regions
+          - regions
+          memory: 6
+          cpus: 1
+          compute_capability: compute_capability
+          persistent_disk: 5
+          accelerators:
+          - accelerators
+          - accelerators
+          areas:
+          - areas
+          - areas
+          clouds:
+          - clouds
+          - clouds
+          storage: 5
+          accelerator_count: 7
+          platform: platform
+          vram: 2
+      properties:
+        workload:
+          $ref: '#/components/schemas/Workload'
+        current_resources:
+          $ref: '#/components/schemas/ClusterOffer'
+        constraints:
+          $ref: '#/components/schemas/Resources'
+      required:
+      - constraints
+      - current_resources
+      - workload
+      type: object
+    AnalyzeGetResponse:
+      description: Serializer for cluster analyzer response.
+      example:
+        results:
+        - offer:
+            accelerator_args: ""
+            memory: 441289069
+            regions: ""
+            cpus: 413233370
+            disk_size: -1803530559
+            storage: storage
+            ports: ""
+            accelerator_count: ""
+            disk_tier: disk_tier
+            job_recovery: job_recovery
+            labels: ""
+            cloud: cloud
+            zone: zone
+            price: 1.4658129805029452
+            accelerators: ""
+            use_spot: true
+            region: region
+            image_id: ""
+            instance_type: instance_type
+          score:
+            weighted_score: 0.7061401241503109
+            rel_perf: 0.5637376656633328
+            rel_price: 0.23021358869347652
+        - offer:
+            accelerator_args: ""
+            memory: 441289069
+            regions: ""
+            cpus: 413233370
+            disk_size: -1803530559
+            storage: storage
+            ports: ""
+            accelerator_count: ""
+            disk_tier: disk_tier
+            job_recovery: job_recovery
+            labels: ""
+            cloud: cloud
+            zone: zone
+            price: 1.4658129805029452
+            accelerators: ""
+            use_spot: true
+            region: region
+            image_id: ""
+            instance_type: instance_type
+          score:
+            weighted_score: 0.7061401241503109
+            rel_perf: 0.5637376656633328
+            rel_price: 0.23021358869347652
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/AnalyzerResult'
+          type: array
+      required:
+      - results
+      type: object
+    AnalyzerResult:
+      example:
+        offer:
+          accelerator_args: ""
+          memory: 441289069
+          regions: ""
+          cpus: 413233370
+          disk_size: -1803530559
+          storage: storage
+          ports: ""
+          accelerator_count: ""
+          disk_tier: disk_tier
+          job_recovery: job_recovery
+          labels: ""
+          cloud: cloud
+          zone: zone
+          price: 1.4658129805029452
+          accelerators: ""
+          use_spot: true
+          region: region
+          image_id: ""
+          instance_type: instance_type
+        score:
+          weighted_score: 0.7061401241503109
+          rel_perf: 0.5637376656633328
+          rel_price: 0.23021358869347652
+      properties:
+        offer:
+          $ref: '#/components/schemas/ClusterOffer'
+        score:
+          $ref: '#/components/schemas/Score'
+      required:
+      - offer
+      - score
+      type: object
     AutoStop:
       properties:
         id:
@@ -810,10 +992,10 @@ components:
             regions:
             - regions
             - regions
-            memory: 5
-            cpus: 2
+            memory: 6
+            cpus: 1
             compute_capability: compute_capability
-            persistent_disk: 9
+            persistent_disk: 5
             accelerators:
             - accelerators
             - accelerators
@@ -823,10 +1005,10 @@ components:
             clouds:
             - clouds
             - clouds
-            storage: 7
-            accelerator_count: 2
+            storage: 5
+            accelerator_count: 7
             platform: platform
-            vram: 3
+            vram: 2
           run: ""
           teardown: ""
       properties:
@@ -891,10 +1073,10 @@ components:
           regions:
           - regions
           - regions
-          memory: 5
-          cpus: 2
+          memory: 6
+          cpus: 1
           compute_capability: compute_capability
-          persistent_disk: 9
+          persistent_disk: 5
           accelerators:
           - accelerators
           - accelerators
@@ -904,10 +1086,10 @@ components:
           clouds:
           - clouds
           - clouds
-          storage: 7
-          accelerator_count: 2
+          storage: 5
+          accelerator_count: 7
           platform: platform
-          vram: 3
+          vram: 2
         run: ""
         teardown: ""
       properties:
@@ -1228,10 +1410,10 @@ components:
             regions:
             - regions
             - regions
-            memory: 5
-            cpus: 2
+            memory: 6
+            cpus: 1
             compute_capability: compute_capability
-            persistent_disk: 9
+            persistent_disk: 5
             accelerators:
             - accelerators
             - accelerators
@@ -1241,10 +1423,10 @@ components:
             clouds:
             - clouds
             - clouds
-            storage: 7
-            accelerator_count: 2
+            storage: 5
+            accelerator_count: 7
             platform: platform
-            vram: 3
+            vram: 2
           run: ""
           teardown: ""
       properties:
@@ -1418,10 +1600,10 @@ components:
         regions:
         - regions
         - regions
-        memory: 5
-        cpus: 2
+        memory: 6
+        cpus: 1
         compute_capability: compute_capability
-        persistent_disk: 9
+        persistent_disk: 5
         accelerators:
         - accelerators
         - accelerators
@@ -1431,10 +1613,10 @@ components:
         clouds:
         - clouds
         - clouds
-        storage: 7
-        accelerator_count: 2
+        storage: 5
+        accelerator_count: 7
         platform: platform
-        vram: 3
+        vram: 2
       properties:
         clouds:
           items:
@@ -1484,6 +1666,40 @@ components:
       required:
       - accelerators
       type: object
+    Score:
+      example:
+        weighted_score: 0.7061401241503109
+        rel_perf: 0.5637376656633328
+        rel_price: 0.23021358869347652
+      properties:
+        rel_perf:
+          description: "Relative performance of the offer compared to the current\
+            \ configuration. A float value describing estimated proportional performance\
+            \ of the resource with the given workload. A value of 1 is equal performance,\
+            \ 2 is double performance and 0.5 is half performance."
+          format: double
+          minimum: 0
+          type: number
+        rel_price:
+          description: "Relative price of the offer compared to the current configuration.\
+            \ A float value describing estimated proportional price of the resource\
+            \ with the given workload. A value of 1 is equal price, 2 is double price\
+            \ and 0.5 is half price."
+          format: double
+          minimum: 0
+          type: number
+        weighted_score:
+          description: "Weighted score of the configuration taking into consideration\
+            \ the workload type, cost to performance weighting and more. Higher is\
+            \ better."
+          format: double
+          minimum: 0
+          type: number
+      required:
+      - rel_perf
+      - rel_price
+      - weighted_score
+      type: object
     Script:
       description: Script configuration serializer.
       properties:
@@ -1524,10 +1740,10 @@ components:
             regions:
             - regions
             - regions
-            memory: 5
-            cpus: 2
+            memory: 6
+            cpus: 1
             compute_capability: compute_capability
-            persistent_disk: 9
+            persistent_disk: 5
             accelerators:
             - accelerators
             - accelerators
@@ -1537,10 +1753,10 @@ components:
             clouds:
             - clouds
             - clouds
-            storage: 7
-            accelerator_count: 2
+            storage: 5
+            accelerator_count: 7
             platform: platform
-            vram: 3
+            vram: 2
           run: ""
           teardown: ""
       properties:
@@ -1597,6 +1813,38 @@ components:
       required:
       - email
       type: object
+    Workload:
+      example:
+        workload_type: batch
+        workload_prompt: workload_prompt
+        cost_perf_weight: -0.8398343619077977
+      properties:
+        workload_type:
+          $ref: '#/components/schemas/WorkloadTypeEnum'
+        workload_prompt:
+          description: "A prompt describing the workload type you're running. Can\
+            \ be a LLM model name with precision, web hosting and more."
+          type: string
+        cost_perf_weight:
+          description: "Weight factor balancing cost vs performance. -1 prioritizes\
+            \ cost, 1 prioritizes performance. For a balanced result, select 0."
+          format: double
+          maximum: 1
+          minimum: -1
+          type: number
+      required:
+      - cost_perf_weight
+      - workload_prompt
+      - workload_type
+      type: object
+    WorkloadTypeEnum:
+      description: |-
+        * `batch` - batch
+        * `serving` - serving
+      enum:
+      - batch
+      - serving
+      type: string
   securitySchemes:
     oauth2:
       flows:
