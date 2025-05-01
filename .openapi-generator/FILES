@@ -2,6 +2,7 @@
 .travis.yml
 README.md
 api/openapi.yaml
+api_analyze.go
 api_clusters.go
 api_constraints.go
 api_download.go
@@ -11,6 +12,10 @@ api_provision.go
 api_users.go
 client.go
 configuration.go
+docs/AnalyzeAPI.md
+docs/AnalyzeGetRequest.md
+docs/AnalyzeGetResponse.md
+docs/AnalyzerResult.md
 docs/AutoStop.md
 docs/Bucket.md
 docs/Cluster.md
@@ -50,6 +55,7 @@ docs/ProvisionAPI.md
 docs/ProvisionLog.md
 docs/ProvisionLogStatusEnum.md
 docs/Resources.md
+docs/Score.md
 docs/Script.md
 docs/TempJobPostRequest.md
 docs/User.md
@@ -57,9 +63,14 @@ docs/UserPublicKeyRequest.md
 docs/UserPublicKeyResponse.md
 docs/UserResponse.md
 docs/UsersAPI.md
+docs/Workload.md
+docs/WorkloadTypeEnum.md
 git_push.sh
 go.mod
 go.sum
+model_analyze_get_request.go
+model_analyze_get_response.go
+model_analyzer_result.go
 model_auto_stop.go
 model_bucket.go
 model_cluster.go
@@ -93,11 +104,15 @@ model_projects_get_response.go
 model_provision_log.go
 model_provision_log_status_enum.go
 model_resources.go
+model_score.go
 model_script.go
 model_temp_job_post_request.go
 model_user.go
 model_user_public_key_request.go
 model_user_public_key_response.go
 model_user_response.go
+model_workload.go
+model_workload_type_enum.go
 response.go
+test/api_analyze_test.go
 utils.go
