@@ -28,6 +28,7 @@ type ConstrainRequest struct {
 	Resources Resources `json:"resources"`
 	JobConfig NullableJobConfig `json:"job_config"`
 	Io NullableIO `json:"io"`
+	Flags map[string]interface{} `json:"flags"`
 }
 
 type _ConstrainRequest ConstrainRequest
@@ -36,12 +37,13 @@ type _ConstrainRequest ConstrainRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewConstrainRequest(project Project, resources Resources, jobConfig NullableJobConfig, io NullableIO) *ConstrainRequest {
+func NewConstrainRequest(project Project, resources Resources, jobConfig NullableJobConfig, io NullableIO, flags map[string]interface{}) *ConstrainRequest {
 	this := ConstrainRequest{}
 	this.Project = project
 	this.Resources = resources
 	this.JobConfig = jobConfig
 	this.Io = io
+	this.Flags = flags
 	return &this
 }
 
@@ -279,6 +281,32 @@ func (o *ConstrainRequest) SetIo(v IO) {
 	o.Io.Set(&v)
 }
 
+// GetFlags returns the Flags field value
+// If the value is explicit nil, the zero value for map[string]interface{} will be returned
+func (o *ConstrainRequest) GetFlags() map[string]interface{} {
+	if o == nil {
+		var ret map[string]interface{}
+		return ret
+	}
+
+	return o.Flags
+}
+
+// GetFlagsOk returns a tuple with the Flags field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ConstrainRequest) GetFlagsOk() (map[string]interface{}, bool) {
+	if o == nil || IsNil(o.Flags) {
+		return map[string]interface{}{}, false
+	}
+	return o.Flags, true
+}
+
+// SetFlags sets field value
+func (o *ConstrainRequest) SetFlags(v map[string]interface{}) {
+	o.Flags = v
+}
+
 func (o ConstrainRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -302,6 +330,9 @@ func (o ConstrainRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize["resources"] = o.Resources
 	toSerialize["job_config"] = o.JobConfig.Get()
 	toSerialize["io"] = o.Io.Get()
+	if o.Flags != nil {
+		toSerialize["flags"] = o.Flags
+	}
 	return toSerialize, nil
 }
 
@@ -314,6 +345,7 @@ func (o *ConstrainRequest) UnmarshalJSON(data []byte) (err error) {
 		"resources",
 		"job_config",
 		"io",
+		"flags",
 	}
 
 	allProperties := make(map[string]interface{})

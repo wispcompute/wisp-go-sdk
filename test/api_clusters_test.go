@@ -11,9 +11,10 @@ package wisp
 
 import (
 	"context"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
 	openapiclient "github.com/wispcompute/wisp-go-sdk"
 )
 
@@ -24,7 +25,7 @@ func Test_wisp_ClustersAPIService(t *testing.T) {
 
 	t.Run("Test ClustersAPIService ClustersCreate", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var action string
 		var clusterHash string
@@ -39,7 +40,7 @@ func Test_wisp_ClustersAPIService(t *testing.T) {
 
 	t.Run("Test ClustersAPIService ClustersRetrieve", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.ClustersAPI.ClustersRetrieve(context.Background()).Execute()
 
@@ -51,7 +52,7 @@ func Test_wisp_ClustersAPIService(t *testing.T) {
 
 	t.Run("Test ClustersAPIService ClustersStatusRetrieve", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var clusterHash string
 

@@ -31,7 +31,7 @@ import (
 )
 
 func main() {
-	constrainRequest := *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), "TODO", "TODO") // ConstrainRequest | 
+	constrainRequest := *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), "TODO", "TODO", map[string]interface{}{"key": interface{}(123)}) // ConstrainRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

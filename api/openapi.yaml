@@ -986,6 +986,8 @@ components:
         config:
           job_config: ""
           io: ""
+          flags:
+            key: ""
           project: ""
           setup: ""
           resources:
@@ -1067,6 +1069,8 @@ components:
       example:
         job_config: ""
         io: ""
+        flags:
+          key: ""
         project: ""
         setup: ""
         resources:
@@ -1119,7 +1123,12 @@ components:
           allOf:
           - $ref: '#/components/schemas/IO'
           nullable: true
+        flags:
+          additionalProperties: {}
+          nullable: true
+          type: object
       required:
+      - flags
       - io
       - job_config
       - project
@@ -1404,6 +1413,8 @@ components:
         config:
           job_config: ""
           io: ""
+          flags:
+            key: ""
           project: ""
           setup: ""
           resources:
@@ -1734,6 +1745,8 @@ components:
         config:
           job_config: ""
           io: ""
+          flags:
+            key: ""
           project: ""
           setup: ""
           resources:

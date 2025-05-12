@@ -11,12 +11,13 @@ Name | Type | Description | Notes
 **Resources** | [**Resources**](Resources.md) |  | 
 **JobConfig** | [**NullableJobConfig**](JobConfig.md) |  | 
 **Io** | [**NullableIO**](IO.md) |  | 
+**Flags** | **map[string]interface{}** |  | 
 
 ## Methods
 
 ### NewConstrainRequest
 
-`func NewConstrainRequest(project Project, resources Resources, jobConfig NullableJobConfig, io NullableIO, ) *ConstrainRequest`
+`func NewConstrainRequest(project Project, resources Resources, jobConfig NullableJobConfig, io NullableIO, flags map[string]interface{}, ) *ConstrainRequest`
 
 NewConstrainRequest instantiates a new ConstrainRequest object
 This constructor will assign default values to properties that have it defined,
@@ -236,6 +237,36 @@ SetIo sets Io field to given value.
 `func (o *ConstrainRequest) UnsetIo()`
 
 UnsetIo ensures that no value is present for Io, not even an explicit nil
+### GetFlags
+
+`func (o *ConstrainRequest) GetFlags() map[string]interface{}`
+
+GetFlags returns the Flags field if non-nil, zero value otherwise.
+
+### GetFlagsOk
+
+`func (o *ConstrainRequest) GetFlagsOk() (*map[string]interface{}, bool)`
+
+GetFlagsOk returns a tuple with the Flags field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFlags
+
+`func (o *ConstrainRequest) SetFlags(v map[string]interface{})`
+
+SetFlags sets Flags field to given value.
+
+
+### SetFlagsNil
+
+`func (o *ConstrainRequest) SetFlagsNil(b bool)`
+
+ SetFlagsNil sets the value for Flags to be an explicit nil
+
+### UnsetFlags
+`func (o *ConstrainRequest) UnsetFlags()`
+
+UnsetFlags ensures that no value is present for Flags, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

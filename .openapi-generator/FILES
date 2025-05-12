@@ -114,5 +114,4 @@ model_user_response.go
 model_workload.go
 model_workload_type_enum.go
 response.go
-test/api_analyze_test.go
 utils.go
