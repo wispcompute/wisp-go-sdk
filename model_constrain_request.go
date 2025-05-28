@@ -28,7 +28,7 @@ type ConstrainRequest struct {
 	Resources Resources `json:"resources"`
 	JobConfig NullableJobConfig `json:"job_config"`
 	Io NullableIO `json:"io"`
-	Flags map[string]interface{} `json:"flags"`
+	Flags map[string]interface{} `json:"flags,omitempty"`
 }
 
 type _ConstrainRequest ConstrainRequest
@@ -37,13 +37,12 @@ type _ConstrainRequest ConstrainRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewConstrainRequest(project Project, resources Resources, jobConfig NullableJobConfig, io NullableIO, flags map[string]interface{}) *ConstrainRequest {
+func NewConstrainRequest(project Project, resources Resources, jobConfig NullableJobConfig, io NullableIO) *ConstrainRequest {
 	this := ConstrainRequest{}
 	this.Project = project
 	this.Resources = resources
 	this.JobConfig = jobConfig
 	this.Io = io
-	this.Flags = flags
 	return &this
 }
 
@@ -281,18 +280,16 @@ func (o *ConstrainRequest) SetIo(v IO) {
 	o.Io.Set(&v)
 }
 
-// GetFlags returns the Flags field value
-// If the value is explicit nil, the zero value for map[string]interface{} will be returned
+// GetFlags returns the Flags field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ConstrainRequest) GetFlags() map[string]interface{} {
 	if o == nil {
 		var ret map[string]interface{}
 		return ret
 	}
-
 	return o.Flags
 }
 
-// GetFlagsOk returns a tuple with the Flags field value
+// GetFlagsOk returns a tuple with the Flags field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ConstrainRequest) GetFlagsOk() (map[string]interface{}, bool) {
@@ -302,7 +299,16 @@ func (o *ConstrainRequest) GetFlagsOk() (map[string]interface{}, bool) {
 	return o.Flags, true
 }
 
-// SetFlags sets field value
+// HasFlags returns a boolean if a field has been set.
+func (o *ConstrainRequest) HasFlags() bool {
+	if o != nil && !IsNil(o.Flags) {
+		return true
+	}
+
+	return false
+}
+
+// SetFlags gets a reference to the given map[string]interface{} and assigns it to the Flags field.
 func (o *ConstrainRequest) SetFlags(v map[string]interface{}) {
 	o.Flags = v
 }
@@ -345,7 +351,6 @@ func (o *ConstrainRequest) UnmarshalJSON(data []byte) (err error) {
 		"resources",
 		"job_config",
 		"io",
-		"flags",
 	}
 
 	allProperties := make(map[string]interface{})

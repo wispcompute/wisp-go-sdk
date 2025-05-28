@@ -611,10 +611,6 @@ components:
           memory: 6
           cpus: 1
           compute_capability: compute_capability
-          persistent_disk: 5
-          accelerators:
-          - accelerators
-          - accelerators
           areas:
           - areas
           - areas
@@ -624,6 +620,11 @@ components:
           storage: 5
           accelerator_count: 7
           platform: platform
+          persistent_disk: 5
+          accelerators:
+          - accelerators
+          - accelerators
+          docker_image: docker_image
           vram: 2
       properties:
         workload:
@@ -997,10 +998,6 @@ components:
             memory: 6
             cpus: 1
             compute_capability: compute_capability
-            persistent_disk: 5
-            accelerators:
-            - accelerators
-            - accelerators
             areas:
             - areas
             - areas
@@ -1010,6 +1007,11 @@ components:
             storage: 5
             accelerator_count: 7
             platform: platform
+            persistent_disk: 5
+            accelerators:
+            - accelerators
+            - accelerators
+            docker_image: docker_image
             vram: 2
           run: ""
           teardown: ""
@@ -1080,10 +1082,6 @@ components:
           memory: 6
           cpus: 1
           compute_capability: compute_capability
-          persistent_disk: 5
-          accelerators:
-          - accelerators
-          - accelerators
           areas:
           - areas
           - areas
@@ -1093,6 +1091,11 @@ components:
           storage: 5
           accelerator_count: 7
           platform: platform
+          persistent_disk: 5
+          accelerators:
+          - accelerators
+          - accelerators
+          docker_image: docker_image
           vram: 2
         run: ""
         teardown: ""
@@ -1128,7 +1131,6 @@ components:
           nullable: true
           type: object
       required:
-      - flags
       - io
       - job_config
       - project
@@ -1424,10 +1426,6 @@ components:
             memory: 6
             cpus: 1
             compute_capability: compute_capability
-            persistent_disk: 5
-            accelerators:
-            - accelerators
-            - accelerators
             areas:
             - areas
             - areas
@@ -1437,6 +1435,11 @@ components:
             storage: 5
             accelerator_count: 7
             platform: platform
+            persistent_disk: 5
+            accelerators:
+            - accelerators
+            - accelerators
+            docker_image: docker_image
             vram: 2
           run: ""
           teardown: ""
@@ -1614,10 +1617,6 @@ components:
         memory: 6
         cpus: 1
         compute_capability: compute_capability
-        persistent_disk: 5
-        accelerators:
-        - accelerators
-        - accelerators
         areas:
         - areas
         - areas
@@ -1627,6 +1626,11 @@ components:
         storage: 5
         accelerator_count: 7
         platform: platform
+        persistent_disk: 5
+        accelerators:
+        - accelerators
+        - accelerators
+        docker_image: docker_image
         vram: 2
       properties:
         clouds:
@@ -1634,6 +1638,9 @@ components:
             nullable: true
             type: string
           type: array
+        docker_image:
+          nullable: true
+          type: string
         regions:
           items:
             nullable: true
@@ -1756,10 +1763,6 @@ components:
             memory: 6
             cpus: 1
             compute_capability: compute_capability
-            persistent_disk: 5
-            accelerators:
-            - accelerators
-            - accelerators
             areas:
             - areas
             - areas
@@ -1769,6 +1772,11 @@ components:
             storage: 5
             accelerator_count: 7
             platform: platform
+            persistent_disk: 5
+            accelerators:
+            - accelerators
+            - accelerators
+            docker_image: docker_image
             vram: 2
           run: ""
           teardown: ""

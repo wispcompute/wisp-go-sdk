@@ -11,13 +11,13 @@ Name | Type | Description | Notes
 **Resources** | [**Resources**](Resources.md) |  | 
 **JobConfig** | [**NullableJobConfig**](JobConfig.md) |  | 
 **Io** | [**NullableIO**](IO.md) |  | 
-**Flags** | **map[string]interface{}** |  | 
+**Flags** | Pointer to **map[string]interface{}** |  | [optional] 
 
 ## Methods
 
 ### NewConstrainRequest
 
-`func NewConstrainRequest(project Project, resources Resources, jobConfig NullableJobConfig, io NullableIO, flags map[string]interface{}, ) *ConstrainRequest`
+`func NewConstrainRequest(project Project, resources Resources, jobConfig NullableJobConfig, io NullableIO, ) *ConstrainRequest`
 
 NewConstrainRequest instantiates a new ConstrainRequest object
 This constructor will assign default values to properties that have it defined,
@@ -256,6 +256,11 @@ and a boolean to check if the value has been set.
 
 SetFlags sets Flags field to given value.
 
+### HasFlags
+
+`func (o *ConstrainRequest) HasFlags() bool`
+
+HasFlags returns a boolean if a field has been set.
 
 ### SetFlagsNil
 

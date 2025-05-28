@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Clouds** | Pointer to **[]string** |  | [optional] 
+**DockerImage** | Pointer to **NullableString** |  | [optional] 
 **Regions** | Pointer to **[]string** |  | [optional] 
 **Areas** | Pointer to **[]string** |  | [optional] 
 **Memory** | Pointer to **NullableInt32** |  | [optional] 
@@ -61,6 +62,41 @@ SetClouds sets Clouds field to given value.
 
 HasClouds returns a boolean if a field has been set.
 
+### GetDockerImage
+
+`func (o *Resources) GetDockerImage() string`
+
+GetDockerImage returns the DockerImage field if non-nil, zero value otherwise.
+
+### GetDockerImageOk
+
+`func (o *Resources) GetDockerImageOk() (*string, bool)`
+
+GetDockerImageOk returns a tuple with the DockerImage field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDockerImage
+
+`func (o *Resources) SetDockerImage(v string)`
+
+SetDockerImage sets DockerImage field to given value.
+
+### HasDockerImage
+
+`func (o *Resources) HasDockerImage() bool`
+
+HasDockerImage returns a boolean if a field has been set.
+
+### SetDockerImageNil
+
+`func (o *Resources) SetDockerImageNil(b bool)`
+
+ SetDockerImageNil sets the value for DockerImage to be an explicit nil
+
+### UnsetDockerImage
+`func (o *Resources) UnsetDockerImage()`
+
+UnsetDockerImage ensures that no value is present for DockerImage, not even an explicit nil
 ### GetRegions
 
 `func (o *Resources) GetRegions() []*string`

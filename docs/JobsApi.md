@@ -33,7 +33,7 @@ import (
 )
 
 func main() {
-	tempJobPostRequest := *openapiclient.NewTempJobPostRequest(*openapiclient.NewCluster(*openapiclient.NewUser("Email_example"), "Name_example", "TODO"), *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), "TODO", "TODO", map[string]interface{}{"key": interface{}(123)}), *openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now())) // TempJobPostRequest | 
+	tempJobPostRequest := *openapiclient.NewTempJobPostRequest(*openapiclient.NewCluster(*openapiclient.NewUser("Email_example"), "Name_example", "TODO"), *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), "TODO", "TODO"), *openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now())) // TempJobPostRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

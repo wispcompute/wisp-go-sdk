@@ -22,6 +22,7 @@ var _ MappedNullable = &Resources{}
 // Resources Resource configuration serializer.
 type Resources struct {
 	Clouds []*string `json:"clouds,omitempty"`
+	DockerImage NullableString `json:"docker_image,omitempty"`
 	Regions []*string `json:"regions,omitempty"`
 	Areas []*string `json:"areas,omitempty"`
 	Memory NullableInt32 `json:"memory,omitempty"`
@@ -85,6 +86,48 @@ func (o *Resources) HasClouds() bool {
 // SetClouds gets a reference to the given []*string and assigns it to the Clouds field.
 func (o *Resources) SetClouds(v []*string) {
 	o.Clouds = v
+}
+
+// GetDockerImage returns the DockerImage field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *Resources) GetDockerImage() string {
+	if o == nil || IsNil(o.DockerImage.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.DockerImage.Get()
+}
+
+// GetDockerImageOk returns a tuple with the DockerImage field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *Resources) GetDockerImageOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.DockerImage.Get(), o.DockerImage.IsSet()
+}
+
+// HasDockerImage returns a boolean if a field has been set.
+func (o *Resources) HasDockerImage() bool {
+	if o != nil && o.DockerImage.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetDockerImage gets a reference to the given NullableString and assigns it to the DockerImage field.
+func (o *Resources) SetDockerImage(v string) {
+	o.DockerImage.Set(&v)
+}
+// SetDockerImageNil sets the value for DockerImage to be an explicit nil
+func (o *Resources) SetDockerImageNil() {
+	o.DockerImage.Set(nil)
+}
+
+// UnsetDockerImage ensures that no value is present for DockerImage, not even an explicit nil
+func (o *Resources) UnsetDockerImage() {
+	o.DockerImage.Unset()
 }
 
 // GetRegions returns the Regions field value if set, zero value otherwise.
@@ -525,6 +568,9 @@ func (o Resources) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if !IsNil(o.Clouds) {
 		toSerialize["clouds"] = o.Clouds
+	}
+	if o.DockerImage.IsSet() {
+		toSerialize["docker_image"] = o.DockerImage.Get()
 	}
 	if !IsNil(o.Regions) {
 		toSerialize["regions"] = o.Regions

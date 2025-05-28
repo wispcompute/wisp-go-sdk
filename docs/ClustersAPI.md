@@ -108,7 +108,7 @@ import (
 )
 
 func main() {
-	clusterPostRequest := *openapiclient.NewClusterPostRequest(*openapiclient.NewClusterOffer(), *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), "TODO", "TODO", map[string]interface{}{"key": interface{}(123)}), *openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now())) // ClusterPostRequest | 
+	clusterPostRequest := *openapiclient.NewClusterPostRequest(*openapiclient.NewClusterOffer(), *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), "TODO", "TODO"), *openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now())) // ClusterPostRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -175,7 +175,7 @@ import (
 )
 
 func main() {
-	constraints := *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), "TODO", "TODO", map[string]interface{}{"key": interface{}(123)}) // ConstrainRequest |  (optional)
+	constraints := *openapiclient.NewConstrainRequest(*openapiclient.NewProject("Name_example", "ProjectId_example", "Type_example", time.Now(), time.Now()), *openapiclient.NewResources([]*string{nil}), "TODO", "TODO") // ConstrainRequest |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
