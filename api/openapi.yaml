@@ -1467,6 +1467,9 @@ components:
     PickledHandleField:
       description: Custom field serializer for pickled handle data.
       properties:
+        docker_user:
+          nullable: true
+          type: string
         stable_internal_ip:
           nullable: true
           type: string

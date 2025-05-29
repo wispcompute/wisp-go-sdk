@@ -19,6 +19,7 @@ var _ MappedNullable = &PickledHandleField{}
 
 // PickledHandleField Custom field serializer for pickled handle data.
 type PickledHandleField struct {
+	DockerUser NullableString `json:"docker_user,omitempty"`
 	StableInternalIp NullableString `json:"stable_internal_ip,omitempty"`
 	StableExternalIp NullableString `json:"stable_external_ip,omitempty"`
 	StableSshPorts []int32 `json:"stable_ssh_ports,omitempty"`
@@ -40,6 +41,48 @@ func NewPickledHandleField() *PickledHandleField {
 func NewPickledHandleFieldWithDefaults() *PickledHandleField {
 	this := PickledHandleField{}
 	return &this
+}
+
+// GetDockerUser returns the DockerUser field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PickledHandleField) GetDockerUser() string {
+	if o == nil || IsNil(o.DockerUser.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.DockerUser.Get()
+}
+
+// GetDockerUserOk returns a tuple with the DockerUser field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PickledHandleField) GetDockerUserOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.DockerUser.Get(), o.DockerUser.IsSet()
+}
+
+// HasDockerUser returns a boolean if a field has been set.
+func (o *PickledHandleField) HasDockerUser() bool {
+	if o != nil && o.DockerUser.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetDockerUser gets a reference to the given NullableString and assigns it to the DockerUser field.
+func (o *PickledHandleField) SetDockerUser(v string) {
+	o.DockerUser.Set(&v)
+}
+// SetDockerUserNil sets the value for DockerUser to be an explicit nil
+func (o *PickledHandleField) SetDockerUserNil() {
+	o.DockerUser.Set(nil)
+}
+
+// UnsetDockerUser ensures that no value is present for DockerUser, not even an explicit nil
+func (o *PickledHandleField) UnsetDockerUser() {
+	o.DockerUser.Unset()
 }
 
 // GetStableInternalIp returns the StableInternalIp field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -210,6 +253,9 @@ func (o PickledHandleField) MarshalJSON() ([]byte, error) {
 
 func (o PickledHandleField) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if o.DockerUser.IsSet() {
+		toSerialize["docker_user"] = o.DockerUser.Get()
+	}
 	if o.StableInternalIp.IsSet() {
 		toSerialize["stable_internal_ip"] = o.StableInternalIp.Get()
 	}

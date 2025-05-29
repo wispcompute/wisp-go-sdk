@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**DockerUser** | Pointer to **NullableString** |  | [optional] 
 **StableInternalIp** | Pointer to **NullableString** |  | [optional] 
 **StableExternalIp** | Pointer to **NullableString** |  | [optional] 
 **StableSshPorts** | Pointer to **[]int32** |  | [optional] 
@@ -28,6 +29,41 @@ NewPickledHandleFieldWithDefaults instantiates a new PickledHandleField object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
+### GetDockerUser
+
+`func (o *PickledHandleField) GetDockerUser() string`
+
+GetDockerUser returns the DockerUser field if non-nil, zero value otherwise.
+
+### GetDockerUserOk
+
+`func (o *PickledHandleField) GetDockerUserOk() (*string, bool)`
+
+GetDockerUserOk returns a tuple with the DockerUser field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDockerUser
+
+`func (o *PickledHandleField) SetDockerUser(v string)`
+
+SetDockerUser sets DockerUser field to given value.
+
+### HasDockerUser
+
+`func (o *PickledHandleField) HasDockerUser() bool`
+
+HasDockerUser returns a boolean if a field has been set.
+
+### SetDockerUserNil
+
+`func (o *PickledHandleField) SetDockerUserNil(b bool)`
+
+ SetDockerUserNil sets the value for DockerUser to be an explicit nil
+
+### UnsetDockerUser
+`func (o *PickledHandleField) UnsetDockerUser()`
+
+UnsetDockerUser ensures that no value is present for DockerUser, not even an explicit nil
 ### GetStableInternalIp
 
 `func (o *PickledHandleField) GetStableInternalIp() string`
