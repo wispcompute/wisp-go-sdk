@@ -22,6 +22,7 @@ var _ MappedNullable = &Resources{}
 // Resources Resource configuration serializer.
 type Resources struct {
 	Clouds []*string `json:"clouds,omitempty"`
+	InstanceTypes []*string `json:"instance_types,omitempty"`
 	DockerImage NullableString `json:"docker_image,omitempty"`
 	Regions []*string `json:"regions,omitempty"`
 	Areas []*string `json:"areas,omitempty"`
@@ -86,6 +87,38 @@ func (o *Resources) HasClouds() bool {
 // SetClouds gets a reference to the given []*string and assigns it to the Clouds field.
 func (o *Resources) SetClouds(v []*string) {
 	o.Clouds = v
+}
+
+// GetInstanceTypes returns the InstanceTypes field value if set, zero value otherwise.
+func (o *Resources) GetInstanceTypes() []*string {
+	if o == nil || IsNil(o.InstanceTypes) {
+		var ret []*string
+		return ret
+	}
+	return o.InstanceTypes
+}
+
+// GetInstanceTypesOk returns a tuple with the InstanceTypes field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Resources) GetInstanceTypesOk() ([]*string, bool) {
+	if o == nil || IsNil(o.InstanceTypes) {
+		return nil, false
+	}
+	return o.InstanceTypes, true
+}
+
+// HasInstanceTypes returns a boolean if a field has been set.
+func (o *Resources) HasInstanceTypes() bool {
+	if o != nil && !IsNil(o.InstanceTypes) {
+		return true
+	}
+
+	return false
+}
+
+// SetInstanceTypes gets a reference to the given []*string and assigns it to the InstanceTypes field.
+func (o *Resources) SetInstanceTypes(v []*string) {
+	o.InstanceTypes = v
 }
 
 // GetDockerImage returns the DockerImage field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -568,6 +601,9 @@ func (o Resources) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if !IsNil(o.Clouds) {
 		toSerialize["clouds"] = o.Clouds
+	}
+	if !IsNil(o.InstanceTypes) {
+		toSerialize["instance_types"] = o.InstanceTypes
 	}
 	if o.DockerImage.IsSet() {
 		toSerialize["docker_image"] = o.DockerImage.Get()

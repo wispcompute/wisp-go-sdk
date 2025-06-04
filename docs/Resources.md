@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Clouds** | Pointer to **[]string** |  | [optional] 
+**InstanceTypes** | Pointer to **[]string** |  | [optional] 
 **DockerImage** | Pointer to **NullableString** |  | [optional] 
 **Regions** | Pointer to **[]string** |  | [optional] 
 **Areas** | Pointer to **[]string** |  | [optional] 
@@ -61,6 +62,31 @@ SetClouds sets Clouds field to given value.
 `func (o *Resources) HasClouds() bool`
 
 HasClouds returns a boolean if a field has been set.
+
+### GetInstanceTypes
+
+`func (o *Resources) GetInstanceTypes() []*string`
+
+GetInstanceTypes returns the InstanceTypes field if non-nil, zero value otherwise.
+
+### GetInstanceTypesOk
+
+`func (o *Resources) GetInstanceTypesOk() (*[]*string, bool)`
+
+GetInstanceTypesOk returns a tuple with the InstanceTypes field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetInstanceTypes
+
+`func (o *Resources) SetInstanceTypes(v []*string)`
+
+SetInstanceTypes sets InstanceTypes field to given value.
+
+### HasInstanceTypes
+
+`func (o *Resources) HasInstanceTypes() bool`
+
+HasInstanceTypes returns a boolean if a field has been set.
 
 ### GetDockerImage
 
