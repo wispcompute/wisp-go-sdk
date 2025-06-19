@@ -27,6 +27,7 @@ type Project struct {
 	Type string `json:"type"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+	Env map[string]interface{} `json:"env,omitempty"`
 }
 
 type _Project Project
@@ -173,6 +174,39 @@ func (o *Project) SetUpdatedAt(v time.Time) {
 	o.UpdatedAt = v
 }
 
+// GetEnv returns the Env field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *Project) GetEnv() map[string]interface{} {
+	if o == nil {
+		var ret map[string]interface{}
+		return ret
+	}
+	return o.Env
+}
+
+// GetEnvOk returns a tuple with the Env field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *Project) GetEnvOk() (map[string]interface{}, bool) {
+	if o == nil || IsNil(o.Env) {
+		return map[string]interface{}{}, false
+	}
+	return o.Env, true
+}
+
+// HasEnv returns a boolean if a field has been set.
+func (o *Project) HasEnv() bool {
+	if o != nil && !IsNil(o.Env) {
+		return true
+	}
+
+	return false
+}
+
+// SetEnv gets a reference to the given map[string]interface{} and assigns it to the Env field.
+func (o *Project) SetEnv(v map[string]interface{}) {
+	o.Env = v
+}
+
 func (o Project) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -188,6 +222,9 @@ func (o Project) ToMap() (map[string]interface{}, error) {
 	toSerialize["type"] = o.Type
 	toSerialize["created_at"] = o.CreatedAt
 	toSerialize["updated_at"] = o.UpdatedAt
+	if o.Env != nil {
+		toSerialize["env"] = o.Env
+	}
 	return toSerialize, nil
 }
 

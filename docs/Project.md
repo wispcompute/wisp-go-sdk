@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **Type** | **string** |  | 
 **CreatedAt** | **time.Time** |  | 
 **UpdatedAt** | **time.Time** |  | 
+**Env** | Pointer to **map[string]interface{}** |  | [optional] 
 
 ## Methods
 
@@ -129,6 +130,41 @@ and a boolean to check if the value has been set.
 SetUpdatedAt sets UpdatedAt field to given value.
 
 
+### GetEnv
+
+`func (o *Project) GetEnv() map[string]interface{}`
+
+GetEnv returns the Env field if non-nil, zero value otherwise.
+
+### GetEnvOk
+
+`func (o *Project) GetEnvOk() (*map[string]interface{}, bool)`
+
+GetEnvOk returns a tuple with the Env field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEnv
+
+`func (o *Project) SetEnv(v map[string]interface{})`
+
+SetEnv sets Env field to given value.
+
+### HasEnv
+
+`func (o *Project) HasEnv() bool`
+
+HasEnv returns a boolean if a field has been set.
+
+### SetEnvNil
+
+`func (o *Project) SetEnvNil(b bool)`
+
+ SetEnvNil sets the value for Env to be an explicit nil
+
+### UnsetEnv
+`func (o *Project) UnsetEnv()`
+
+UnsetEnv ensures that no value is present for Env, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
